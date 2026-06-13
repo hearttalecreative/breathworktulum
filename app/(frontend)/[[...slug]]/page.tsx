@@ -3,21 +3,18 @@ import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 import RenderBlocks from "@/components/RenderBlocks";
 import LivePreviewListener from "@/components/LivePreviewListener";
-import { getPage, getAllPageSlugs, getGlobals, getAuthUser } from "@/lib/payload";
+import { getPage, getGlobals, getAuthUser } from "@/lib/payload";
 import { SITE } from "@/lib/site";
+
+// Pages are rendered per-request (auth check shows drafts to logged-in admins),
+// so there is no build-time DB access. Keeps the build green without env/DB.
+export const dynamic = "force-dynamic";
 
 type Params = { slug?: string[] };
 
 function toSlug(segments?: string[]) {
   if (!segments || segments.length === 0) return "home";
   return segments.join("/");
-}
-
-export async function generateStaticParams() {
-  const slugs = await getAllPageSlugs();
-  return slugs.map((slug) => ({
-    slug: slug === "home" ? [] : slug.split("/"),
-  }));
 }
 
 export async function generateMetadata({
