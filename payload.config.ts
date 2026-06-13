@@ -32,7 +32,11 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
   db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URI || "" },
+    pool: {
+      connectionString: process.env.DATABASE_URI || "",
+      // Supabase pooler presents a self-signed cert in the chain; accept it.
+      ssl: { rejectUnauthorized: false },
+    },
   }),
   sharp,
   // Media → Vercel Blob in production. Falls back to local disk storage in dev
