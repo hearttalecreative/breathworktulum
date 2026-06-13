@@ -42,3 +42,4 @@ next-env.d.ts
 
 # Payload local media uploads (prod uses Vercel Blob)
 /media/
+.env*.local
