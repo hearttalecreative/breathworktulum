@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
+/*
+  Breathwork Tulum — earthy luxury, calm nervous system.
+  Warm sand base, warm charcoal ink, refined terroso gold.
+  Brand reference gold #bf9000, softened for body comfort + WCAG AA.
+*/
+
+@theme {
+  /* Surfaces */
+  --color-cream: #f6f1e8;
+  --color-sand: #ece3d4;
+  --color-sand-deep: #e2d6c2;
+  --color-night: #2a251f;
+  --color-night-soft: #36302a;
+
+  /* Ink */
+  --color-ink: #2a2620;
+  --color-muted: #5c5347;
+  --color-faint: #8a7f70;
+
+  /* Accents */
+  --color-gold: #a17c2e;
+  --color-gold-soft: #b8923e;
+  --color-clay: #9c5b3e;
+  --color-sage: #6f7459;
+
+  /* On-dark */
+  --color-cream-dim: #d9cfbe;
+
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+
+  /* Generous, slow rhythm */
+  --spacing-section: 7rem;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Base element styles go in @layer base so Tailwind utility classes
+   (text-cream, text-gold, etc.) still win on headings. */
+@layer base {
+  * {
+    border-color: var(--color-sand-deep);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "kern", "liga";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Visible keyboard focus, never on mouse */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+::selection {
+  background: var(--color-gold-soft);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Editorial helpers */
+.eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-gold);
+}
+
+.prose-lede {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.6vw, 1.85rem);
+  line-height: 1.4;
+  color: var(--color-muted);
+  font-weight: 300;
+}
+
+.rule {
+  width: 3rem;
+  height: 1px;
+  background: var(--color-gold);
 }
