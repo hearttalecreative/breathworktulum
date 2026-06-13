@@ -2,132 +2,96 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { NAV, SITE } from "@/lib/site";
-import { whatsappLink } from "@/lib/whatsapp";
 
-export default function Header() {
+type NavLink = { label: string; href: string };
+
+export default function Header({
+  brandName = "Breathwork Tulum",
+  workWithMe = [],
+  primary = [],
+  whatsappHref = "#",
+  email = "",
+}: {
+  brandName?: string;
+  workWithMe?: NavLink[];
+  primary?: NavLink[];
+  whatsappHref?: string;
+  email?: string;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-sand-deep/60 bg-cream/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link
-          href="/"
-          className="font-serif text-lg tracking-tight text-ink"
-          onClick={() => setMenuOpen(false)}
-        >
-          Breathwork Tulum
+        <Link href="/" className="font-serif text-lg tracking-tight text-ink" onClick={() => setMenuOpen(false)}>
+          {brandName}
         </Link>
 
-        {/* Desktop nav */}
-        <nav
-          className="hidden items-center gap-8 lg:flex"
-          aria-label="Primary"
-        >
-          <div className="group relative">
-            <button className="flex items-center gap-1 py-2 text-sm text-ink/80 transition-colors hover:text-ink">
-              Work With Me
-              <span aria-hidden className="text-[0.6rem]">▾</span>
-            </button>
-            <div className="invisible absolute left-1/2 top-full w-60 -translate-x-1/2 pt-2 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-              <div className="rounded-xl border border-sand-deep bg-cream p-2 shadow-lg shadow-ink/5">
-                {NAV.workWithMe.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block rounded-lg px-3 py-2 text-sm text-ink/80 transition-colors hover:bg-sand hover:text-ink"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
+          {workWithMe.length > 0 && (
+            <div className="group relative">
+              <button className="flex items-center gap-1 py-2 text-sm text-ink/80 transition-colors hover:text-ink">
+                Work With Me
+                <span aria-hidden className="text-[0.6rem]">▾</span>
+              </button>
+              <div className="invisible absolute left-1/2 top-full w-60 -translate-x-1/2 pt-2 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <div className="rounded-xl border border-sand-deep bg-cream p-2 shadow-lg shadow-ink/5">
+                  {workWithMe.map((item) => (
+                    <Link key={item.href} href={item.href} className="block rounded-lg px-3 py-2 text-sm text-ink/80 transition-colors hover:bg-sand hover:text-ink">
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {NAV.primary.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="py-2 text-sm text-ink/80 transition-colors hover:text-ink"
-            >
+          {primary.map((item) => (
+            <Link key={item.href} href={item.href} className="py-2 text-sm text-ink/80 transition-colors hover:text-ink">
               {item.label}
             </Link>
           ))}
 
-          <a
-            href={whatsappLink("general")}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Message on WhatsApp"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-sage text-cream transition-colors hover:bg-ink"
-          >
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="Message on WhatsApp" className="flex h-10 w-10 items-center justify-center rounded-full bg-sage text-cream transition-colors hover:bg-ink">
             <WaIcon />
           </a>
         </nav>
 
-        {/* Mobile controls */}
         <div className="flex items-center gap-2 lg:hidden">
-          <a
-            href={whatsappLink("general")}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Message on WhatsApp"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-sage text-cream"
-          >
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="Message on WhatsApp" className="flex h-10 w-10 items-center justify-center rounded-full bg-sage text-cream">
             <WaIcon />
           </a>
-          <button
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-ink"
-          >
+          <button onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen} aria-label={menuOpen ? "Close menu" : "Open menu"} className="flex h-10 w-10 items-center justify-center rounded-full text-ink">
             <span className="text-xl">{menuOpen ? "✕" : "☰"}</span>
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <nav
-          className="border-t border-sand-deep bg-cream px-6 py-6 lg:hidden"
-          aria-label="Mobile"
-        >
-          <p className="eyebrow mb-2">Work With Me</p>
-          <div className="mb-4 flex flex-col gap-1 pl-1">
-            {NAV.workWithMe.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="py-1.5 text-ink/80"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
+        <nav className="border-t border-sand-deep bg-cream px-6 py-6 lg:hidden" aria-label="Mobile">
+          {workWithMe.length > 0 && (
+            <>
+              <p className="eyebrow mb-2">Work With Me</p>
+              <div className="mb-4 flex flex-col gap-1 pl-1">
+                {workWithMe.map((item) => (
+                  <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} className="py-1.5 text-ink/80">
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
           <div className="flex flex-col gap-1">
-            {NAV.primary.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="py-1.5 text-lg text-ink"
-              >
+            {primary.map((item) => (
+              <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} className="py-1.5 text-lg text-ink">
                 {item.label}
               </Link>
             ))}
           </div>
-          <a
-            href={whatsappLink("general")}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setMenuOpen(false)}
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-3 text-cream"
-          >
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="mt-6 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-3 text-cream">
             <WaIcon /> Message me on WhatsApp
           </a>
-          <p className="mt-4 text-sm text-faint">{SITE.email}</p>
+          {email ? <p className="mt-4 text-sm text-faint">{email}</p> : null}
         </nav>
       )}
     </header>

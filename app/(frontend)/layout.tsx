@@ -7,6 +7,8 @@ import WhatsAppSticky from "@/components/WhatsAppSticky";
 import JsonLd from "@/components/JsonLd";
 import { SITE } from "@/lib/site";
 import { organizationLd, websiteLd, localBusinessLd } from "@/lib/seo";
+import { getGlobals } from "@/lib/payload";
+import { whatsappHref } from "@/lib/cta";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -31,9 +33,15 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.ico" },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const globals = await getGlobals();
+  const s = globals.siteSettings as unknown as Record<string, never>;
+  const header = globals.header as unknown as Record<string, never[]>;
+  const footer = globals.footer as unknown as Record<string, never>;
+  const waHref = whatsappHref(globals.siteSettings as never, "general");
+
   return (
     <html
       lang="en"
@@ -47,11 +55,32 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Header />
+        <Header
+          brandName={(s.brandName as string) || "Breathwork Tulum"}
+          workWithMe={header.workWithMe || []}
+          primary={header.primary || []}
+          whatsappHref={waHref}
+          email={(s.email as string) || ""}
+        />
         <main id="main" className="flex-1">
           {children}
         </main>
-        <Footer />
+        <Footer
+          brandName={(s.brandName as string) || "Breathwork Tulum"}
+          slogan={(s.slogan as string) || "Breathe. Heal. Transform.®"}
+          brandBlurb={footer.brandBlurb || ""}
+          locationBlurb={footer.locationBlurb || ""}
+          subBrandTitle={footer.subBrandTitle || "Sister project"}
+          subBrandName={footer.subBrandName || ""}
+          subBrandBlurb={footer.subBrandBlurb || ""}
+          workWithMe={footer.workWithMe || []}
+          explore={footer.explore || []}
+          newsletterBlurb={footer.newsletterBlurb || ""}
+          legal={footer.legal || []}
+          bottomNote={footer.bottomNote || ""}
+          instagram={(s.instagram as string) || ""}
+          googleReviews={(s.googleReviews as string) || ""}
+        />
         <WhatsAppSticky />
       </body>
     </html>
