@@ -103,6 +103,7 @@ export const WaysGridBlock: Block = {
       name: "cards",
       type: "array",
       fields: [
+        { name: "image", type: "upload", relationTo: "media" },
         { name: "title", type: "text", required: true },
         { name: "body", type: "textarea", required: true },
         { name: "ctaLabel", type: "text" },

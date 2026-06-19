@@ -308,6 +308,7 @@ export interface Page {
             heading: string;
             cards?:
               | {
+                  image?: (number | null) | Media;
                   title: string;
                   body: string;
                   ctaLabel?: string | null;
@@ -929,6 +930,7 @@ export interface PagesSelect<T extends boolean = true> {
               cards?:
                 | T
                 | {
+                    image?: T;
                     title?: T;
                     body?: T;
                     ctaLabel?: T;

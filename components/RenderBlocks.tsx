@@ -179,22 +179,44 @@ function BlockSwitch({
     }
 
     case "waysGrid": {
-      const cards = (b.cards as { title: string; body: string; ctaLabel?: string; href?: string }[]) || [];
+      const cards =
+        (b.cards as { image?: unknown; title: string; body: string; ctaLabel?: string; href?: string }[]) || [];
+      // Editorial, photo-forward, asymmetric: the first two span wide, the rest
+      // narrow — no uniform box grid, no hairline borders.
+      const spans = ["lg:col-span-3", "lg:col-span-3", "lg:col-span-2", "lg:col-span-2", "lg:col-span-2"];
+      const ratios = ["aspect-[16/10]", "aspect-[16/10]", "aspect-[4/5]", "aspect-[4/5]", "aspect-[4/5]"];
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {cards.map((c, i) => (
-              <div key={i} className="flex flex-col rounded-2xl border border-sand-deep bg-cream p-7">
-                <h3 className="font-serif text-2xl text-ink">{c.title}</h3>
-                <p className="mt-3 flex-1 text-muted">{c.body}</p>
-                {c.ctaLabel && c.href ? (
-                  <a href={c.href} className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-gold transition-colors hover:text-ink">
-                    {c.ctaLabel} <span aria-hidden>→</span>
-                  </a>
-                ) : null}
-              </div>
-            ))}
+          <span className="eyebrow eyebrow--filet">Ways to work together</span>
+          <h2 className="mt-4 max-w-2xl text-3xl sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+            {cards.map((c, i) => {
+              const Wrapper = c.href ? "a" : "div";
+              return (
+                <Wrapper
+                  key={i}
+                  {...(c.href ? { href: c.href } : {})}
+                  className={`card group relative block overflow-clip rounded-2xl bg-night ${spans[i % spans.length]}`}
+                >
+                  <div className={`card-media relative ${ratios[i % ratios.length]} w-full`}>
+                    {c.image ? (
+                      <PayloadImage media={c.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
+                    ) : null}
+                    <div className="absolute inset-0 bg-gradient-to-t from-night/85 via-night/15 to-transparent" aria-hidden />
+                  </div>
+                  <div className="absolute inset-x-0 bottom-0 p-6">
+                    <h3 className="font-serif text-2xl text-pure">{c.title}</h3>
+                    <p className="mt-2 max-w-sm text-sm leading-relaxed text-cream-dim">{c.body}</p>
+                    {c.ctaLabel ? (
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-champagne">
+                        {c.ctaLabel}
+                        <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                      </span>
+                    ) : null}
+                  </div>
+                </Wrapper>
+              );
+            })}
           </div>
         </Section>
       );
