@@ -47,7 +47,7 @@ export default function Header({
           )}
 
           {primary.map((item) => (
-            <Link key={item.href} href={item.href} className="py-2 text-sm text-ink/80 transition-colors hover:text-ink">
+            <Link key={item.href} href={item.href} className="link-underline py-2 text-sm text-ink/80 transition-colors hover:text-ink">
               {item.label}
             </Link>
           ))}

@@ -5,6 +5,7 @@ import ThreePhases from "./method/ThreePhases";
 import Accordion from "./Accordion";
 import ContactForm from "./ContactForm";
 import PayloadImage from "./PayloadImage";
+import Reveal from "./Reveal";
 import { resolveCta, resolveCtas, type RawCta } from "@/lib/cta";
 
 type Settings = Parameters<typeof resolveCtas>[1];
@@ -42,9 +43,16 @@ export default function RenderBlocks({
   if (!blocks?.length) return null;
   return (
     <>
-      {blocks.map((b, i) => (
-        <BlockSwitch key={b.id || i} block={b} settings={settings} first={i === 0} />
-      ))}
+      {blocks.map((b, i) =>
+        i === 0 ? (
+          // Hero / first block renders immediately (LCP — no reveal delay).
+          <BlockSwitch key={b.id || i} block={b} settings={settings} first />
+        ) : (
+          <Reveal key={b.id || i}>
+            <BlockSwitch block={b} settings={settings} first={false} />
+          </Reveal>
+        )
+      )}
     </>
   );
 }
