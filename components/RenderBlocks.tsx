@@ -90,7 +90,7 @@ function BlockSwitch({
     case "situations": {
       const items = (b.items as { text: string }[]) || [];
       return (
-        <Section tone={(b.tone as never) || "sand"} id={b.id}>
+        <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-sand-deep bg-sand-deep sm:grid-cols-2">
             {items.map((it, i) => (
@@ -107,7 +107,7 @@ function BlockSwitch({
     case "threePhases": {
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
-        <Section tone={(b.tone as never) || "cream"} width="wide" id={b.id}>
+        <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
           {b.eyebrow ? <span className="eyebrow">{b.eyebrow as string}</span> : null}
           {b.heading ? (
             <h2 className="mt-3 max-w-2xl text-3xl sm:text-4xl">{b.heading as string}</h2>
@@ -129,7 +129,7 @@ function BlockSwitch({
     case "waysGrid": {
       const cards = (b.cards as { title: string; body: string; ctaLabel?: string; href?: string }[]) || [];
       return (
-        <Section tone={(b.tone as never) || "sand"} width="wide" id={b.id}>
+        <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {cards.map((c, i) => (
@@ -151,7 +151,7 @@ function BlockSwitch({
     case "testimonialsBlock": {
       const items = (b.items as { quote: string; source?: string }[]) || [];
       return (
-        <Section tone={(b.tone as never) || "sand"} width="wide" id={b.id}>
+        <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
           {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {items.map((t, i) => (
@@ -178,7 +178,7 @@ function BlockSwitch({
       const cta = resolveCta(b.cta as RawCta, settings);
       const left = b.imageSide !== "right";
       return (
-        <Section tone={(b.tone as never) || "cream"} width="wide" id={b.id}>
+        <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div className={`relative aspect-[4/5] overflow-hidden rounded-2xl bg-sand ${left ? "lg:order-first" : "lg:order-last"}`}>
               <PayloadImage media={b.image as never} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
@@ -200,7 +200,7 @@ function BlockSwitch({
     case "signatureBand": {
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
-        <section className="relative overflow-hidden bg-night px-6 py-24 text-cream-dim sm:py-32" id={b.id}>
+        <section className="relative overflow-hidden bg-night px-6 py-24 text-cream-dim sm:py-32" id={(b.anchor as string) || undefined}>
           <PayloadImage media={b.image as never} fill sizes="100vw" className="object-cover opacity-30" />
           <div className="absolute inset-0 bg-night/70" aria-hidden />
           <div className="relative mx-auto max-w-3xl text-center">
@@ -217,7 +217,7 @@ function BlockSwitch({
       const ctas = resolveCtas(b.ctas as RawCta[], settings);
       const center = b.align !== "left";
       return (
-        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={b.id} className={center ? "text-center" : ""}>
+        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           {b.body ? <p className={`mt-6 text-[1.05rem] leading-relaxed text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"}`}>{b.body as string}</p> : null}
           <CtaRow ctas={ctas} align={center ? "center" : "left"} />
@@ -229,7 +229,7 @@ function BlockSwitch({
       const cta = resolveCta(b.cta as RawCta, settings);
       const included = (b.included as { text: string }[]) || [];
       return (
-        <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || b.id}>
+        <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
           {b.tag ? (
             <span className="mb-3 inline-block rounded-full bg-gold/15 px-3 py-1 text-xs font-medium uppercase tracking-widest text-gold">
               {b.tag as string}
@@ -270,7 +270,7 @@ function BlockSwitch({
     case "faq": {
       const items = ((b.items as { question: string; answer: string }[]) || []).map((q) => ({ q: q.question, a: q.answer }));
       return (
-        <Section tone={(b.tone as never) || "sand"} id={b.id}>
+        <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
           {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
           <div className="mt-8"><Accordion items={items} /></div>
         </Section>
@@ -281,7 +281,7 @@ function BlockSwitch({
       const items = (b.items as { text: string }[]) || [];
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
-        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={b.id}>
+        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <ul className="mt-6 space-y-3">
@@ -299,7 +299,7 @@ function BlockSwitch({
       const left = (b.left as { text: string }[]) || [];
       const right = (b.right as { text: string }[]) || [];
       return (
-        <Section tone={(b.tone as never) || "cream"} id={b.id}>
+        <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <div className="mt-8 grid gap-6 md:grid-cols-2">
@@ -323,7 +323,7 @@ function BlockSwitch({
     case "contactTiles": {
       const tiles = (b.tiles as { title: string; line?: string; value?: string; ctaLabel?: string; action?: string; whatsappContext?: string; href?: string }[]) || [];
       return (
-        <Section tone={(b.tone as never) || "sand"} width="wide" id={b.id}>
+        <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
           <div className="grid gap-6 md:grid-cols-3">
             {tiles.map((t, i) => {
               const cta = resolveCta({ label: t.ctaLabel, action: t.action as never, whatsappContext: t.whatsappContext, href: t.href }, settings);
@@ -347,7 +347,7 @@ function BlockSwitch({
 
     case "contactForm":
       return (
-        <Section tone={(b.tone as never) || "sand"} id={b.id}>
+        <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
           {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <div className="mt-8"><ContactForm /></div>
@@ -357,7 +357,7 @@ function BlockSwitch({
     case "richText": {
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
-        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={b.id}>
+        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
           {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
           <div className="prose-body mt-6 space-y-4 text-[1.05rem] leading-relaxed text-muted">
             {b.body ? <RichText data={b.body as never} /> : null}

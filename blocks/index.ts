@@ -285,3 +285,16 @@ export const allBlocks: Block[] = [
   ContactTilesBlock,
   ContactFormBlock,
 ];
+
+// Give every block an optional `anchor` (for in-page #links). FormatDetail
+// already defines one. This drives the DOM id in RenderBlocks.
+const anchorField = {
+  name: "anchor",
+  type: "text" as const,
+  admin: { position: "sidebar" as const, description: "Optional anchor id for #links (e.g. inquiry)." },
+};
+for (const b of allBlocks) {
+  if (!b.fields.some((f) => "name" in f && f.name === "anchor")) {
+    b.fields.push(anchorField);
+  }
+}
