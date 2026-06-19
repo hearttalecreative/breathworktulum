@@ -3,8 +3,33 @@ import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 import RenderBlocks from "@/components/RenderBlocks";
 import LivePreviewListener from "@/components/LivePreviewListener";
+import JsonLd from "@/components/JsonLd";
 import { getPage, getGlobals, getAuthUser } from "@/lib/payload";
 import { SITE } from "@/lib/site";
+import { faqLd, serviceLd, personLd } from "@/lib/seo";
+
+const OG_FALLBACK = "/images/og-default.jpg";
+
+// Per-page structured data derived from slug + blocks.
+function pageSchemas(slug: string, title: string, description: string, layout: { blockType: string; items?: { question: string; answer: string }[] }[]) {
+  const schemas: object[] = [];
+  // FAQ schema from any faq block.
+  const faqBlock = layout.find((b) => b.blockType === "faq" && b.items?.length);
+  if (faqBlock?.items) schemas.push(faqLd(faqBlock.items.map((i) => ({ q: i.question, a: i.answer }))));
+  // Service schema for offer pages.
+  if (slug.startsWith("work-with-me")) schemas.push(serviceLd(title, description));
+  if (slug === "about") schemas.push(personLd());
+  if (slug === "retreat-riviera-maya-2026") {
+    schemas.push({
+      "@context": "https://schema.org", "@type": "Event", name: title, description,
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      location: { "@type": "Place", name: "ONZE Xpu Ha", address: "Xpu Ha, Riviera Maya, Mexico" },
+      organizer: { "@type": "Person", name: SITE.founder },
+    });
+  }
+  return schemas;
+}
 
 // Pages are rendered per-request (auth check shows drafts to logged-in admins),
 // so there is no build-time DB access. Keeps the build green without env/DB.
@@ -36,8 +61,9 @@ export async function generateMetadata({
       title: (p.metaTitle as string) || (p.title as string),
       description: (p.metaDescription as string) || undefined,
       url: `${SITE.url}${path}`,
-      images: og?.url ? [{ url: og.url, width: 1200, height: 630 }] : undefined,
+      images: [{ url: og?.url || OG_FALLBACK, width: 1200, height: 630 }],
     },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -50,7 +76,14 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   if (!page) notFound();
 
   const { siteSettings } = await getGlobals();
-  const layout = ((page as unknown as { layout?: unknown[] }).layout || []) as never;
+  const pd = page as unknown as { layout?: unknown[]; title?: string; metaDescription?: string };
+  const layout = (pd.layout || []) as never;
+  const schemas = pageSchemas(
+    toSlug(slug),
+    (pd.title as string) || "",
+    (pd.metaDescription as string) || "",
+    (pd.layout as { blockType: string; items?: { question: string; answer: string }[] }[]) || []
+  );
 
   return (
     <>
@@ -59,6 +92,7 @@ export default async function Page({ params }: { params: Promise<Params> }) {
           serverURL={process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000"}
         />
       ) : null}
+      {schemas.length > 0 ? <JsonLd data={schemas} /> : null}
       <RenderBlocks blocks={layout} settings={siteSettings as never} />
     </>
   );

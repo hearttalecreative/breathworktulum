@@ -174,6 +174,10 @@ export interface Page {
                   id?: string | null;
                 }[]
               | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero';
@@ -221,6 +225,10 @@ export interface Page {
             };
             tone?: ('cream' | 'sand' | 'night') | null;
             width?: ('narrow' | 'default' | 'wide') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'richText';
@@ -269,6 +277,10 @@ export interface Page {
               href?: string | null;
             };
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'threePhases';
@@ -283,6 +295,10 @@ export interface Page {
               | null;
             closing?: string | null;
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'situations';
@@ -299,6 +315,10 @@ export interface Page {
                 }[]
               | null;
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'waysGrid';
@@ -309,6 +329,10 @@ export interface Page {
             reviewsLabel?: string | null;
             reviewsUrl?: string | null;
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'testimonialsBlock';
@@ -357,6 +381,10 @@ export interface Page {
               href?: string | null;
             };
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'splitImageText';
@@ -390,6 +418,10 @@ export interface Page {
                */
               href?: string | null;
             };
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'signatureBand';
@@ -426,6 +458,10 @@ export interface Page {
             align?: ('center' | 'left') | null;
             tone?: ('cream' | 'sand' | 'night') | null;
             width?: ('narrow' | 'default' | 'wide') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'ctaSection';
@@ -502,6 +538,10 @@ export interface Page {
                 }[]
               | null;
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'faq';
@@ -542,6 +582,10 @@ export interface Page {
             };
             tone?: ('cream' | 'sand' | 'night') | null;
             width?: ('narrow' | 'default' | 'wide') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'list';
@@ -564,6 +608,10 @@ export interface Page {
                 }[]
               | null;
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'twoColumnLists';
@@ -598,6 +646,10 @@ export interface Page {
                 }[]
               | null;
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'contactTiles';
@@ -606,6 +658,10 @@ export interface Page {
             heading?: string | null;
             intro?: string | null;
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'contactForm';
@@ -801,6 +857,7 @@ export interface PagesSelect<T extends boolean = true> {
                     href?: T;
                     id?: T;
                   };
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -821,6 +878,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               width?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -842,6 +900,7 @@ export interface PagesSelect<T extends boolean = true> {
                     href?: T;
                   };
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -857,6 +916,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               closing?: T;
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -874,6 +934,7 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -885,6 +946,7 @@ export interface PagesSelect<T extends boolean = true> {
               reviewsLabel?: T;
               reviewsUrl?: T;
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -906,6 +968,7 @@ export interface PagesSelect<T extends boolean = true> {
                     href?: T;
                   };
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -926,6 +989,7 @@ export interface PagesSelect<T extends boolean = true> {
                     whatsappContext?: T;
                     href?: T;
                   };
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -947,6 +1011,7 @@ export interface PagesSelect<T extends boolean = true> {
               align?: T;
               tone?: T;
               width?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -991,6 +1056,7 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1018,6 +1084,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               width?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1041,6 +1108,7 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1060,6 +1128,7 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1069,6 +1138,7 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               intro?: T;
               tone?: T;
+              anchor?: T;
               id?: T;
               blockName?: T;
             };
