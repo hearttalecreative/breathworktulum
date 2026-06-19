@@ -143,6 +143,7 @@ export interface Page {
   layout?:
     | (
         | {
+            variant?: ('split' | 'fullBleed') | null;
             eyebrow?: string | null;
             heading: string;
             lede?: string | null;
@@ -842,6 +843,7 @@ export interface PagesSelect<T extends boolean = true> {
         hero?:
           | T
           | {
+              variant?: T;
               eyebrow?: T;
               heading?: T;
               lede?: T;

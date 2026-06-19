@@ -27,6 +27,15 @@ export const HeroBlock: Block = {
   slug: "hero",
   labels: { singular: "Hero", plural: "Heroes" },
   fields: [
+    {
+      name: "variant",
+      type: "select",
+      defaultValue: "split",
+      options: [
+        { label: "Split (image beside text)", value: "split" },
+        { label: "Full-bleed (immersive photo)", value: "fullBleed" },
+      ],
+    },
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "textarea", required: true },
     { name: "lede", type: "textarea" },
@@ -35,6 +44,7 @@ export const HeroBlock: Block = {
       name: "imageSide",
       type: "select",
       defaultValue: "right",
+      admin: { condition: (_, s) => s?.variant !== "fullBleed" },
       options: [
         { label: "Right", value: "right" },
         { label: "Left", value: "left" },

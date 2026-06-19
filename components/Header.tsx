@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type NavLink = { label: string; href: string };
 
@@ -19,23 +19,52 @@ export default function Header({
   email?: string;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  // Transparent + light text while sitting over a full-bleed hero; solid after.
+  const [overHero, setOverHero] = useState(false);
+
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>("[data-fullbleed-hero]");
+    if (!hero) {
+      setOverHero(false);
+      return;
+    }
+    const onScroll = () => {
+      setOverHero(window.scrollY < hero.offsetHeight - 90);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const light = overHero && !menuOpen;
+  const linkColor = light ? "text-cream-dim hover:text-pure" : "text-ink/80 hover:text-ink";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-sand-deep/60 bg-cream/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="font-serif text-lg tracking-tight text-ink" onClick={() => setMenuOpen(false)}>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        light
+          ? "bg-transparent"
+          : "border-b border-line/60 bg-shell/90 backdrop-blur-md"
+      }`}
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-[clamp(20px,5vw,80px)] py-4">
+        <Link
+          href="/"
+          className={`font-serif text-lg tracking-tight ${light ? "text-pure" : "text-ink"}`}
+          onClick={() => setMenuOpen(false)}
+        >
           {brandName}
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
           {workWithMe.length > 0 && (
             <div className="group relative">
-              <button className="flex items-center gap-1 py-2 text-sm text-ink/80 transition-colors hover:text-ink">
+              <button className={`flex items-center gap-1 py-2 text-sm transition-colors ${linkColor}`}>
                 Work With Me
                 <span aria-hidden className="text-[0.6rem]">▾</span>
               </button>
-              <div className="invisible absolute left-1/2 top-full w-60 -translate-x-1/2 pt-2 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                <div className="rounded-xl border border-sand-deep bg-cream p-2 shadow-lg shadow-ink/5">
+              <div className="invisible absolute left-1/2 top-full w-60 -translate-x-1/2 pt-3 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                <div className="rounded-xl border border-line bg-ivory p-2 shadow-[0_30px_60px_-30px_rgba(42,37,33,0.25)]">
                   {workWithMe.map((item) => (
                     <Link key={item.href} href={item.href} className="block rounded-lg px-3 py-2 text-sm text-ink/80 transition-colors hover:bg-sand hover:text-ink">
                       {item.label}
@@ -47,28 +76,45 @@ export default function Header({
           )}
 
           {primary.map((item) => (
-            <Link key={item.href} href={item.href} className="link-underline py-2 text-sm text-ink/80 transition-colors hover:text-ink">
+            <Link key={item.href} href={item.href} className={`link-underline py-2 text-sm transition-colors ${linkColor}`}>
               {item.label}
             </Link>
           ))}
 
-          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="Message on WhatsApp" className="flex h-10 w-10 items-center justify-center rounded-full bg-sage text-cream transition-colors hover:bg-ink">
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Message on WhatsApp"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-whatsapp text-pure transition-colors hover:bg-ink"
+          >
             <WaIcon />
           </a>
         </nav>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="Message on WhatsApp" className="flex h-10 w-10 items-center justify-center rounded-full bg-sage text-cream">
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Message on WhatsApp"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-whatsapp text-pure"
+          >
             <WaIcon />
           </a>
-          <button onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen} aria-label={menuOpen ? "Close menu" : "Open menu"} className="flex h-10 w-10 items-center justify-center rounded-full text-ink">
+          <button
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className={`flex h-10 w-10 items-center justify-center rounded-full ${light ? "text-pure" : "text-ink"}`}
+          >
             <span className="text-xl">{menuOpen ? "✕" : "☰"}</span>
           </button>
         </div>
       </div>
 
       {menuOpen && (
-        <nav className="border-t border-sand-deep bg-cream px-6 py-6 lg:hidden" aria-label="Mobile">
+        <nav className="border-t border-line bg-shell px-[clamp(20px,5vw,80px)] py-6 lg:hidden" aria-label="Mobile">
           {workWithMe.length > 0 && (
             <>
               <p className="eyebrow mb-2">Work With Me</p>
@@ -88,7 +134,13 @@ export default function Header({
               </Link>
             ))}
           </div>
-          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className="mt-6 inline-flex items-center gap-2 rounded-full bg-sage px-6 py-3 text-cream">
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMenuOpen(false)}
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-whatsapp px-6 py-3 text-pure"
+          >
             <WaIcon /> Message me on WhatsApp
           </a>
           {email ? <p className="mt-4 text-sm text-faint">{email}</p> : null}

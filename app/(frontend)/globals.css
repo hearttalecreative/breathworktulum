@@ -65,6 +65,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* clear the fixed header on anchor jumps */
     -webkit-text-size-adjust: 100%;
   }
 
@@ -179,10 +180,70 @@
 .link-underline:focus-visible { background-size: 100% 1px; }
 
 /* Slow Ken Burns for static hero images. */
-@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.06); } }
-.kenburns { animation: kenburns 20s ease-out both; }
+@keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.12); } }
+.kenburns { animation: kenburns 24s ease-out both; }
+
+/* Top-arch (niche/window) mask — the boutique-feminine signature on portraits. */
+.arch {
+  border-radius: 9999px 9999px 14px 14px / 42% 42% 14px 14px;
+  overflow: clip;
+}
+
+/* Card with media that zooms + a champagne wash on hover. */
+.card-media { overflow: clip; }
+.card-media img {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.card:hover .card-media img { transform: scale(1.04); }
+.card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-champagne);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  mix-blend-mode: multiply;
+}
+.card:hover .card-media::after { opacity: 0.35; }
+
+/* Hero scrim — keeps display type legible over photography. */
+.hero-scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(34, 30, 26, 0.55) 0%,
+    rgba(34, 30, 26, 0.15) 35%,
+    rgba(34, 30, 26, 0.25) 65%,
+    rgba(34, 30, 26, 0.7) 100%
+  );
+}
+
+/* Display type for full-bleed heroes. */
+.t-display {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Slow marquee band (one slow exhale, pauses on hover). */
+.marquee { overflow: clip; }
+.marquee__track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Subtle scroll cue. */
+@keyframes scrollcue { 0%,100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(6px); opacity: 1; } }
+.scrollcue { animation: scrollcue 2.4s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
-  .kenburns { animation: none; }
+  .kenburns, .marquee__track, .scrollcue { animation: none; }
+  .marquee__track { transform: none; }
 }

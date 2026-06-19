@@ -69,26 +69,70 @@ function BlockSwitch({
   switch (b.blockType) {
     case "hero": {
       const ctas = resolveCtas(b.ctas as RawCta[], settings);
-      const left = b.imageSide === "left";
-      return (
-        <section className="bg-cream px-6 pt-16 pb-12 sm:pt-20 lg:pt-24">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            <div className={left ? "lg:order-last" : ""}>
-              {b.eyebrow ? <span className="eyebrow">{b.eyebrow as string}</span> : null}
-              <h1 className="mt-3 text-[2.4rem] leading-[1.08] sm:text-5xl lg:text-[3.2rem]">
-                {b.heading as string}
-              </h1>
-              {b.lede ? <p className="prose-lede mt-7">{b.lede as string}</p> : null}
-              <CtaRow ctas={ctas} />
-            </div>
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-sand">
+
+      // Full-bleed immersive hero (Habitas-style): photo fills the viewport,
+      // scrim keeps the display type legible, content sits low-left.
+      if (b.variant === "fullBleed" && b.image) {
+        return (
+          <section
+            data-fullbleed-hero
+            className="relative flex min-h-[92svh] items-end overflow-clip bg-night"
+          >
+            <div className="absolute inset-0">
               <PayloadImage
                 media={b.image as never}
                 fill
                 priority={first}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+                sizes="100vw"
+                className="kenburns object-cover"
               />
+              <div className="hero-scrim absolute inset-0" aria-hidden />
+            </div>
+            <div className="relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(3rem,9vh,7rem)] pt-40">
+              {b.eyebrow ? (
+                <span className="eyebrow eyebrow--filet text-champagne">
+                  {b.eyebrow as string}
+                </span>
+              ) : null}
+              <h1 className="t-display mt-5 max-w-[16ch] text-pure">{b.heading as string}</h1>
+              {b.lede ? (
+                <p className="prose-lede mt-6 max-w-xl text-cream-dim">{b.lede as string}</p>
+              ) : null}
+              <CtaRow ctas={ctas} />
+            </div>
+            <span
+              aria-hidden
+              className="scrollcue absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-xs uppercase tracking-[0.2em] text-cream-dim/80 sm:block"
+            >
+              Scroll
+            </span>
+          </section>
+        );
+      }
+
+      // Split editorial hero — image arched beside large display type.
+      const left = b.imageSide === "left";
+      return (
+        <section className="bg-shell px-[clamp(20px,5vw,80px)] pt-20 pb-12 sm:pt-24 lg:pt-28">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <div className={left ? "lg:order-last" : ""}>
+              {b.eyebrow ? (
+                <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span>
+              ) : null}
+              <h1 className="t-display mt-4">{b.heading as string}</h1>
+              {b.lede ? <p className="prose-lede mt-7 measure">{b.lede as string}</p> : null}
+              <CtaRow ctas={ctas} />
+            </div>
+            <div className="card relative aspect-[4/5] arch bg-sand lg:aspect-[5/6]">
+              <div className="card-media absolute inset-0">
+                <PayloadImage
+                  media={b.image as never}
+                  fill
+                  priority={first}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </section>
