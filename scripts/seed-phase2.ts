@@ -162,7 +162,7 @@ async function run() {
         body: "Both formats are open practice. If after either one you want to go deeper, the next step is usually a Private Session or a Personalized Retreat.",
         ctas: [link("Explore Private Sessions", "/work-with-me/private-sessions/"), link("Explore Personalized Retreats", "/work-with-me/personalized-retreats/", "secondary")] },
       { blockType: "faq", heading: "Questions, answered.", tone: "sand", items: [
-        { question: "Can I drop in without booking ahead?", answer: "For the 1 Day Retreat in the national park, no — tickets are on Eventbrite and dates fill ahead. For Nomade, message me first to confirm availability." },
+        { question: "Can I drop in without booking ahead?", answer: "For the 1 Day Retreat in the national park, no. Tickets are on Eventbrite and dates fill ahead. For Nomade, message me first to confirm availability." },
         { question: "Do I need breathwork experience?", answer: "No. Both formats are open to first timers. The method is soft and trauma informed." },
         { question: "What should I bring?", answer: "For the 1 Day Retreat: comfortable clothes, water, swimsuit if relevant. Full details sent after booking. For Nomade: come as you are." },
         { question: "What if I'm dealing with a health condition?", answer: "Bring it up before booking. There are conditions where breathwork isn't advised or needs to be modified. We talk first." },
@@ -249,7 +249,7 @@ async function run() {
 
   // ---------- SIGNATURE RETREAT ----------
   await page("retreat-riviera-maya-2026", {
-    title: "Signature Retreat — Riviera Maya 2026",
+    title: "Signature Retreat, Riviera Maya 2026",
     metaTitle: "Breathwork Retreat Riviera Maya 2026. Waitlist Open",
     metaDescription: "Five day group breathwork retreat in Xpu Ha, Riviera Maya. Limited to twenty places. First retreat Q1 2026. Join the waitlist.",
     ogImage: riviera,

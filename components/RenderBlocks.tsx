@@ -100,12 +100,6 @@ function BlockSwitch({
               ) : null}
               <CtaRow ctas={ctas} />
             </div>
-            <span
-              aria-hidden
-              className="scrollcue absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-xs uppercase tracking-[0.2em] text-cream-dim/80 sm:block"
-            >
-              Scroll
-            </span>
           </section>
         );
       }
@@ -154,8 +148,7 @@ function BlockSwitch({
               </div>
             ) : null}
             <div>
-              <span className="eyebrow eyebrow--filet">If this sounds familiar</span>
-              <h2 className="mt-4 max-w-xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
+              <h2 className="max-w-xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
               <ol className="mt-10 space-y-8">
                 {items.map((it, i) => (
                   <li key={i} className="flex gap-6">
@@ -258,8 +251,7 @@ function BlockSwitch({
       const ratios = ["aspect-[16/10]", "aspect-[16/10]", "aspect-[4/5]", "aspect-[4/5]", "aspect-[4/5]"];
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <span className="eyebrow eyebrow--filet">Ways to work together</span>
-          <h2 className="mt-4 max-w-2xl text-3xl sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
+          <h2 className="max-w-2xl text-3xl sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
             {cards.map((c, i) => {
               const Wrapper = c.href ? "a" : "div";
@@ -298,8 +290,7 @@ function BlockSwitch({
       const [lead, ...rest] = items;
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <span className="eyebrow eyebrow--filet">What people say</span>
-          {b.heading ? <h2 className="mt-4 max-w-2xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2> : null}
+          {b.heading ? <h2 className="max-w-2xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2> : null}
           <div className="mt-12 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             {lead ? (
               <figure className="relative">
@@ -344,8 +335,7 @@ function BlockSwitch({
               </div>
             </div>
             <div>
-              <span className="eyebrow eyebrow--filet">Meet Sabine</span>
-              <h2 className="mt-4 text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">{b.heading as string}</h2>
+              <h2 className="text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">{b.heading as string}</h2>
               {b.body ? (
                 <div className="prose-body measure mt-6 space-y-4 text-[1.0625rem] leading-relaxed text-ink-soft">
                   <RichText data={b.body as never} />
@@ -410,9 +400,9 @@ function BlockSwitch({
                     {included.length ? (
                       <>
                         <p className="text-xs uppercase tracking-widest text-faint">What&apos;s included</p>
-                        <ul className="mt-4 space-y-2.5 text-sm text-muted">
+                        <ul className="mt-4 space-y-3 text-sm text-muted">
                           {included.map((it, i) => (
-                            <li key={i} className="flex gap-2.5"><span aria-hidden className="mt-1 text-gold">—</span><span>{it.text}</span></li>
+                            <li key={i} className="border-l border-gold-soft/55 pl-3.5">{it.text}</li>
                           ))}
                         </ul>
                       </>
@@ -445,9 +435,9 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
-          <ul className="mt-6 space-y-3">
+          <ul className="mt-8 space-y-4 measure">
             {items.map((it, i) => (
-              <li key={i} className="flex gap-3 text-muted"><span aria-hidden className="mt-1 text-gold">—</span><span>{it.text}</span></li>
+              <li key={i} className="border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
             ))}
           </ul>
           {b.note ? <p className="mt-6 text-sm italic text-faint">{b.note as string}</p> : null}
@@ -464,16 +454,16 @@ function BlockSwitch({
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <div className="mt-8 grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-sand-deep bg-sand p-6">
+            <div className="rounded-2xl bg-sand p-7 sm:p-8">
               {b.leftTitle ? <h3 className="font-serif text-xl text-ink">{b.leftTitle as string}</h3> : null}
-              <ul className="mt-4 space-y-2.5 text-sm text-muted">
-                {left.map((it, i) => <li key={i} className="flex gap-2.5"><span aria-hidden className="mt-1 text-clay">—</span><span>{it.text}</span></li>)}
+              <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
+                {left.map((it, i) => <li key={i} className="border-l border-clay/50 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
-            <div className="rounded-2xl border border-sand-deep bg-sand p-6">
+            <div className="rounded-2xl bg-sand p-7 sm:p-8">
               {b.rightTitle ? <h3 className="font-serif text-xl text-ink">{b.rightTitle as string}</h3> : null}
-              <ul className="mt-4 space-y-2.5 text-sm text-muted">
-                {right.map((it, i) => <li key={i} className="flex gap-2.5"><span aria-hidden className="mt-1 text-sage">—</span><span>{it.text}</span></li>)}
+              <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
+                {right.map((it, i) => <li key={i} className="border-l border-sage/60 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
           </div>

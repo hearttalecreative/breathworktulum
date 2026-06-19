@@ -262,9 +262,9 @@ async function run() {
         lede: "A three phase process. Not a metaphor. The actual arc of every session and every retreat.",
         tone: "sand",
         body: lex(
-          "Breathe — the body enters the work. The technique opens what's been held. You might notice tingling, warmth, vibration, your awareness moving from your head into the rest of you. This is your nervous system shifting state.",
-          "Heal — the emotional layer surfaces. Core wounds, old patterns, the things the mind has named already but the body never finished. Tears that surprise you, sometimes laughter, sometimes a deep stillness. This phase is release of what's ready to move.",
-          "Transform — integration. What surfaced gets language so it can be recognized when it comes back. Without this phase, the work doesn't land. The Transform phase is what makes the shift sustainable."
+          "Breathe. The body enters the work. The technique opens what's been held. You might notice tingling, warmth, vibration, your awareness moving from your head into the rest of you. This is your nervous system shifting state.",
+          "Heal. The emotional layer surfaces. Core wounds, old patterns, the things the mind has named already but the body never finished. Tears that surprise you, sometimes laughter, sometimes a deep stillness. This phase is release of what's ready to move.",
+          "Transform. Integration. What surfaced gets language so it can be recognized when it comes back. Without this phase, the work doesn't land. The Transform phase is what makes the shift sustainable."
         ),
       },
       {
