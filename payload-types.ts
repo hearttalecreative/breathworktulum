@@ -238,6 +238,7 @@ export interface Page {
             eyebrow?: string | null;
             heading?: string | null;
             lede?: string | null;
+            image?: (number | null) | Media;
             body?: {
               root: {
                 type: string;
@@ -288,6 +289,7 @@ export interface Page {
           }
         | {
             heading: string;
+            image?: (number | null) | Media;
             items?:
               | {
                   text: string;
@@ -303,6 +305,22 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'situations';
+          }
+        | {
+            image: number | Media;
+            eyebrow?: string | null;
+            /**
+             * Optional short line over the photo.
+             */
+            caption?: string | null;
+            height?: ('standard' | 'tall') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'photoBand';
           }
         | {
             heading: string;
@@ -891,6 +909,7 @@ export interface PagesSelect<T extends boolean = true> {
               eyebrow?: T;
               heading?: T;
               lede?: T;
+              image?: T;
               body?: T;
               cta?:
                 | T
@@ -911,6 +930,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
+              image?: T;
               items?:
                 | T
                 | {
@@ -919,6 +939,17 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               closing?: T;
               tone?: T;
+              anchor?: T;
+              id?: T;
+              blockName?: T;
+            };
+        photoBand?:
+          | T
+          | {
+              image?: T;
+              eyebrow?: T;
+              caption?: T;
+              height?: T;
               anchor?: T;
               id?: T;
               blockName?: T;

@@ -73,6 +73,7 @@ export const ThreePhasesBlock: Block = {
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "text" },
     { name: "lede", type: "textarea" },
+    { name: "image", type: "upload", relationTo: "media" },
     { name: "body", type: "richText" },
     ctaGroup("cta"),
     tone,
@@ -84,6 +85,7 @@ export const SituationsBlock: Block = {
   labels: { singular: "Situations list", plural: "Situations lists" },
   fields: [
     { name: "heading", type: "text", required: true },
+    { name: "image", type: "upload", relationTo: "media" },
     {
       name: "items",
       type: "array",
@@ -91,6 +93,26 @@ export const SituationsBlock: Block = {
     },
     { name: "closing", type: "text" },
     tone,
+  ],
+};
+
+// Full-bleed photographic band — a breath between sections (doc 18 §6.1).
+export const PhotoBandBlock: Block = {
+  slug: "photoBand",
+  labels: { singular: "Photo band", plural: "Photo bands" },
+  fields: [
+    { name: "image", type: "upload", relationTo: "media", required: true },
+    { name: "eyebrow", type: "text" },
+    { name: "caption", type: "text", admin: { description: "Optional short line over the photo." } },
+    {
+      name: "height",
+      type: "select",
+      defaultValue: "tall",
+      options: [
+        { label: "Standard", value: "standard" },
+        { label: "Tall", value: "tall" },
+      ],
+    },
   ],
 };
 
@@ -284,6 +306,7 @@ export const allBlocks: Block[] = [
   RichTextBlock,
   ThreePhasesBlock,
   SituationsBlock,
+  PhotoBandBlock,
   WaysGridBlock,
   TestimonialsBlock,
   SplitImageTextBlock,

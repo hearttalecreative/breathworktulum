@@ -141,40 +141,111 @@ function BlockSwitch({
 
     case "situations": {
       const items = (b.items as { text: string }[]) || [];
+      const hasImg = !!b.image;
       return (
-        <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
-          <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
-          <div className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-sand-deep bg-sand-deep sm:grid-cols-2">
-            {items.map((it, i) => (
-              <p key={i} className="bg-cream p-7 text-[1.05rem] leading-relaxed text-muted">
-                {it.text}
-              </p>
-            ))}
+        <section className="bg-shell px-[clamp(20px,5vw,80px)] py-section" id={(b.anchor as string) || undefined}>
+          <div className={`mx-auto grid max-w-6xl gap-12 ${hasImg ? "lg:grid-cols-[0.85fr_1.15fr]" : ""}`}>
+            {hasImg ? (
+              <div className="card relative hidden lg:block">
+                {/* Atmospheric image bleeding tall beside the text. */}
+                <div className="card-media arch sticky top-28 aspect-[3/4]">
+                  <PayloadImage media={b.image as never} fill sizes="40vw" className="object-cover" />
+                </div>
+              </div>
+            ) : null}
+            <div>
+              <span className="eyebrow eyebrow--filet">If this sounds familiar</span>
+              <h2 className="mt-4 max-w-xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
+              <ol className="mt-10 space-y-8">
+                {items.map((it, i) => (
+                  <li key={i} className="flex gap-6">
+                    <span className="font-serif text-2xl text-gold-soft tabular-nums">0{i + 1}</span>
+                    <p className="measure text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</p>
+                  </li>
+                ))}
+              </ol>
+              {b.closing ? (
+                <p className="mt-12 font-serif text-3xl text-ink sm:text-4xl">{b.closing as string}</p>
+              ) : null}
+            </div>
           </div>
-          {b.closing ? <p className="mt-10 font-serif text-2xl text-ink">{b.closing as string}</p> : null}
-        </Section>
+        </section>
+      );
+    }
+
+    case "photoBand": {
+      const tall = b.height !== "standard";
+      return (
+        <section
+          className={`relative flex items-end overflow-clip bg-night ${tall ? "min-h-[70svh]" : "min-h-[48svh]"}`}
+          id={(b.anchor as string) || undefined}
+        >
+          <PayloadImage media={b.image as never} fill sizes="100vw" className="kenburns object-cover" />
+          {b.caption || b.eyebrow ? (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent" aria-hidden />
+              <div className="relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2rem,6vh,4rem)]">
+                {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
+                {b.caption ? <p className="mt-3 max-w-2xl font-serif text-2xl text-pure sm:text-3xl">{b.caption as string}</p> : null}
+              </div>
+            </>
+          ) : null}
+        </section>
       );
     }
 
     case "threePhases": {
       const cta = resolveCta(b.cta as RawCta, settings);
+      const phases = [
+        { n: "Breathe", line: "The body enters the work. The technique opens what's been held." },
+        { n: "Heal", line: "The emotional layer surfaces. What was stored has room to move." },
+        { n: "Transform", line: "Integration. What shifted gets language, so the change holds." },
+      ];
+      // Dark "breath" anchor: forest bg, photo, big editorial phases (no icon).
       return (
-        <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
-          {b.eyebrow ? <span className="eyebrow">{b.eyebrow as string}</span> : null}
-          {b.heading ? (
-            <h2 className="mt-3 max-w-2xl text-3xl sm:text-4xl">{b.heading as string}</h2>
-          ) : null}
-          {b.lede ? <p className="prose-lede mt-4 max-w-2xl">{b.lede as string}</p> : null}
-          <div className="mt-12">
-            <ThreePhases />
-          </div>
-          {b.body ? (
-            <div className="prose-body mt-10 max-w-3xl space-y-4 text-[1.05rem] leading-relaxed text-muted">
-              <RichText data={b.body as never} />
+        <section
+          className="bg-forest px-[clamp(20px,5vw,80px)] py-section text-cream-dim"
+          id={(b.anchor as string) || undefined}
+        >
+          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            {b.image ? (
+              <div className="card relative order-last aspect-[4/5] arch bg-night lg:order-first">
+                <div className="card-media absolute inset-0">
+                  <PayloadImage media={b.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
+                </div>
+              </div>
+            ) : null}
+            <div>
+              {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
+              {b.heading ? <h2 className="mt-4 text-3xl text-pure sm:text-4xl lg:text-5xl">{b.heading as string}</h2> : null}
+              {b.lede ? <p className="prose-lede mt-5 text-cream-dim">{b.lede as string}</p> : null}
+              <ol className="mt-10 space-y-7">
+                {phases.map((p, i) => (
+                  <li key={p.n} className="flex gap-5 border-t border-cream-dim/15 pt-7 first:border-0 first:pt-0">
+                    <span className="font-serif text-3xl text-gold-soft tabular-nums">0{i + 1}</span>
+                    <div>
+                      <h3 className="font-serif text-2xl text-pure">{p.n}</h3>
+                      <p className="mt-1 text-cream-dim">{p.line}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              {b.body ? (
+                <div className="prose-body mt-8 max-w-xl space-y-4 leading-relaxed text-cream-dim [&_strong]:text-pure">
+                  <RichText data={b.body as never} />
+                </div>
+              ) : null}
+              {cta ? (
+                <a
+                  href={cta.href}
+                  className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full border border-cream-dim/40 px-7 py-3 text-[0.95rem] font-medium text-cream-dim transition-colors hover:border-pure hover:bg-pure hover:text-forest"
+                >
+                  {cta.label}
+                </a>
+              ) : null}
             </div>
-          ) : null}
-          {cta ? <CtaRow ctas={[cta]} /> : null}
-        </Section>
+          </div>
+        </section>
       );
     }
 
@@ -224,20 +295,33 @@ function BlockSwitch({
 
     case "testimonialsBlock": {
       const items = (b.items as { quote: string; source?: string }[]) || [];
+      const [lead, ...rest] = items;
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {items.map((t, i) => (
-              <figure key={i} className="flex flex-col rounded-2xl border border-sand-deep bg-cream p-7">
-                <blockquote className="flex-1 font-serif text-lg leading-relaxed text-ink">
-                  &ldquo;{t.quote}&rdquo;
+          <span className="eyebrow eyebrow--filet">What people say</span>
+          {b.heading ? <h2 className="mt-4 max-w-2xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2> : null}
+          <div className="mt-12 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
+            {lead ? (
+              <figure className="relative">
+                <span aria-hidden className="font-serif text-7xl leading-none text-gold-soft">&ldquo;</span>
+                <blockquote className="-mt-6 font-serif text-2xl leading-snug text-ink sm:text-[1.75rem]">
+                  {lead.quote}
                 </blockquote>
-                <figcaption className="mt-5 text-xs uppercase tracking-widest text-faint">
-                  {t.source || "Google Review"}
+                <figcaption className="mt-5 text-xs uppercase tracking-[0.16em] text-gold-ink">
+                  {lead.source || "Google Review"}
                 </figcaption>
               </figure>
-            ))}
+            ) : null}
+            <div className="flex flex-col justify-center gap-10 border-t border-line pt-10 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0">
+              {rest.map((t, i) => (
+                <figure key={i}>
+                  <blockquote className="font-serif text-lg leading-relaxed text-ink">{t.quote}</blockquote>
+                  <figcaption className="mt-3 text-xs uppercase tracking-[0.16em] text-gold-ink">
+                    {t.source || "Google Review"}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
           {b.reviewsUrl ? (
             <a href={b.reviewsUrl as string} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-1 text-sm font-medium text-gold hover:text-ink">
@@ -253,14 +337,17 @@ function BlockSwitch({
       const left = b.imageSide !== "right";
       return (
         <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div className={`relative aspect-[4/5] overflow-hidden rounded-2xl bg-sand ${left ? "lg:order-first" : "lg:order-last"}`}>
-              <PayloadImage media={b.image as never} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+          <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+            <div className={`card relative aspect-[4/5] arch bg-sand ${left ? "lg:order-first" : "lg:order-last"}`}>
+              <div className="card-media absolute inset-0">
+                <PayloadImage media={b.image as never} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+              </div>
             </div>
             <div>
-              <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
+              <span className="eyebrow eyebrow--filet">Meet Sabine</span>
+              <h2 className="mt-4 text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">{b.heading as string}</h2>
               {b.body ? (
-                <div className="prose-body mt-6 space-y-4 text-[1.05rem] leading-relaxed text-muted">
+                <div className="prose-body measure mt-6 space-y-4 text-[1.0625rem] leading-relaxed text-ink-soft">
                   <RichText data={b.body as never} />
                 </div>
               ) : null}
