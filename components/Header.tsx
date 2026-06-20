@@ -196,14 +196,14 @@ export default function Header({
           viewport, not the backdrop-blurred bar) === */}
       <div
         data-open={menuOpen}
-        className="fixed inset-0 z-40 flex flex-col bg-night text-cream-dim transition-[opacity,visibility] duration-500 data-[open=false]:invisible data-[open=false]:opacity-0 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
+        className="fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-night text-cream-dim transition-[opacity,visibility] duration-500 data-[open=false]:invisible data-[open=false]:opacity-0 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
       >
         {/* Faint botanical glow + grain so it reads premium, not flat black. */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,rgba(194,168,120,0.14),transparent_60%)]"
         />
-        <div className="menu-stagger relative flex h-full flex-col items-center justify-center gap-0.5 overflow-y-auto px-6 pb-16 pt-24 text-center">
+        <div className="menu-stagger relative flex min-h-full flex-col items-center justify-center gap-0.5 px-6 py-24 text-center">
           {workWithMe.length > 0 && (
             <>
               <span className="eyebrow mb-2 text-gold-soft">Work With Me</span>
