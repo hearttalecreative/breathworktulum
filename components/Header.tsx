@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import SocialLinks from "./SocialLinks";
 
 type NavLink = { label: string; href: string };
 
@@ -203,7 +202,7 @@ export default function Header({
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,rgba(194,168,120,0.14),transparent_60%)]"
         />
-        <div className="menu-stagger relative flex min-h-full flex-col items-center justify-center gap-0.5 px-6 py-24 text-center">
+        <div className="menu-stagger relative flex min-h-full flex-col items-center justify-center gap-0.5 px-6 pb-8 pt-20 text-center">
           {workWithMe.length > 0 && (
             <>
               <span className="eyebrow mb-2 text-gold-soft">Work With Me</span>
@@ -212,12 +211,12 @@ export default function Header({
                   key={item.href}
                   href={item.href}
                   onClick={() => setMenuOpen(false)}
-                  className="py-1 font-sans text-[0.95rem] text-cream-dim/80 transition-colors hover:text-pure"
+                  className="py-0.5 font-sans text-[0.95rem] text-cream-dim/80 transition-colors hover:text-pure"
                 >
                   {item.label}
                 </Link>
               ))}
-              <span aria-hidden className="my-5 h-px w-10 bg-gold-soft/50" />
+              <span aria-hidden className="my-4 h-px w-10 bg-gold-soft/50" />
             </>
           )}
 
@@ -226,7 +225,7 @@ export default function Header({
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="link-underline py-1.5 font-serif text-[1.7rem] text-cream transition-colors hover:text-pure"
+              className="link-underline py-0.5 font-serif text-[1.55rem] text-cream transition-colors hover:text-pure"
             >
               {item.label}
             </Link>
@@ -237,12 +236,11 @@ export default function Header({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setMenuOpen(false)}
-            className="mt-8 inline-flex items-center gap-2.5 border border-cream-dim/30 px-7 py-3.5 text-sm font-medium text-cream transition-colors hover:border-pure hover:bg-pure hover:text-forest"
+            className="mt-7 inline-flex items-center gap-2.5 border border-cream-dim/30 px-7 py-3 text-sm font-medium text-cream transition-colors hover:border-pure hover:bg-pure hover:text-forest"
           >
             <WaIcon size={16} /> Message me on WhatsApp
           </a>
           {email ? <p className="mt-4 text-xs tracking-wide text-cream-dim/50">{email}</p> : null}
-          <SocialLinks tone="dark" className="mt-5 justify-center" />
         </div>
       </div>
     </>
