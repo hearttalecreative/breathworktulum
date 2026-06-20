@@ -221,23 +221,36 @@
 }
 .card:hover .card-media::after { opacity: 0.35; }
 
-/* Hero scrim — keeps display type legible over photography. */
+/* Hero scrim — darker at top (nav legibility) and bottom (content legibility). */
 .hero-scrim {
-  background: linear-gradient(
-    180deg,
-    rgba(34, 30, 26, 0.55) 0%,
-    rgba(34, 30, 26, 0.15) 35%,
-    rgba(34, 30, 26, 0.25) 65%,
-    rgba(34, 30, 26, 0.7) 100%
-  );
+  background:
+    linear-gradient(
+      90deg,
+      rgba(25, 27, 23, 0.5) 0%,
+      rgba(25, 27, 23, 0.12) 48%,
+      rgba(25, 27, 23, 0) 78%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(25, 27, 23, 0.55) 0%,
+      rgba(25, 27, 23, 0.05) 20%,
+      rgba(25, 27, 23, 0.58) 48%,
+      rgba(25, 27, 23, 0.84) 70%,
+      rgba(25, 27, 23, 0.95) 100%
+    );
+}
+
+/* Soft shadow so hero type stays legible over any bright patch of a photo. */
+.over-photo {
+  text-shadow: 0 1px 2px rgba(18, 20, 16, 0.35), 0 2px 40px rgba(18, 20, 16, 0.4);
 }
 
 /* Display type for full-bleed heroes. */
 .t-display {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(2.6rem, 6vw, 5rem);
-  line-height: 1.04;
+  font-size: clamp(2.15rem, 5vw, 4.25rem);
+  line-height: 1.07;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }

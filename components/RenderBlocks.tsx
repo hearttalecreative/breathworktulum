@@ -25,15 +25,17 @@ function emph(s?: string | null) {
 function CtaRow({
   ctas,
   align = "left",
+  onDark = false,
 }: {
   ctas: { label: string; href: string; variant: "primary" | "secondary" | "whatsapp"; external: boolean }[];
   align?: "left" | "center";
+  onDark?: boolean;
 }) {
   if (!ctas.length) return null;
   return (
-    <div className={`mt-8 flex flex-wrap gap-3 ${align === "center" ? "justify-center" : ""}`}>
+    <div className={`mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 ${align === "center" ? "justify-center" : ""}`}>
       {ctas.map((c, i) => (
-        <CTAButton key={i} href={c.href} variant={c.variant} external={c.external}>
+        <CTAButton key={i} href={c.href} variant={c.variant} external={c.external} onDark={onDark}>
           {c.label}
         </CTAButton>
       ))}
@@ -96,7 +98,7 @@ function BlockSwitch({
               />
               <div className="hero-scrim absolute inset-0" aria-hidden />
             </div>
-            <div className="relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(3rem,9vh,7rem)] pt-40">
+            <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(3rem,9vh,7rem)] pt-40">
               {b.eyebrow ? (
                 <span className="eyebrow eyebrow--filet text-champagne">
                   {b.eyebrow as string}
@@ -104,9 +106,9 @@ function BlockSwitch({
               ) : null}
               <h1 className="t-display mt-5 max-w-[16ch] text-pure">{emph(b.heading as string)}</h1>
               {b.lede ? (
-                <p className="prose-lede mt-6 max-w-xl text-cream-dim">{b.lede as string}</p>
+                <p className="prose-lede mt-6 max-w-xl text-pure/90">{b.lede as string}</p>
               ) : null}
-              <CtaRow ctas={ctas} />
+              <CtaRow ctas={ctas} onDark />
             </div>
           </section>
         );
@@ -366,7 +368,7 @@ function BlockSwitch({
             {b.eyebrow ? <span className="eyebrow text-gold-soft">{b.eyebrow as string}</span> : null}
             <h2 className="mt-4 text-3xl text-cream sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
             {b.body ? <p className="mx-auto mt-6 max-w-xl text-cream-dim/85">{b.body as string}</p> : null}
-            {cta ? <div className="mt-9 flex justify-center"><CTAButton href={cta.href} variant={cta.variant} external={cta.external}>{cta.label}</CTAButton></div> : null}
+            {cta ? <div className="mt-9 flex justify-center"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark>{cta.label}</CTAButton></div> : null}
           </div>
         </section>
       );
@@ -379,7 +381,7 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
           <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2>
           {b.body ? <p className={`mt-6 text-[1.05rem] leading-relaxed text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"}`}>{b.body as string}</p> : null}
-          <CtaRow ctas={ctas} align={center ? "center" : "left"} />
+          <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} />
         </Section>
       );
     }

@@ -9,11 +9,13 @@ type Variant = "primary" | "secondary" | "whatsapp";
 const filledBase =
   "group inline-flex min-h-[3.25rem] items-center justify-center gap-2.5 px-8 text-[0.92rem] font-medium tracking-[0.01em] transition-[background-color,transform] duration-300 active:translate-y-px";
 
-const variants: Record<Variant, string> = {
-  primary: `${filledBase} bg-ink text-pure hover:bg-forest`,
-  whatsapp: `${filledBase} bg-whatsapp text-pure hover:bg-ink`,
-  secondary: "", // rendered as an underlined text link below
-};
+// Light variants pop on dark photography (no dark-on-dark).
+function filledVariant(variant: "primary" | "whatsapp", onDark: boolean) {
+  if (variant === "whatsapp") return `${filledBase} bg-whatsapp text-pure hover:bg-ink`;
+  return onDark
+    ? `${filledBase} bg-shell text-ink hover:bg-champagne`
+    : `${filledBase} bg-ink text-pure hover:bg-forest`;
+}
 
 function Arrow() {
   return (
@@ -36,11 +38,13 @@ export default function CTAButton({
   variant = "primary",
   children,
   external,
+  onDark = false,
 }: {
   href: string;
   variant?: Variant;
   children: ReactNode;
   external?: boolean;
+  onDark?: boolean;
 }) {
   const isExternal = external ?? (href.startsWith("http") || href.startsWith("mailto:"));
   const linkProps = isExternal
@@ -65,7 +69,9 @@ export default function CTAButton({
   if (variant === "secondary") {
     return (
       <Anchor
-        className="group link-underline inline-flex min-h-[3.25rem] items-center gap-2 pb-1 text-[0.95rem] text-ink"
+        className={`group link-underline inline-flex min-h-[3.25rem] items-center gap-2 pb-1 text-[0.95rem] ${
+          onDark ? "text-cream-dim hover:text-pure" : "text-ink"
+        }`}
         content={
           <>
             {children}
@@ -78,7 +84,7 @@ export default function CTAButton({
 
   return (
     <Anchor
-      className={variants[variant]}
+      className={filledVariant(variant, onDark)}
       content={
         <>
           {variant === "whatsapp" && <WhatsAppGlyph />}
