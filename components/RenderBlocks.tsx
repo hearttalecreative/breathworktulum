@@ -5,6 +5,8 @@ import ThreePhases from "./method/ThreePhases";
 import Accordion from "./Accordion";
 import ContactForm from "./ContactForm";
 import PayloadImage from "./PayloadImage";
+import HeroVideo from "./HeroVideo";
+import WaveMark from "./WaveMark";
 import Reveal from "./Reveal";
 import { resolveCta, resolveCtas, type RawCta } from "@/lib/cta";
 
@@ -39,6 +41,18 @@ function CtaRow({
           {c.label}
         </CTAButton>
       ))}
+    </div>
+  );
+}
+
+// Delicate divider: a gold filet flanking the brand wave mark.
+function Ornament({ start = false, tone = "gold" }: { start?: boolean; tone?: "gold" | "champagne" }) {
+  return (
+    <div
+      className={`ornament ${start ? "ornament--start" : ""} ${tone === "champagne" ? "text-champagne/70" : ""}`}
+      aria-hidden
+    >
+      <WaveMark className="w-9 opacity-90" />
     </div>
   );
 }
@@ -89,13 +103,7 @@ function BlockSwitch({
             className="relative flex min-h-[92svh] items-end overflow-clip bg-night"
           >
             <div className="absolute inset-0">
-              <PayloadImage
-                media={b.image as never}
-                fill
-                priority={first}
-                sizes="100vw"
-                className="kenburns object-cover"
-              />
+              <HeroVideo url="https://vimeo.com/773408641/7c81c6bfcc" poster="/hero/hero-poster.jpg" loopEnd={25.8} />
               <div className="hero-scrim absolute inset-0" aria-hidden />
             </div>
             <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(3rem,9vh,7rem)] pt-40">
@@ -109,6 +117,10 @@ function BlockSwitch({
                 <p className="prose-lede mt-6 max-w-xl text-pure/90">{b.lede as string}</p>
               ) : null}
               <CtaRow ctas={ctas} onDark />
+            </div>
+            {/* Breathing scroll cue — a thin line that exhales downward. */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-6 hidden justify-center sm:flex">
+              <span className="scrollcue-line" aria-hidden />
             </div>
           </section>
         );
@@ -127,7 +139,7 @@ function BlockSwitch({
               {b.lede ? <p className="prose-lede mt-7 measure">{b.lede as string}</p> : null}
               <CtaRow ctas={ctas} />
             </div>
-            <div className="card relative aspect-[4/5] arch bg-sand lg:aspect-[5/6]">
+            <div className="card relative aspect-[4/5] arch float-slow bg-sand lg:aspect-[5/6]">
               <div className="card-media absolute inset-0">
                 <PayloadImage
                   media={b.image as never}
@@ -152,23 +164,26 @@ function BlockSwitch({
             {hasImg ? (
               <div className="card relative hidden lg:block">
                 {/* Atmospheric image bleeding tall beside the text. */}
-                <div className="card-media arch sticky top-28 aspect-[3/4]">
-                  <PayloadImage media={b.image as never} fill sizes="40vw" className="object-cover" />
+                <div className="sticky top-28">
+                  <div className="card-media arch float-slow aspect-[3/4]">
+                    <PayloadImage media={b.image as never} fill sizes="40vw" className="object-cover" />
+                  </div>
                 </div>
               </div>
             ) : null}
             <div>
-              <h2 className="max-w-xl text-3xl text-ink sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
-              <ol className="mt-10 space-y-8">
+              <Ornament start />
+              <h2 className="mt-7 max-w-xl text-3xl text-ink sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
+              <ol className="stagger mt-10 space-y-9">
                 {items.map((it, i) => (
-                  <li key={i} className="flex gap-6">
-                    <span className="font-serif text-2xl text-gold-soft tabular-nums">0{i + 1}</span>
+                  <li key={i} className="timeline-item flex gap-6">
+                    <span className="timeline-num font-serif text-2xl leading-none text-gold-soft tabular-nums">0{i + 1}</span>
                     <p className="measure text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</p>
                   </li>
                 ))}
               </ol>
               {b.closing ? (
-                <p className="mt-12 font-serif italic text-3xl text-ink sm:text-4xl">{emph(b.closing as string)}</p>
+                <p className="mt-14 font-serif italic text-3xl text-ink sm:text-4xl">{emph(b.closing as string)}</p>
               ) : null}
             </div>
           </div>
@@ -180,7 +195,7 @@ function BlockSwitch({
       const tall = b.height !== "standard";
       return (
         <section
-          className={`relative flex items-end overflow-clip bg-night ${tall ? "min-h-[70svh]" : "min-h-[48svh]"}`}
+          className={`on-dark relative flex items-end overflow-clip bg-night ${tall ? "min-h-[70svh]" : "min-h-[48svh]"}`}
           id={(b.anchor as string) || undefined}
         >
           <PayloadImage media={b.image as never} fill sizes="100vw" className="kenburns object-cover" />
@@ -207,22 +222,27 @@ function BlockSwitch({
       // Dark "breath" anchor: forest bg, photo, big editorial phases (no icon).
       return (
         <section
-          className="bg-forest px-[clamp(20px,5vw,80px)] py-section text-cream-dim"
+          className="on-dark bg-forest px-[clamp(20px,5vw,80px)] py-section text-cream-dim"
           id={(b.anchor as string) || undefined}
         >
           <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {b.image ? (
-              <div className="card relative order-last aspect-[4/5] arch bg-night lg:order-first">
+              <div className="card relative order-last aspect-[4/5] arch float-slow bg-night lg:order-first">
                 <div className="card-media absolute inset-0">
                   <PayloadImage media={b.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             ) : null}
             <div>
-              {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
+              {b.eyebrow ? (
+                <span className="inline-flex items-center gap-3">
+                  <span className="breath-dot" aria-hidden />
+                  <span className="eyebrow text-champagne">{b.eyebrow as string}</span>
+                </span>
+              ) : null}
               {b.heading ? <h2 className="mt-4 text-3xl text-pure sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2> : null}
               {b.lede ? <p className="prose-lede mt-5 text-cream-dim">{b.lede as string}</p> : null}
-              <ol className="mt-10 space-y-7">
+              <ol className="stagger mt-10 space-y-7">
                 {phases.map((p, i) => (
                   <li key={p.n} className="flex gap-5 border-t border-cream-dim/15 pt-7 first:border-0 first:pt-0">
                     <span className="font-serif text-3xl text-gold-soft tabular-nums">0{i + 1}</span>
@@ -238,14 +258,7 @@ function BlockSwitch({
                   <RichText data={b.body as never} />
                 </div>
               ) : null}
-              {cta ? (
-                <a
-                  href={cta.href}
-                  className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full border border-cream-dim/40 px-7 py-3 text-[0.95rem] font-medium text-cream-dim transition-colors hover:border-pure hover:bg-pure hover:text-forest"
-                >
-                  {cta.label}
-                </a>
-              ) : null}
+              {cta ? <div className="mt-9"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark>{cta.label}</CTAButton></div> : null}
             </div>
           </div>
         </section>
@@ -261,15 +274,16 @@ function BlockSwitch({
       const ratios = ["aspect-[16/10]", "aspect-[16/10]", "aspect-[4/5]", "aspect-[4/5]", "aspect-[4/5]"];
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <h2 className="max-w-2xl text-3xl sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
+          <Ornament start />
+          <h2 className="mt-7 max-w-2xl text-3xl sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
+          <div className="stagger mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
             {cards.map((c, i) => {
               const Wrapper = c.href ? "a" : "div";
               return (
                 <Wrapper
                   key={i}
                   {...(c.href ? { href: c.href } : {})}
-                  className={`card group relative block overflow-clip bg-night ${spans[i % spans.length]}`}
+                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 ${spans[i % spans.length]}`}
                 >
                   <div className={`card-media relative ${ratios[i % ratios.length]} w-full`}>
                     {c.image ? (
@@ -300,7 +314,8 @@ function BlockSwitch({
       const [lead, ...rest] = items;
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="max-w-2xl text-3xl text-ink sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2> : null}
+          <Ornament start />
+          {b.heading ? <h2 className="mt-7 max-w-2xl text-3xl text-ink sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2> : null}
           <div className="mt-12 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             {lead ? (
               <figure className="relative">
@@ -313,7 +328,7 @@ function BlockSwitch({
                 </figcaption>
               </figure>
             ) : null}
-            <div className="flex flex-col justify-center gap-10 border-t border-line pt-10 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0">
+            <div className="stagger flex flex-col justify-center gap-10 border-t border-line pt-10 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0">
               {rest.map((t, i) => (
                 <figure key={i}>
                   <blockquote className="font-serif text-lg leading-relaxed text-ink">{t.quote}</blockquote>
@@ -339,13 +354,14 @@ function BlockSwitch({
       return (
         <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
           <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-            <div className={`card relative aspect-[4/5] arch bg-sand ${left ? "lg:order-first" : "lg:order-last"}`}>
+            <div className={`card relative aspect-[4/5] arch float-slow bg-sand ${left ? "lg:order-first" : "lg:order-last"}`}>
               <div className="card-media absolute inset-0">
                 <PayloadImage media={b.image as never} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
             </div>
             <div>
-              <h2 className="text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">{emph(b.heading as string)}</h2>
+              <Ornament start />
+              <h2 className="mt-7 text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">{emph(b.heading as string)}</h2>
               {b.body ? (
                 <div className="prose-body measure mt-6 space-y-4 text-[1.0625rem] leading-relaxed text-ink-soft">
                   <RichText data={b.body as never} />
@@ -361,12 +377,13 @@ function BlockSwitch({
     case "signatureBand": {
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
-        <section className="relative overflow-hidden bg-night px-6 py-24 text-cream-dim sm:py-32" id={(b.anchor as string) || undefined}>
+        <section className="on-dark relative overflow-hidden bg-night px-6 py-24 text-cream-dim sm:py-32" id={(b.anchor as string) || undefined}>
           <PayloadImage media={b.image as never} fill sizes="100vw" className="object-cover opacity-30" />
           <div className="absolute inset-0 bg-night/70" aria-hidden />
           <div className="relative mx-auto max-w-3xl text-center">
             {b.eyebrow ? <span className="eyebrow text-gold-soft">{b.eyebrow as string}</span> : null}
             <h2 className="mt-4 text-3xl text-cream sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
+            <div className="mt-7 flex justify-center"><Ornament tone="champagne" /></div>
             {b.body ? <p className="mx-auto mt-6 max-w-xl text-cream-dim/85">{b.body as string}</p> : null}
             {cta ? <div className="mt-9 flex justify-center"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark>{cta.label}</CTAButton></div> : null}
           </div>
@@ -410,7 +427,7 @@ function BlockSwitch({
                     {included.length ? (
                       <>
                         <p className="text-xs uppercase tracking-widest text-faint">What&apos;s included</p>
-                        <ul className="mt-4 space-y-3 text-sm text-muted">
+                        <ul className="stagger mt-4 space-y-3 text-sm text-muted">
                           {included.map((it, i) => (
                             <li key={i} className="border-l border-gold-soft/55 pl-3.5">{it.text}</li>
                           ))}
@@ -445,7 +462,7 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
           <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
-          <ul className="mt-8 space-y-4 measure">
+          <ul className="stagger mt-8 space-y-4 measure">
             {items.map((it, i) => (
               <li key={i} className="border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
             ))}
@@ -466,13 +483,13 @@ function BlockSwitch({
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             <div className="rounded-none bg-sand p-7 sm:p-8">
               {b.leftTitle ? <h3 className="text-xl text-ink">{b.leftTitle as string}</h3> : null}
-              <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
+              <ul className="stagger mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
                 {left.map((it, i) => <li key={i} className="border-l border-clay/50 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
             <div className="rounded-none bg-sand p-7 sm:p-8">
               {b.rightTitle ? <h3 className="text-xl text-ink">{b.rightTitle as string}</h3> : null}
-              <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
+              <ul className="stagger mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
                 {right.map((it, i) => <li key={i} className="border-l border-sage/60 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
@@ -485,7 +502,7 @@ function BlockSwitch({
       const tiles = (b.tiles as { title: string; line?: string; value?: string; ctaLabel?: string; action?: string; whatsappContext?: string; href?: string }[]) || [];
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="stagger grid gap-6 md:grid-cols-3">
             {tiles.map((t, i) => {
               const cta = resolveCta({ label: t.ctaLabel, action: t.action as never, whatsappContext: t.whatsappContext, href: t.href }, settings);
               return (

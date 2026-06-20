@@ -31,7 +31,7 @@ export default function Section({
   return (
     <section
       id={id}
-      className={`${tones[tone]} px-[clamp(20px,5vw,80px)] py-section ${className}`}
+      className={`${tones[tone]} ${tone === "night" ? "on-dark" : ""} px-[clamp(20px,5vw,80px)] py-section ${className}`}
     >
       <div className={`mx-auto ${measure}`}>{children}</div>
     </section>

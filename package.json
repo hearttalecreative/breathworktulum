@@ -19,6 +19,7 @@
     "@payloadcms/storage-vercel-blob": "^3.85.1",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.1",
+    "@vimeo/player": "^2.30.4",
     "graphql": "^16.14.2",
     "next": "16.2.9",
     "payload": "^3.85.1",

@@ -80,23 +80,23 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Headlines (titulares) — Canela serif. */
+  /* Headlines (titulares) — Canela serif. Light weight = delicate, feminine. */
   h1, h2 {
     font-family: var(--font-serif);
-    font-weight: 500;
-    line-height: 1.12;
-    letter-spacing: -0.015em;
+    font-weight: 300;
+    line-height: 1.13;
+    letter-spacing: -0.008em;
     color: var(--color-ink);
     text-wrap: balance;
     font-feature-settings: "kern", "liga", "lnum" 1;
   }
 
-  /* Secondary titles (títulos secundarios) — Söhne sans, for premium contrast. */
+  /* Secondary titles (títulos secundarios) — Söhne sans, lighter for grace. */
   h3, h4 {
     font-family: var(--font-sans);
-    font-weight: 600;
-    line-height: 1.22;
-    letter-spacing: -0.005em;
+    font-weight: 500;
+    line-height: 1.24;
+    letter-spacing: -0.003em;
     color: var(--color-ink);
     text-wrap: balance;
   }
@@ -105,6 +105,49 @@
   h1 em, h2 em, .lede em { font-style: italic; font-weight: 400; }
   /* Slight italic clearance so descenders (y g j p q) never clip. */
   h1 em, h2 em { line-height: 1.1; }
+
+  /* A slow warm gleam drifts through the emphasized words — reinforces the
+     one idea each headline turns on. Base stays ink for legibility. */
+  h1 em, h2 em {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-ink) 0%, var(--color-ink) 40%,
+      var(--color-gold-ink) 50%,
+      var(--color-ink) 60%, var(--color-ink) 100%
+    );
+    background-size: 250% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: emshimmer 7.5s ease-in-out infinite;
+  }
+  @keyframes emshimmer {
+    0%   { background-position: 130% 0; }
+    100% { background-position: -30% 0; }
+  }
+  /* On dark solid sections (forest / night) the gleam runs LIGHT, never
+     ink-on-dark. Cream base with a champagne→gold drift. */
+  .on-dark h1 em, .on-dark h2 em, .on-dark .lede em {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-cream) 0%, var(--color-cream) 40%,
+      var(--color-gold-soft) 50%,
+      var(--color-cream) 60%, var(--color-cream) 100%
+    );
+  }
+  /* Over photography the accent word stays pure white with a soft, breathing
+     glow — luminous, never darkened by a tint. */
+  .over-photo h1 em {
+    background: none;
+    -webkit-text-fill-color: #ffffff;
+    color: #ffffff;
+    animation: emglow 5.5s ease-in-out infinite;
+  }
+  @keyframes emglow {
+    0%, 100% { text-shadow: 0 0 12px rgba(255, 255, 255, 0.25), 0 1px 2px rgba(18, 20, 16, 0.35); }
+    50%      { text-shadow: 0 0 26px rgba(255, 255, 255, 0.7), 0 0 48px rgba(255, 255, 255, 0.35), 0 1px 2px rgba(18, 20, 16, 0.35); }
+  }
 
   p { text-wrap: pretty; }
 
@@ -162,6 +205,10 @@
   font-weight: 400;
   text-wrap: pretty;
 }
+/* Over photography, the lede must read pure white (beats .prose-lede by
+   specificity, so it wins regardless of cascade layer). */
+.over-photo .prose-lede,
+.over-photo .prose-lede em { color: rgba(255, 255, 255, 0.94); }
 
 /* Constrain body copy to a comfortable measure (~66ch). */
 .measure { max-width: 38rem; }
@@ -240,20 +287,98 @@
     );
 }
 
-/* Soft shadow so hero type stays legible over any bright patch of a photo. */
+/* Soft shadow so hero type stays legible over any bright patch of a photo.
+   Light text only — NEVER let it reach dark text (e.g. the ink label on a
+   light-filled button), so reset it on the filled CTAs. */
 .over-photo {
   text-shadow: 0 1px 2px rgba(18, 20, 16, 0.35), 0 2px 40px rgba(18, 20, 16, 0.4);
 }
+.over-photo .btn-sheen,
+.over-photo .btn-sheen-gold { text-shadow: none; }
 
 /* Display type for full-bleed heroes. */
 .t-display {
   font-family: var(--font-serif);
-  font-weight: 500;
+  font-weight: 300;
   font-size: clamp(2.15rem, 5vw, 4.25rem);
-  line-height: 1.07;
-  letter-spacing: -0.02em;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
   text-wrap: balance;
 }
+
+/* === Button sheen — a single elegant light glint sweeps across, then rests.
+   Draws the eye without shouting. Color adapts to the fill. === */
+.btn-sheen, .btn-sheen-gold { position: relative; overflow: hidden; isolation: isolate; }
+.btn-sheen::after, .btn-sheen-gold::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -160%;
+  width: 80%;
+  height: 140%;
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: -1;
+  animation: sheen 6.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+.btn-sheen::after {
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+}
+.btn-sheen-gold::after {
+  background: linear-gradient(100deg, transparent, rgba(194, 168, 120, 0.55), transparent);
+}
+/* One quick glint sweep, then off-screen at rest (long pause between). */
+@keyframes sheen {
+  0%   { left: -160%; }
+  12%  { left: 160%; }
+  100% { left: 160%; }
+}
+/* A faster, brighter sweep on hover/focus for tactility. */
+.btn-sheen:hover::after, .btn-sheen:focus-visible::after,
+.btn-sheen-gold:hover::after, .btn-sheen-gold:focus-visible::after {
+  animation: sheen 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Soft glow that breathes around the primary action. */
+@keyframes btnglow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(194, 168, 120, 0); }
+  50%      { box-shadow: 0 0 22px -6px rgba(194, 168, 120, 0.55); }
+}
+.btn-glow { animation: btnglow 6.5s ease-in-out infinite; }
+.btn-glow:hover { animation: none; box-shadow: 0 0 26px -6px rgba(194, 168, 120, 0.7); }
+
+/* Vimeo background video — force a 16:9 iframe to COVER any container
+   (portrait phones included), centered and cropped, never letterboxed. */
+.vimeo-cover iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 16 / 9;
+  width: max(100vw, 177.78vh);
+  height: auto;
+  min-width: 100%;
+  min-height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+
+/* Page loader — the wave mark breathes; a gold filet inhales beneath it. */
+.loader-breathe { animation: breathe 3.4s ease-in-out infinite; transform-origin: center; }
+@keyframes loaderfilet {
+  0%, 100% { transform: scaleX(0.2); opacity: 0.3; }
+  50%      { transform: scaleX(1); opacity: 1; }
+}
+.loader-filet { transform-origin: center; animation: loaderfilet 3.4s ease-in-out infinite; }
+@keyframes loaderfade { from { opacity: 0; } to { opacity: 1; } }
+.loader-screen { animation: loaderfade 0.4s ease both; }
+@media (prefers-reduced-motion: reduce) {
+  .loader-breathe, .loader-filet { animation: none; }
+}
+
+/* Cookie notice — slides up softly, no jolt. */
+@keyframes cookiein { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.reveal-cookie { animation: cookiein 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (prefers-reduced-motion: reduce) { .reveal-cookie { animation: none; } }
 
 /* Slow marquee band (one slow exhale, pauses on hover). */
 .marquee { overflow: clip; }
@@ -269,8 +394,130 @@
 @keyframes scrollcue { 0%,100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(6px); opacity: 1; } }
 .scrollcue { animation: scrollcue 2.4s ease-in-out infinite; }
 
+/* === Decorative language (delicate, feminine, botanical) === */
+
+/* Section ornament: a 1px gold filet centered on a small open diamond.
+   The signature divider between movements. */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--color-gold-soft);
+}
+.ornament::before,
+.ornament::after {
+  content: "";
+  height: 1px;
+  width: clamp(2.5rem, 12vw, 6rem);
+  background: linear-gradient(var(--dir, 90deg), transparent, currentColor);
+}
+.ornament::after { --dir: 270deg; }
+.ornament__mark {
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  transform: rotate(45deg);
+  flex: none;
+}
+.ornament--start { justify-content: flex-start; }
+.ornament--start::before { display: none; }
+
+/* A single hairline rule, gold, used inline as a small flourish. */
+.filet-v { width: 1px; background: linear-gradient(180deg, var(--color-gold-soft), transparent); }
+
+/* Breathing accent — one slow inhale/exhale. On theme, never loud. */
+@keyframes breathe {
+  0%, 100% { transform: scale(0.86); opacity: 0.45; }
+  50%      { transform: scale(1.12); opacity: 0.9; }
+}
+.breath-dot {
+  position: relative;
+  width: 9px; height: 9px;
+}
+.breath-dot::before,
+.breath-dot::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--color-gold-soft);
+}
+.breath-dot::before { animation: breathe 6.5s ease-in-out infinite; }
+.breath-dot::after  { animation: breathe 6.5s ease-in-out infinite 0.6s; opacity: 0.4; }
+
+/* Hero scroll cue — a thin line that exhales downward. */
+.scrollcue-line {
+  width: 1px; height: 3.5rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.7), transparent);
+  transform-origin: top;
+  animation: cueline 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes cueline {
+  0%        { transform: scaleY(0); opacity: 0; }
+  35%       { transform: scaleY(1); opacity: 1; }
+  100%      { transform: scaleY(1) translateY(60%); opacity: 0; }
+}
+
+/* Gentle float for arched portraits — they breathe with the page. */
+@keyframes floatslow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.float-slow { animation: floatslow 9s ease-in-out infinite; }
+
+/* Staggered reveal — children fade+rise in sequence. Paired with .reveal. */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-shown="true"] .stagger > * { opacity: 1; transform: none; }
+[data-shown="true"] .stagger > *:nth-child(1) { transition-delay: 0.05s; }
+[data-shown="true"] .stagger > *:nth-child(2) { transition-delay: 0.18s; }
+[data-shown="true"] .stagger > *:nth-child(3) { transition-delay: 0.31s; }
+[data-shown="true"] .stagger > *:nth-child(4) { transition-delay: 0.44s; }
+[data-shown="true"] .stagger > *:nth-child(5) { transition-delay: 0.57s; }
+
+/* Full-screen mobile menu — items rise + fade in sequence on open. */
+.menu-stagger > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-open="true"] .menu-stagger > * { opacity: 1; transform: none; }
+[data-open="true"] .menu-stagger > *:nth-child(1) { transition-delay: 0.12s; }
+[data-open="true"] .menu-stagger > *:nth-child(2) { transition-delay: 0.17s; }
+[data-open="true"] .menu-stagger > *:nth-child(3) { transition-delay: 0.22s; }
+[data-open="true"] .menu-stagger > *:nth-child(4) { transition-delay: 0.27s; }
+[data-open="true"] .menu-stagger > *:nth-child(5) { transition-delay: 0.32s; }
+[data-open="true"] .menu-stagger > *:nth-child(6) { transition-delay: 0.37s; }
+[data-open="true"] .menu-stagger > *:nth-child(7) { transition-delay: 0.42s; }
+[data-open="true"] .menu-stagger > *:nth-child(8) { transition-delay: 0.47s; }
+[data-open="true"] .menu-stagger > *:nth-child(9) { transition-delay: 0.52s; }
+[data-open="true"] .menu-stagger > *:nth-child(n + 10) { transition-delay: 0.56s; }
+
+/* Oversized editorial numeral with a connecting timeline filet. */
+.timeline-num { position: relative; }
+.timeline-num::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 2.6rem; bottom: -2rem;
+  width: 1px;
+  background: linear-gradient(180deg, var(--color-gold-soft), transparent);
+  transform: translateX(-50%);
+}
+.timeline-item:last-child .timeline-num::after { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
   .kenburns, .marquee__track, .scrollcue { animation: none; }
   .marquee__track { transform: none; }
+  .breath-dot::before, .breath-dot::after, .scrollcue-line, .float-slow { animation: none; }
+  .stagger > * { opacity: 1; transform: none; }
+  .btn-sheen::after, .btn-sheen-gold::after, .btn-glow { animation: none; }
+  .btn-sheen::after, .btn-sheen-gold::after { display: none; }
+  /* Stop the gleam and restore solid fill so the words stay visible. */
+  h1 em, h2 em {
+    animation: none;
+    -webkit-text-fill-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+  .over-photo h1 em { animation: none; text-shadow: none; -webkit-text-fill-color: #ffffff; color: #ffffff; }
 }

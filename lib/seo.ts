@@ -49,7 +49,13 @@ export function organizationLd() {
     url: SITE.url,
     email: SITE.email,
     founder: { "@type": "Person", name: SITE.founder },
-    sameAs: [SITE.social.instagram, SITE.social.googleReviews].filter(Boolean),
+    logo: `${SITE.url}/brand/icon-512.png`,
+    sameAs: [
+      SITE.social.instagram,
+      SITE.social.facebook,
+      SITE.social.linkedin,
+      SITE.social.googleReviews,
+    ].filter(Boolean),
   };
 }
 
@@ -108,7 +114,7 @@ export function personLd() {
       "Trauma informed practice",
     ],
     url: `${SITE.url}/about/`,
-    sameAs: [SITE.social.instagram].filter(Boolean),
+    sameAs: [SITE.social.instagram, SITE.social.linkedin, SITE.social.facebook].filter(Boolean),
   };
 }
 

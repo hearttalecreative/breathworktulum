@@ -7,14 +7,15 @@ type Variant = "primary" | "secondary" | "whatsapp";
 // blocks with a tactile press; secondary is a text link with a gold underline
 // that draws on hover (delicate, not a boxed AI button).
 const filledBase =
-  "group inline-flex min-h-[3.25rem] items-center justify-center gap-2.5 px-8 text-[0.92rem] font-medium tracking-[0.01em] transition-[background-color,transform] duration-300 active:translate-y-px";
+  "group relative inline-flex min-h-[3.25rem] items-center justify-center gap-2.5 px-8 text-[0.92rem] font-medium tracking-[0.01em] transition-[background-color,transform] duration-300 active:translate-y-px";
 
 // Light variants pop on dark photography (no dark-on-dark).
+// Each carries a sheen glint (color matched to its fill); the primary also glows.
 function filledVariant(variant: "primary" | "whatsapp", onDark: boolean) {
-  if (variant === "whatsapp") return `${filledBase} bg-whatsapp text-pure hover:bg-ink`;
+  if (variant === "whatsapp") return `${filledBase} btn-sheen bg-whatsapp text-pure hover:bg-ink`;
   return onDark
-    ? `${filledBase} bg-shell text-ink hover:bg-champagne`
-    : `${filledBase} bg-ink text-pure hover:bg-forest`;
+    ? `${filledBase} btn-sheen-gold btn-glow bg-shell text-ink hover:bg-champagne`
+    : `${filledBase} btn-sheen btn-glow bg-ink text-pure hover:bg-forest`;
 }
 
 function Arrow() {

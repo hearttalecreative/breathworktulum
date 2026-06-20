@@ -53,6 +53,9 @@ export async function generateMetadata({
   const p = page as unknown as Record<string, unknown>;
   const path = toSlug(slug) === "home" ? "/" : `/${toSlug(slug)}/`;
   const og = p.ogImage as { url?: string } | undefined;
+  // Home shares the branded hero portrait (IMG_5306); other pages use their
+  // own CMS image, falling back to the same branded card.
+  const ogUrl = toSlug(slug) === "home" ? OG_FALLBACK : og?.url || OG_FALLBACK;
   return {
     title: (p.metaTitle as string) || (p.title as string),
     description: (p.metaDescription as string) || undefined,
@@ -61,7 +64,7 @@ export async function generateMetadata({
       title: (p.metaTitle as string) || (p.title as string),
       description: (p.metaDescription as string) || undefined,
       url: `${SITE.url}${path}`,
-      images: [{ url: og?.url || OG_FALLBACK, width: 1200, height: 630 }],
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: { card: "summary_large_image" },
   };

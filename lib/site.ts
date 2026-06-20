@@ -25,11 +25,10 @@ export const SITE = {
   },
 
   social: {
-    instagram: "https://instagram.com/breathworktulum",
+    instagram: "https://www.instagram.com/breathworktulum/",
     googleReviews: "https://g.page/r/CXT0CCkbKfFWEBM/review",
-    // TODO: confirm exact URLs with Sabine (09_DECISIONES_PENDIENTES.md)
-    linkedin: "",
-    facebook: "",
+    linkedin: "https://www.linkedin.com/in/sabine-binns-039787a/",
+    facebook: "https://www.facebook.com/2105142943041254",
   },
 } as const;
 

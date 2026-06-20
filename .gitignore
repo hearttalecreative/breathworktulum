@@ -46,3 +46,10 @@ next-env.d.ts
 
 # Source font library (trial); only used weights in fonts/ are committed
 FONTS/
+
+# Source asset drops (working copies live in public/brand + public/hero)
+/LOGO B *.svg
+/icon.svg
+/icon blanco.svg
+/rs=w_*.webp
+/public/images/og-photo-backup.jpg
