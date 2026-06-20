@@ -14,6 +14,14 @@ type AnyBlock = Record<string, unknown> & { blockType: string; id?: string };
 const paras = (s?: string | null) =>
   (s || "").split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
 
+// Emphasis: *word* renders as a Canela italic "breath word" inside a headline.
+function emph(s?: string | null) {
+  if (!s) return null;
+  return s.split(/(\*[^*]+\*)/g).map((part, i) =>
+    /^\*[^*]+\*$/.test(part) ? <em key={i}>{part.slice(1, -1)}</em> : <span key={i}>{part}</span>
+  );
+}
+
 function CtaRow({
   ctas,
   align = "left",
@@ -94,7 +102,7 @@ function BlockSwitch({
                   {b.eyebrow as string}
                 </span>
               ) : null}
-              <h1 className="t-display mt-5 max-w-[16ch] text-pure">{b.heading as string}</h1>
+              <h1 className="t-display mt-5 max-w-[16ch] text-pure">{emph(b.heading as string)}</h1>
               {b.lede ? (
                 <p className="prose-lede mt-6 max-w-xl text-cream-dim">{b.lede as string}</p>
               ) : null}
@@ -113,7 +121,7 @@ function BlockSwitch({
               {b.eyebrow ? (
                 <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span>
               ) : null}
-              <h1 className="t-display mt-4">{b.heading as string}</h1>
+              <h1 className="t-display mt-4">{emph(b.heading as string)}</h1>
               {b.lede ? <p className="prose-lede mt-7 measure">{b.lede as string}</p> : null}
               <CtaRow ctas={ctas} />
             </div>
@@ -148,7 +156,7 @@ function BlockSwitch({
               </div>
             ) : null}
             <div>
-              <h2 className="max-w-xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
+              <h2 className="max-w-xl text-3xl text-ink sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
               <ol className="mt-10 space-y-8">
                 {items.map((it, i) => (
                   <li key={i} className="flex gap-6">
@@ -158,7 +166,7 @@ function BlockSwitch({
                 ))}
               </ol>
               {b.closing ? (
-                <p className="mt-12 font-serif text-3xl text-ink sm:text-4xl">{b.closing as string}</p>
+                <p className="mt-12 font-serif italic text-3xl text-ink sm:text-4xl">{emph(b.closing as string)}</p>
               ) : null}
             </div>
           </div>
@@ -210,14 +218,14 @@ function BlockSwitch({
             ) : null}
             <div>
               {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
-              {b.heading ? <h2 className="mt-4 text-3xl text-pure sm:text-4xl lg:text-5xl">{b.heading as string}</h2> : null}
+              {b.heading ? <h2 className="mt-4 text-3xl text-pure sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2> : null}
               {b.lede ? <p className="prose-lede mt-5 text-cream-dim">{b.lede as string}</p> : null}
               <ol className="mt-10 space-y-7">
                 {phases.map((p, i) => (
                   <li key={p.n} className="flex gap-5 border-t border-cream-dim/15 pt-7 first:border-0 first:pt-0">
                     <span className="font-serif text-3xl text-gold-soft tabular-nums">0{i + 1}</span>
                     <div>
-                      <h3 className="font-serif text-2xl text-pure">{p.n}</h3>
+                      <h3 className="text-2xl text-pure">{p.n}</h3>
                       <p className="mt-1 text-cream-dim">{p.line}</p>
                     </div>
                   </li>
@@ -251,7 +259,7 @@ function BlockSwitch({
       const ratios = ["aspect-[16/10]", "aspect-[16/10]", "aspect-[4/5]", "aspect-[4/5]", "aspect-[4/5]"];
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <h2 className="max-w-2xl text-3xl sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
+          <h2 className="max-w-2xl text-3xl sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
             {cards.map((c, i) => {
               const Wrapper = c.href ? "a" : "div";
@@ -268,7 +276,7 @@ function BlockSwitch({
                     <div className="absolute inset-0 bg-gradient-to-t from-night/85 via-night/15 to-transparent" aria-hidden />
                   </div>
                   <div className="absolute inset-x-0 bottom-0 p-6">
-                    <h3 className="font-serif text-2xl text-pure">{c.title}</h3>
+                    <h3 className="text-2xl text-pure">{c.title}</h3>
                     <p className="mt-2 max-w-sm text-sm leading-relaxed text-cream-dim">{c.body}</p>
                     {c.ctaLabel ? (
                       <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-champagne">
@@ -290,7 +298,7 @@ function BlockSwitch({
       const [lead, ...rest] = items;
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="max-w-2xl text-3xl text-ink sm:text-4xl lg:text-5xl">{b.heading as string}</h2> : null}
+          {b.heading ? <h2 className="max-w-2xl text-3xl text-ink sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2> : null}
           <div className="mt-12 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             {lead ? (
               <figure className="relative">
@@ -335,7 +343,7 @@ function BlockSwitch({
               </div>
             </div>
             <div>
-              <h2 className="text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">{b.heading as string}</h2>
+              <h2 className="text-3xl text-ink sm:text-4xl lg:text-[2.75rem]">{emph(b.heading as string)}</h2>
               {b.body ? (
                 <div className="prose-body measure mt-6 space-y-4 text-[1.0625rem] leading-relaxed text-ink-soft">
                   <RichText data={b.body as never} />
@@ -356,7 +364,7 @@ function BlockSwitch({
           <div className="absolute inset-0 bg-night/70" aria-hidden />
           <div className="relative mx-auto max-w-3xl text-center">
             {b.eyebrow ? <span className="eyebrow text-gold-soft">{b.eyebrow as string}</span> : null}
-            <h2 className="mt-4 text-3xl text-cream sm:text-4xl lg:text-5xl">{b.heading as string}</h2>
+            <h2 className="mt-4 text-3xl text-cream sm:text-4xl lg:text-5xl">{emph(b.heading as string)}</h2>
             {b.body ? <p className="mx-auto mt-6 max-w-xl text-cream-dim/85">{b.body as string}</p> : null}
             {cta ? <div className="mt-9 flex justify-center"><CTAButton href={cta.href} variant={cta.variant} external={cta.external}>{cta.label}</CTAButton></div> : null}
           </div>
@@ -369,7 +377,7 @@ function BlockSwitch({
       const center = b.align !== "left";
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
-          <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
+          <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2>
           {b.body ? <p className={`mt-6 text-[1.05rem] leading-relaxed text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"}`}>{b.body as string}</p> : null}
           <CtaRow ctas={ctas} align={center ? "center" : "left"} />
         </Section>
@@ -422,7 +430,7 @@ function BlockSwitch({
       const items = ((b.items as { question: string; answer: string }[]) || []).map((q) => ({ q: q.question, a: q.answer }));
       return (
         <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
+          {b.heading ? <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2> : null}
           <div className="mt-8"><Accordion items={items} /></div>
         </Section>
       );
@@ -433,7 +441,7 @@ function BlockSwitch({
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
-          <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
+          <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <ul className="mt-8 space-y-4 measure">
             {items.map((it, i) => (
@@ -451,17 +459,17 @@ function BlockSwitch({
       const right = (b.right as { text: string }[]) || [];
       return (
         <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
-          <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
+          <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             <div className="rounded-none bg-sand p-7 sm:p-8">
-              {b.leftTitle ? <h3 className="font-serif text-xl text-ink">{b.leftTitle as string}</h3> : null}
+              {b.leftTitle ? <h3 className="text-xl text-ink">{b.leftTitle as string}</h3> : null}
               <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
                 {left.map((it, i) => <li key={i} className="border-l border-clay/50 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
             <div className="rounded-none bg-sand p-7 sm:p-8">
-              {b.rightTitle ? <h3 className="font-serif text-xl text-ink">{b.rightTitle as string}</h3> : null}
+              {b.rightTitle ? <h3 className="text-xl text-ink">{b.rightTitle as string}</h3> : null}
               <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
                 {right.map((it, i) => <li key={i} className="border-l border-sage/60 pl-3.5">{it.text}</li>)}
               </ul>
@@ -480,7 +488,7 @@ function BlockSwitch({
               const cta = resolveCta({ label: t.ctaLabel, action: t.action as never, whatsappContext: t.whatsappContext, href: t.href }, settings);
               return (
                 <div key={i} className="flex flex-col rounded-none border border-sand-deep bg-cream p-7">
-                  <h3 className="font-serif text-2xl text-ink">{t.title}</h3>
+                  <h3 className="text-2xl text-ink">{t.title}</h3>
                   {t.line ? <p className="mt-2 flex-1 text-sm text-muted">{t.line}</p> : <div className="flex-1" />}
                   {t.value ? <p className="mt-4 text-sm font-medium text-ink">{t.value}</p> : null}
                   {cta ? (
@@ -499,7 +507,7 @@ function BlockSwitch({
     case "contactForm":
       return (
         <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
+          {b.heading ? <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2> : null}
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <div className="mt-8"><ContactForm /></div>
         </Section>
@@ -509,7 +517,7 @@ function BlockSwitch({
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2> : null}
+          {b.heading ? <h2 className="text-3xl sm:text-4xl">{emph(b.heading as string)}</h2> : null}
           <div className="prose-body mt-6 space-y-4 text-[1.05rem] leading-relaxed text-muted">
             {b.body ? <RichText data={b.body as never} /> : null}
           </div>

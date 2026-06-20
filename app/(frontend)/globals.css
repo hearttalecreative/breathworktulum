@@ -80,18 +80,31 @@
     text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3, h4 {
+  /* Headlines (titulares) — Canela serif. */
+  h1, h2 {
     font-family: var(--font-serif);
     font-weight: 500;
     line-height: 1.12;
     letter-spacing: -0.015em;
     color: var(--color-ink);
     text-wrap: balance;
-    font-feature-settings: "kern", "liga", "lnum" 1; /* lining nums in headings */
+    font-feature-settings: "kern", "liga", "lnum" 1;
   }
 
-  /* "Breath words" — italic serif inside a heading (Emily ref). */
-  h1 em, h2 em, h3 em { font-style: italic; font-weight: 400; }
+  /* Secondary titles (títulos secundarios) — Söhne sans, for premium contrast. */
+  h3, h4 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.005em;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  /* "Breath words" — Canela italic inside a serif headline (Emily ref). */
+  h1 em, h2 em, .lede em { font-style: italic; font-weight: 400; }
+  /* Slight italic clearance so descenders (y g j p q) never clip. */
+  h1 em, h2 em { line-height: 1.1; }
 
   p { text-wrap: pretty; }
 

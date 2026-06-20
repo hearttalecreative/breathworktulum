@@ -24,7 +24,7 @@ function Item({ q, a }: QA) {
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-4 py-5 text-left"
       >
-        <span className="font-serif text-lg text-ink">{q}</span>
+        <span className="font-sans font-medium text-lg text-ink">{q}</span>
         <span aria-hidden className="text-gold">{open ? "–" : "+"}</span>
       </button>
       {open && <p className="pb-5 pr-8 text-muted">{a}</p>}
