@@ -43,3 +43,6 @@ next-env.d.ts
 # Payload local media uploads (prod uses Vercel Blob)
 /media/
 .env*.local
+
+# Source font library (trial); only used weights in fonts/ are committed
+FONTS/

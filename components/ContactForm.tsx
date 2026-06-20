@@ -42,7 +42,7 @@ export default function ContactForm() {
 
   if (status === "done") {
     return (
-      <div className="rounded-2xl border border-sand-deep bg-cream p-8">
+      <div className="rounded-none border border-sand-deep bg-cream p-8">
         <p className="text-[1.05rem] text-ink">
           Got it. I&apos;ll get back to you within 48 hours.
         </p>
@@ -74,7 +74,7 @@ export default function ContactForm() {
         <select
           id="subject"
           name="subject"
-          className="min-h-[44px] w-full rounded-xl border border-sand-deep bg-cream px-4 py-2.5 text-ink"
+          className="min-h-[44px] w-full rounded-none border border-sand-deep bg-cream px-4 py-2.5 text-ink"
         >
           <option>Question</option>
           <option>Private session booking</option>
@@ -95,7 +95,7 @@ export default function ContactForm() {
           name="message"
           rows={5}
           required
-          className="w-full rounded-xl border border-sand-deep bg-cream px-4 py-3 text-ink"
+          className="w-full rounded-none border border-sand-deep bg-cream px-4 py-3 text-ink"
         />
       </div>
 
@@ -110,7 +110,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="min-h-[44px] rounded-full bg-ink px-7 py-3 text-cream transition-colors hover:bg-night-soft disabled:opacity-60"
+        className="min-h-[44px] rounded-none bg-ink px-7 py-3 text-cream transition-colors hover:bg-night-soft disabled:opacity-60"
       >
         {status === "sending" ? "Sending..." : "Send message"}
       </button>
@@ -140,7 +140,7 @@ function Field({
         name={name}
         type={type}
         required={required}
-        className="min-h-[44px] w-full rounded-xl border border-sand-deep bg-cream px-4 py-2.5 text-ink"
+        className="min-h-[44px] w-full rounded-none border border-sand-deep bg-cream px-4 py-2.5 text-ink"
       />
     </div>
   );

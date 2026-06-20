@@ -10,44 +10,44 @@
 */
 
 @theme {
-  /* === Canvas / surfaces === */
-  --color-shell: #f7f2ea;   /* warm white — default bg */
-  --color-ivory: #fbf8f2;   /* cards, slight lift */
+  /* === Canvas / surfaces (no beige — porcelain + botanical) === */
+  --color-shell: #f1f1ec;   /* porcelain near-white, neutral, NOT cream */
+  --color-ivory: #f8f8f5;   /* faint lift for panels */
   --color-pure: #ffffff;    /* inputs, on-dark text/logo only */
-  --color-sand: #eadfce;    /* alternating sections */
-  --color-champagne: #e7d9c2; /* tints, hover fills */
+  --color-sand: #e4e7df;    /* pale sage-stone — the alt-section tone (replaces beige) */
+  --color-champagne: #dfe2d8; /* cool pale wash for hovers/tints */
 
   /* === Ink / text === */
-  --color-ink: #2a2521;     /* body + most headings (warm black) */
-  --color-ink-soft: #5b5249; /* secondary, captions */
-  --color-forest: #3c463d;  /* rare dark "breath" sections */
+  --color-ink: #222420;     /* cool near-black */
+  --color-ink-soft: #53534b; /* secondary, captions */
+  --color-forest: #2b3730;  /* deep botanical green — dark "breath" sections */
 
   /* === Gold === */
   --color-gold: #bf9000;       /* brand ref — drops only */
-  --color-gold-soft: #c2a878;  /* the protagonist gold — filets, borders, eyebrow rule */
+  --color-gold-soft: #c2a878;  /* the protagonist gold — filets, hairlines, accents */
   --color-gold-ink: #8a6a18;   /* only gold allowed for small text (AA) */
 
   /* === Functional === */
-  --color-line: #e2d7c6;
+  --color-line: #e0e0d9;
   --color-success: #5b7355;
   --color-error: #a65a4a;
   --color-whatsapp: #7ba889;
 
   /* === On-dark === */
-  --color-cream-dim: #d9cfbe;
-  --color-night: #221e1a;      /* deep warm near-black for dark bands */
-  --color-night-soft: #2e2925;
+  --color-cream-dim: #d6d6cd;
+  --color-night: #191b17;      /* deep green-black for dark bands */
+  --color-night-soft: #24271f;
 
-  /* === Aliases kept for existing components (mapped to spec values) === */
+  /* === Aliases kept for existing components === */
   --color-cream: var(--color-shell);
   --color-sand-deep: var(--color-line);
   --color-muted: var(--color-ink-soft);
-  --color-faint: #8a8076;
+  --color-faint: #82827a;
   --color-clay: var(--color-error);
   --color-sage: var(--color-whatsapp);
 
-  --font-serif: var(--font-fraunces), "Canela", Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-hanken), "Söhne", system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-canela), "Canela", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-sohne), "Söhne", system-ui, -apple-system, sans-serif;
 
   /* Vertical rhythm — generous, "breathing" */
   --spacing-section: clamp(4.5rem, 12vh, 10rem);
@@ -183,9 +183,10 @@
 @keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.12); } }
 .kenburns { animation: kenburns 24s ease-out both; }
 
-/* Top-arch (niche/window) mask — the boutique-feminine signature on portraits. */
+/* Cathedral/lancet arch mask — the elegant signature on portraits.
+   Tall soft crown, crisp bottom corners (architectural, not a round rectangle). */
 .arch {
-  border-radius: 9999px 9999px 14px 14px / 42% 42% 14px 14px;
+  border-radius: 49% 49% 2px 2px / 34% 34% 2px 2px;
   overflow: clip;
 }
 

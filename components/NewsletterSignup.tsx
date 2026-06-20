@@ -48,7 +48,7 @@ export default function NewsletterSignup({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@email.com"
-          className={`min-h-[44px] flex-1 rounded-full border px-5 py-2.5 text-sm outline-none ${
+          className={`min-h-[44px] flex-1 rounded-none border px-5 py-2.5 text-sm outline-none ${
             dark
               ? "border-cream-dim/30 bg-transparent text-cream placeholder:text-cream-dim/50"
               : "border-sand-deep bg-cream text-ink placeholder:text-faint"
@@ -56,7 +56,7 @@ export default function NewsletterSignup({
         />
         <button
           type="submit"
-          className={`min-h-[44px] rounded-full px-6 py-2.5 text-sm font-medium transition-colors ${
+          className={`min-h-[44px] rounded-none px-6 py-2.5 text-sm font-medium transition-colors ${
             dark
               ? "bg-cream text-ink hover:bg-cream-dim"
               : "bg-ink text-cream hover:bg-night-soft"

@@ -259,7 +259,7 @@ function BlockSwitch({
                 <Wrapper
                   key={i}
                   {...(c.href ? { href: c.href } : {})}
-                  className={`card group relative block overflow-clip rounded-2xl bg-night ${spans[i % spans.length]}`}
+                  className={`card group relative block overflow-clip bg-night ${spans[i % spans.length]}`}
                 >
                   <div className={`card-media relative ${ratios[i % ratios.length]} w-full`}>
                     {c.image ? (
@@ -382,7 +382,7 @@ function BlockSwitch({
       return (
         <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
           {b.tag ? (
-            <span className="mb-3 inline-block rounded-full bg-gold/15 px-3 py-1 text-xs font-medium uppercase tracking-widest text-gold">
+            <span className="mb-3 inline-block rounded-none bg-gold/15 px-3 py-1 text-xs font-medium uppercase tracking-widest text-gold">
               {b.tag as string}
             </span>
           ) : null}
@@ -396,7 +396,7 @@ function BlockSwitch({
                   {b.body ? <RichText data={b.body as never} /> : null}
                 </div>
                 {hasAside ? (
-                  <div className="rounded-2xl border border-sand-deep bg-cream/60 p-6">
+                  <div className="rounded-none border border-sand-deep bg-cream/60 p-6">
                     {included.length ? (
                       <>
                         <p className="text-xs uppercase tracking-widest text-faint">What&apos;s included</p>
@@ -454,13 +454,13 @@ function BlockSwitch({
           <h2 className="text-3xl sm:text-4xl">{b.heading as string}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <div className="mt-8 grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl bg-sand p-7 sm:p-8">
+            <div className="rounded-none bg-sand p-7 sm:p-8">
               {b.leftTitle ? <h3 className="font-serif text-xl text-ink">{b.leftTitle as string}</h3> : null}
               <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
                 {left.map((it, i) => <li key={i} className="border-l border-clay/50 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
-            <div className="rounded-2xl bg-sand p-7 sm:p-8">
+            <div className="rounded-none bg-sand p-7 sm:p-8">
               {b.rightTitle ? <h3 className="font-serif text-xl text-ink">{b.rightTitle as string}</h3> : null}
               <ul className="mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
                 {right.map((it, i) => <li key={i} className="border-l border-sage/60 pl-3.5">{it.text}</li>)}
@@ -479,7 +479,7 @@ function BlockSwitch({
             {tiles.map((t, i) => {
               const cta = resolveCta({ label: t.ctaLabel, action: t.action as never, whatsappContext: t.whatsappContext, href: t.href }, settings);
               return (
-                <div key={i} className="flex flex-col rounded-2xl border border-sand-deep bg-cream p-7">
+                <div key={i} className="flex flex-col rounded-none border border-sand-deep bg-cream p-7">
                   <h3 className="font-serif text-2xl text-ink">{t.title}</h3>
                   {t.line ? <p className="mt-2 flex-1 text-sm text-muted">{t.line}</p> : <div className="flex-1" />}
                   {t.value ? <p className="mt-4 text-sm font-medium text-ink">{t.value}</p> : null}

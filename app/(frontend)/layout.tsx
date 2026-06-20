@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Hanken_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,17 +10,29 @@ import { organizationLd, websiteLd, localBusinessLd } from "@/lib/seo";
 import { getGlobals } from "@/lib/payload";
 import { whatsappHref } from "@/lib/cta";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
+// Premium licensed faces (trial files in /fonts). Canela = display serif,
+// Söhne = humanist sans. Swap point from the Fraunces + Hanken stand-ins.
+const canela = localFont({
+  variable: "--font-canela",
   display: "swap",
-  axes: ["opsz", "SOFT", "WONK"],
+  src: [
+    { path: "../../typefaces/Canela-Light.otf", weight: "300", style: "normal" },
+    { path: "../../typefaces/Canela-Regular.otf", weight: "400", style: "normal" },
+    { path: "../../typefaces/Canela-Italic.otf", weight: "400", style: "italic" },
+    { path: "../../typefaces/Canela-Medium.otf", weight: "500", style: "normal" },
+    { path: "../../typefaces/Canela-MediumItalic.otf", weight: "500", style: "italic" },
+  ],
 });
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
-  subsets: ["latin"],
+const sohne = localFont({
+  variable: "--font-sohne",
   display: "swap",
+  src: [
+    { path: "../../typefaces/Sohne-Light.otf", weight: "300", style: "normal" },
+    { path: "../../typefaces/Sohne-Book.otf", weight: "400", style: "normal" },
+    { path: "../../typefaces/Sohne-Medium.otf", weight: "500", style: "normal" },
+    { path: "../../typefaces/Sohne-Semibold.otf", weight: "600", style: "normal" },
+  ],
 });
 
 export const metadata: Metadata = {
@@ -45,7 +57,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${hanken.variable} h-full`}
+      className={`${canela.variable} ${sohne.variable} h-full`}
     >
       <body className="flex min-h-full flex-col">
         <JsonLd data={[organizationLd(), websiteLd(), localBusinessLd()]} />
