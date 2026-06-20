@@ -50,7 +50,7 @@ export default function Footer({
       />
       {/* Oversized brand wave, barely there, anchoring the footer. */}
       <WaveMark className="pointer-events-none absolute -bottom-6 left-1/2 w-[120%] max-w-none -translate-x-1/2 text-gold-soft/[0.05]" />
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-16">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 pt-16 pb-28 lg:pb-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
