@@ -350,8 +350,8 @@ function BlockSwitch({
             </div>
           </div>
           {b.reviewsUrl ? (
-            <a href={b.reviewsUrl as string} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-1 text-sm font-medium text-gold hover:text-ink">
-              {(b.reviewsLabel as string) || "Read more reviews"} <span aria-hidden>→</span>
+            <a href={b.reviewsUrl as string} target="_blank" rel="noopener noreferrer" className="group link-underline mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-gold-ink">
+              {(b.reviewsLabel as string) || "Read more reviews"} <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
             </a>
           ) : null}
         </Section>
@@ -410,7 +410,8 @@ function BlockSwitch({
       const center = b.align !== "left";
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
-          <h2 className="t-h2">{emph(b.heading as string)}</h2>
+          <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={b.tone === "night" ? "champagne" : "gold"} /></div>
+          <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
           {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"}`}>{b.body as string}</p> : null}
           <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} />
         </Section>
@@ -422,12 +423,8 @@ function BlockSwitch({
       const included = (b.included as { text: string }[]) || [];
       return (
         <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
-          {b.tag ? (
-            <span className="mb-3 inline-block rounded-none bg-gold/15 px-3 py-1 text-xs font-medium uppercase tracking-widest text-gold">
-              {b.tag as string}
-            </span>
-          ) : null}
-          <h2 className="t-h2">{b.title as string}</h2>
+          {b.tag ? <span className="eyebrow eyebrow--filet">{b.tag as string}</span> : null}
+          <h2 className={`t-h2 ${b.tag ? "mt-4" : ""}`}>{b.title as string}</h2>
           {b.tagline ? <p className="prose-lede mt-3">{b.tagline as string}</p> : null}
           {(() => {
             const hasAside = included.length > 0 || !!b.investment;
@@ -437,18 +434,18 @@ function BlockSwitch({
                   {b.body ? <RichText data={b.body as never} /> : null}
                 </div>
                 {hasAside ? (
-                  <div className="rounded-none border border-sand-deep bg-cream/60 p-6">
+                  <div className="border-l border-gold-soft/45 bg-ivory/70 p-7 sm:p-8">
                     {included.length ? (
                       <>
-                        <p className="text-xs uppercase tracking-widest text-faint">What&apos;s included</p>
-                        <ul className="stagger mt-4 space-y-3 text-sm text-muted">
+                        <p className="eyebrow text-gold-ink/80">What&apos;s included</p>
+                        <ul className="stagger mt-5 space-y-3 text-sm text-ink-soft">
                           {included.map((it, i) => (
                             <li key={i} className="border-l border-gold-soft/55 pl-3.5">{it.text}</li>
                           ))}
                         </ul>
                       </>
                     ) : null}
-                    {b.investment ? <p className="mt-5 text-sm text-muted"><span className="font-medium text-ink">Investment:</span> {b.investment as string}</p> : null}
+                    {b.investment ? <p className="mt-6 border-t border-line pt-5 text-sm text-ink-soft"><span className="font-medium text-ink">Investment</span> · {b.investment as string}</p> : null}
                   </div>
                 ) : null}
               </div>
@@ -463,8 +460,9 @@ function BlockSwitch({
       const items = ((b.items as { question: string; answer: string }[]) || []).map((q) => ({ q: q.question, a: q.answer }));
       return (
         <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
-          <div className="mt-8"><Accordion items={items} /></div>
+          <Ornament start />
+          {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
+          <div className="mt-9"><Accordion items={items} /></div>
         </Section>
       );
     }
@@ -474,7 +472,8 @@ function BlockSwitch({
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
-          <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2>
+          <Ornament start />
+          <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <ul className="stagger mt-8 space-y-4 measure">
             {items.map((it, i) => (
@@ -492,19 +491,22 @@ function BlockSwitch({
       const right = (b.right as { text: string }[]) || [];
       return (
         <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
-          <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2>
+          <Ornament start />
+          <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
-            <div className="rounded-none bg-sand p-7 sm:p-8">
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <div className="relative overflow-hidden bg-ivory/70 p-8 sm:p-9">
+              <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
               {b.leftTitle ? <h3 className="text-xl text-ink">{b.leftTitle as string}</h3> : null}
-              <ul className="stagger mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
-                {left.map((it, i) => <li key={i} className="border-l border-clay/50 pl-3.5">{it.text}</li>)}
+              <ul className="stagger mt-6 space-y-3.5 text-sm leading-relaxed text-ink-soft">
+                {left.map((it, i) => <li key={i} className="border-l border-gold-soft/45 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
-            <div className="rounded-none bg-sand p-7 sm:p-8">
+            <div className="relative overflow-hidden bg-ivory/70 p-8 sm:p-9">
+              <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
               {b.rightTitle ? <h3 className="text-xl text-ink">{b.rightTitle as string}</h3> : null}
-              <ul className="stagger mt-5 space-y-3.5 text-sm leading-relaxed text-ink-soft">
-                {right.map((it, i) => <li key={i} className="border-l border-sage/60 pl-3.5">{it.text}</li>)}
+              <ul className="stagger mt-6 space-y-3.5 text-sm leading-relaxed text-ink-soft">
+                {right.map((it, i) => <li key={i} className="border-l border-gold-soft/45 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
           </div>
@@ -520,13 +522,14 @@ function BlockSwitch({
             {tiles.map((t, i) => {
               const cta = resolveCta({ label: t.ctaLabel, action: t.action as never, whatsappContext: t.whatsappContext, href: t.href }, settings);
               return (
-                <div key={i} className="flex flex-col rounded-none border border-sand-deep bg-cream p-7">
+                <div key={i} className="group relative flex flex-col overflow-hidden border border-line bg-ivory/70 p-8 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1">
+                  <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
                   <h3 className="text-2xl text-ink">{t.title}</h3>
-                  {t.line ? <p className="mt-2 flex-1 text-sm text-muted">{t.line}</p> : <div className="flex-1" />}
-                  {t.value ? <p className="mt-4 text-sm font-medium text-ink">{t.value}</p> : null}
+                  {t.line ? <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft">{t.line}</p> : <div className="flex-1" />}
+                  {t.value ? <p className="mt-5 text-sm font-medium text-ink">{t.value}</p> : null}
                   {cta ? (
-                    <a href={cta.href} target={cta.external ? "_blank" : undefined} rel={cta.external ? "noopener noreferrer" : undefined} className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-gold hover:text-ink">
-                      {cta.label} <span aria-hidden>→</span>
+                    <a href={cta.href} target={cta.external ? "_blank" : undefined} rel={cta.external ? "noopener noreferrer" : undefined} className="link-underline mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gold-ink">
+                      {cta.label} <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
                     </a>
                   ) : null}
                 </div>
@@ -540,9 +543,10 @@ function BlockSwitch({
     case "contactForm":
       return (
         <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
+          <Ornament start />
+          {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
-          <div className="mt-8"><ContactForm /></div>
+          <div className="mt-9"><ContactForm /></div>
         </Section>
       );
 
