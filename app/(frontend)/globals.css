@@ -306,6 +306,26 @@
   text-wrap: balance;
 }
 
+/* One fluid scale for every section H2 — replaces ad-hoc text-3xl/4xl/5xl
+   stacks so the same semantic rank renders identically across all blocks.
+   Keep per-block color utilities (text-ink / text-pure / text-cream). */
+.t-h2 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.85rem, 3.2vw + 0.4rem, 3rem);
+  line-height: 1.13;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+
+/* Body prose — typography only (no color, since it's reused on dark blocks).
+   Each block supplies its own ink/cream color utility. */
+.prose-body {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
 /* === Button sheen — a single elegant light glint sweeps across, then rests.
    Draws the eye without shouting. Color adapts to the fill. === */
 .btn-sheen, .btn-sheen-gold { position: relative; overflow: hidden; isolation: isolate; }
@@ -343,7 +363,8 @@
   0%, 100% { box-shadow: 0 0 0 0 rgba(194, 168, 120, 0); }
   50%      { box-shadow: 0 0 22px -6px rgba(194, 168, 120, 0.55); }
 }
-.btn-glow { animation: btnglow 6.5s ease-in-out infinite; }
+/* One considered entrance breath, then rest — not an endless pulse. */
+.btn-glow { animation: btnglow 3s ease-out 0.4s both; }
 .btn-glow:hover { animation: none; box-shadow: 0 0 26px -6px rgba(194, 168, 120, 0.7); }
 
 /* Vimeo background video — force a 16:9 iframe to COVER any container

@@ -1,7 +1,7 @@
 "use client";
 
-import Player from "@vimeo/player";
 import { useEffect, useRef, useState } from "react";
+import type PlayerType from "@vimeo/player";
 
 // Full-bleed Vimeo background video for the hero. Background mode autoplays
 // muted on every device, fills + covers the section, no controls. The poster
@@ -22,35 +22,40 @@ export default function HeroVideo({
   useEffect(() => {
     const el = wrap.current;
     if (!el) return;
+    let player: PlayerType | null = null;
+    let cancelled = false;
+    let seeking = false;
 
-    const player = new Player(el, {
-      url: url as never,
-      background: true, // autoplay + muted + loop + cover, no UI
-      muted: true,
-      autoplay: true,
-      loop: true,
-      responsive: false,
-      dnt: true,
-      quality: "auto",
+    // Lazy-load the SDK so it stays out of the initial homepage bundle; the
+    // poster already covers the hero while it loads.
+    import("@vimeo/player").then(({ default: Player }) => {
+      if (cancelled || !wrap.current) return;
+      player = new Player(el, {
+        url: url as never,
+        background: true, // autoplay + muted + loop + cover, no UI
+        muted: true,
+        autoplay: true,
+        loop: true,
+        responsive: false,
+        dnt: true,
+        quality: "auto",
+      });
+      const onTime = (data: { seconds: number }) => {
+        if (data.seconds >= loopEnd && !seeking && player) {
+          seeking = true;
+          player.setCurrentTime(0).finally(() => {
+            seeking = false;
+          });
+        }
+      };
+      player.on("timeupdate", onTime);
+      player.on("play", () => setReady(true));
+      player.ready().then(() => setReady(true)).catch(() => {});
     });
 
-    let seeking = false;
-    const onTime = (data: { seconds: number }) => {
-      if (data.seconds >= loopEnd && !seeking) {
-        seeking = true;
-        player.setCurrentTime(0).finally(() => {
-          seeking = false;
-        });
-      }
-    };
-
-    player.on("timeupdate", onTime);
-    player.on("play", () => setReady(true));
-    player.ready().then(() => setReady(true)).catch(() => {});
-
     return () => {
-      player.off("timeupdate", onTime);
-      player.destroy().catch(() => {});
+      cancelled = true;
+      player?.destroy().catch(() => {});
     };
   }, [url, loopEnd]);
 

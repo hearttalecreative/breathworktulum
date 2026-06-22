@@ -25,14 +25,28 @@ export default function Header({
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const hero = document.querySelector<HTMLElement>("[data-fullbleed-hero]");
-    const onScroll = () => {
+    // Header (in the layout) hydrates before the streamed page content, so the
+    // full-bleed hero can land in the DOM after this effect first runs. Use
+    // innerHeight (always resolved) gated on hero EXISTENCE, and poll briefly
+    // until the hero appears so the bar starts immersive, never flashing solid.
+    const compute = () => {
+      const hasHero = !!document.querySelector("[data-fullbleed-hero]");
       setScrolled(window.scrollY > 24);
-      if (hero) setOverHero(window.scrollY < hero.offsetHeight - 90);
+      setOverHero(hasHero ? window.scrollY < window.innerHeight - 90 : false);
+      return hasHero;
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const poll = setInterval(() => {
+      if (compute()) clearInterval(poll);
+    }, 100);
+    const stop = setTimeout(() => clearInterval(poll), 3000);
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      clearInterval(poll);
+      clearTimeout(stop);
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
   }, []);
 
   // Lock background scroll while the full-screen menu is open.
@@ -255,3 +269,5 @@ function WaIcon({ size = 18 }: { size?: number }) {
   );
 }
 
+
+// hmr-bump

@@ -88,8 +88,19 @@ export default async function Page({ params }: { params: Promise<Params> }) {
     (pd.layout as { blockType: string; items?: { question: string; answer: string }[] }[]) || []
   );
 
+  const isHome = toSlug(slug) === "home";
+
   return (
     <>
+      {isHome ? (
+        <>
+          {/* LCP poster + warm up the Vimeo background-video origins. */}
+          <link rel="preload" as="image" href="/hero/hero-poster.jpg" fetchPriority="high" />
+          <link rel="preconnect" href="https://player.vimeo.com" />
+          <link rel="preconnect" href="https://i.vimeocdn.com" crossOrigin="anonymous" />
+          <link rel="preconnect" href="https://f.vimeocdn.com" crossOrigin="anonymous" />
+        </>
+      ) : null}
       {draft ? (
         <LivePreviewListener
           serverURL={process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000"}

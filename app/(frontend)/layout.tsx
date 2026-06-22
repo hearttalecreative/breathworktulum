@@ -17,11 +17,11 @@ const canela = localFont({
   variable: "--font-canela",
   display: "swap",
   src: [
-    { path: "../../typefaces/Canela-Light.otf", weight: "300", style: "normal" },
-    { path: "../../typefaces/Canela-Regular.otf", weight: "400", style: "normal" },
-    { path: "../../typefaces/Canela-Italic.otf", weight: "400", style: "italic" },
-    { path: "../../typefaces/Canela-Medium.otf", weight: "500", style: "normal" },
-    { path: "../../typefaces/Canela-MediumItalic.otf", weight: "500", style: "italic" },
+    { path: "../../typefaces/Canela-Light.woff2", weight: "300", style: "normal" },
+    { path: "../../typefaces/Canela-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../typefaces/Canela-Italic.woff2", weight: "400", style: "italic" },
+    { path: "../../typefaces/Canela-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../../typefaces/Canela-MediumItalic.woff2", weight: "500", style: "italic" },
   ],
 });
 
@@ -29,10 +29,10 @@ const sohne = localFont({
   variable: "--font-sohne",
   display: "swap",
   src: [
-    { path: "../../typefaces/Sohne-Light.otf", weight: "300", style: "normal" },
-    { path: "../../typefaces/Sohne-Book.otf", weight: "400", style: "normal" },
-    { path: "../../typefaces/Sohne-Medium.otf", weight: "500", style: "normal" },
-    { path: "../../typefaces/Sohne-Semibold.otf", weight: "600", style: "normal" },
+    { path: "../../typefaces/Sohne-Light.woff2", weight: "300", style: "normal" },
+    { path: "../../typefaces/Sohne-Book.woff2", weight: "400", style: "normal" },
+    { path: "../../typefaces/Sohne-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../../typefaces/Sohne-Semibold.woff2", weight: "600", style: "normal" },
   ],
 });
 
