@@ -30,6 +30,14 @@ async function run() {
   const somatic = await mediaId("breathwork-tulum-somatic-session.jpg");
   const privateImg = await mediaId("breathwork-tulum-private-session.jpg");
   const riviera = await mediaId("breathwork-tulum-riviera-maya.jpg");
+  // Themed photos for full-bleed bands that break long text sections.
+  const deckSea = await mediaId("bw-deck-sea.jpg");
+  const groupJungle = await mediaId("bw-group-jungle.jpg");
+  const soundCircle = await mediaId("bw-curated-sound-circle.jpg");
+  const corporateVilla = await mediaId("bw-corporate-villa.jpg");
+  const bandPalapaWide = await mediaId("bw-band-palapa-wide.jpg");
+  const retreatCoupleSea = await mediaId("bw-retreat-couple-sea.jpg");
+  const cenote = await mediaId("bw-cenote.jpg");
 
   const reviews = await payload.find({ collection: "testimonials", limit: 3 });
   const tIds = reviews.docs.map((d) => d.id);
@@ -58,6 +66,8 @@ async function run() {
       { blockType: "ctaSection", heading: "Five ways in, depending on where you are.", width: "default", align: "left", tone: "cream",
         body: "Some people come for one session. Others for a five day process. Some bring their partner, their team, or a private group. The work is the same. The container changes." },
       { blockType: "waysGrid", heading: "Ways to work together.", tone: "sand", cards: WAYS },
+      { blockType: "photoBand", image: bandPalapaWide, height: "standard", eyebrow: "Tulum · Riviera Maya · Online",
+        caption: "Wherever you start, the work meets you there." },
       { blockType: "richText", heading: "Honestly, if you're not sure.", tone: "cream", width: "narrow",
         body: lex(
           "Most people land on Private Sessions and start with an Immersive. It's the format that gives the method enough room without asking for a multi-day commitment.",
@@ -104,6 +114,8 @@ async function run() {
         body: lex("Three or five virtual sessions across a few weeks, designed to give online clients a real container without forcing them to travel. Not a watered down version of in person. A different way to work with the same depth. Best for someone who can't travel right now, or who wants to integrate the work into their actual life."),
         included: incl("3 or 5 long sessions across 4 to 8 weeks.", "Pre-retreat intake and design.", "Voice note check-ins between sessions.", "Integration practices customized to your life.", "A follow-up session 4 to 6 weeks after the last one."),
         investment: "From $[price on inquiry].", cta: link("Book a discovery call", "/contact/") },
+      { blockType: "photoBand", image: deckSea, height: "tall", eyebrow: "Riviera Maya",
+        caption: "Days built around you, in a place that holds the work." },
       { blockType: "twoColumnLists", heading: "Not for everyone, on purpose.", tone: "sand",
         leftTitle: "Best fit if", left: items(
           "You're moving through a real transition and the time has come to do something bigger than a session.",
@@ -158,6 +170,8 @@ async function run() {
       { blockType: "formatDetail", anchor: "nomade", title: "Group Session at Nomade.", tag: "Regular · Tulum hotel zone", tagline: "The breathwork session, with a tight integration circle.", tone: "sand",
         body: lex("A regular group breathwork session held at Nomade in Tulum's hotel zone. Smaller container than the 1 Day Retreat, focused on the breathwork session itself with a tight integration circle after. Open to Nomade guests and to the public. A good way to experience the work without leaving the hotel zone. Around 2 hours. Message me for the next date."),
         cta: wa("Message me to join the next session", "general") },
+      { blockType: "photoBand", image: groupJungle, height: "standard", eyebrow: "A national park, every week",
+        caption: "The room becomes the work when people breathe together." },
       { blockType: "ctaSection", heading: "Where group fits in the full work.", width: "default", align: "left", tone: "cream",
         body: "Both formats are open practice. If after either one you want to go deeper, the next step is usually a Private Session or a Personalized Retreat.",
         ctas: [link("Explore Private Sessions", "/work-with-me/private-sessions/"), link("Explore Personalized Retreats", "/work-with-me/personalized-retreats/", "secondary")] },
@@ -193,6 +207,8 @@ async function run() {
         { title: "Curated Travel Groups", body: "Small group luxury travel curators (8 to 16 people) who include experiential wellness in their itineraries. Breathwork as one anchor experience." },
         { title: "Private Friend Groups", body: "Two to six friends traveling together who want a shared session or short retreat. Closer to private sessions, with the group dynamic added." },
       ]},
+      { blockType: "photoBand", image: soundCircle, height: "standard", eyebrow: "Privately curated",
+        caption: "One group at a time, in a closed and well held container." },
       { blockType: "richText", anchor: "retreat-integration", heading: "A note on retreat integration.", tone: "sand",
         body: lex("Of all the group work I do, the most consistent demand comes from retreat leaders and centers running plant medicine work who need a serious integration partner.", "When participants travel home, the nervous system is often still moving. Breathwork in the integration window helps the body process what came up without retraumatizing the system. I work with retreat centers who refer participants, independent facilitators, and therapists supporting clients post-retreat."),
         cta: { ...link("Inquire about retreat integration", "#inquiry"), enabled: true } },
@@ -233,6 +249,8 @@ async function run() {
         { title: "Team Program", body: "Multiple sessions across weeks or months, designed for sustained impact, with optional 1:1 work for leaders. Best for companies investing in real cultural change, not a one-off." },
         { title: "Executive 1:1", body: "Private breathwork and somatic coaching for senior leaders. Confidential, scheduled around your reality. Best for C-level or founders facing burnout, transitions, or high pressure periods." },
       ]},
+      { blockType: "photoBand", image: corporateVilla, height: "standard", eyebrow: "For teams under load",
+        caption: "Structured regulation for nervous systems under pressure." },
       { blockType: "list", heading: "The kind of changes that show up.", tone: "cream", intro: "I won't claim transformations. I'll name what people actually report.",
         items: items("More capacity under pressure, with less reactive escalation.", "Better quality of attention in meetings. Less context-switching cost.", "Shorter recovery time after high-stress periods.", "Real conversations about stress and burnout, instead of polite ones.", "Tools people use on Monday morning, not just remember from Friday's workshop.", "For leaders: better access to their own signal under load. Clearer decisions.") },
       { blockType: "richText", heading: "The technical backbone.", tone: "sand", width: "narrow",
@@ -269,6 +287,8 @@ async function run() {
         note: "This is the architecture. The specifics adjust to the group that shows up. The container holds. The content responds." },
       { blockType: "richText", heading: "ONZE Xpu Ha.", tone: "sand", width: "narrow",
         body: lex("Xpu Ha is a beach town between Tulum and Playa del Carmen. Quieter, less crowded, surrounded by jungle on one side and the Caribbean on the other.", "ONZE is the venue. A curated property with breathwork spaces, accommodation, dining, and access to nature designed for this kind of work. We chose it because it can hold a group of twenty without losing intimacy.") },
+      { blockType: "photoBand", image: retreatCoupleSea, height: "tall", eyebrow: "ONZE Xpu Ha · Q1 2026",
+        caption: "Five days to land what daily life keeps postponing." },
       { blockType: "twoColumnLists", heading: "Is this for you?", tone: "cream",
         leftTitle: "Best fit if", left: items(
           "You've been considering a retreat for a while and the right one hasn't shown up yet.",
@@ -321,15 +341,8 @@ async function run() {
     ],
   });
 
-  // ---------- LEGAL STUBS ----------
-  const legal = (slug: string, title: string, body: string[]) =>
-    page(slug, { title, metaTitle: `${title} · Breathwork Tulum`, metaDescription: title,
-      layout: [{ blockType: "richText", heading: title, tone: "cream", width: "narrow", body: lex(...body, "For questions in the meantime, write breathe@breathworktulum.com.") }] });
-
-  await legal("legal/privacy", "Privacy Policy", ["Our full privacy policy is being finalized. Breathwork Tulum collects only the information you choose to share through forms, WhatsApp, and email, and uses it solely to respond to you and deliver the services you request. We do not sell your data."]);
-  await legal("legal/terms", "Terms of Service", ["Our full terms of service are being finalized. By booking a session, retreat, or program, you agree to the booking, payment, and cancellation terms communicated at the time of booking."]);
-  await legal("legal/contraindications", "Health Contraindications", ["Breathwork is not a medical or psychological treatment and complements, but does not replace, therapy or medical care.", "Please share relevant health context before booking. Conditions that require a conversation first include: pregnancy, recent cardiovascular events, epilepsy, glaucoma, severe asthma, recent surgery, untreated psychosis, and severe PTSD without parallel therapeutic support. Many of these are workable with adjustments; some are not, and Sabine will tell you."]);
-  await legal("legal/retreat-policies", "Retreat Booking Policies", ["Our full retreat booking policies are being finalized. In general: a non-refundable deposit secures your place, the balance follows a payment schedule sent at confirmation, and cancellations follow a tiered schedule depending on proximity to the start date. Full terms are sent before any payment is made."]);
+  // Legal pages live in scripts/seed-legal.ts (full content). Not seeded here
+  // to avoid clobbering them.
 
   payload.logger.info("✅ Phase-2 pages seeded.");
   process.exit(0);
