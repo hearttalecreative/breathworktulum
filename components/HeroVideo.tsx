@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type PlayerType from "@vimeo/player";
 
@@ -63,13 +64,16 @@ export default function HeroVideo({
     <div className="absolute inset-0 overflow-hidden bg-night">
       {/* The SDK injects the iframe here; background mode fills + covers. */}
       <div ref={wrap} className="vimeo-cover absolute inset-0" />
-      {/* Poster while the player warms up; fades once playing. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      {/* Poster = LCP. Server-optimized + priority so it paints fast and
+          responsive; fades out once the player is playing. */}
+      <Image
         src={poster}
         alt=""
         aria-hidden
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+        fill
+        priority
+        sizes="100vw"
+        className={`object-cover transition-opacity duration-700 ${
           ready ? "opacity-0" : "opacity-100"
         }`}
       />

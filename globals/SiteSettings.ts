@@ -1,9 +1,11 @@
 import type { GlobalConfig } from "payload";
+import { revalidateGlobalsTag } from "../lib/revalidate";
 
 export const SiteSettings: GlobalConfig = {
   slug: "siteSettings",
   access: { read: () => true },
   admin: { group: "Settings" },
+  hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {
       type: "collapsible",

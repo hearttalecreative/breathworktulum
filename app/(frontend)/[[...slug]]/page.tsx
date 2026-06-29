@@ -108,8 +108,8 @@ export default async function Page({ params }: { params: Promise<Params> }) {
     <>
       {isHome ? (
         <>
-          {/* LCP poster + warm up the Vimeo background-video origins. */}
-          <link rel="preload" as="image" href="/hero/hero-poster.jpg" fetchPriority="high" />
+          {/* Warm up the Vimeo background-video origins (the LCP poster is
+              preloaded by next/image priority in HeroVideo). */}
           <link rel="preconnect" href="https://player.vimeo.com" />
           <link rel="preconnect" href="https://i.vimeocdn.com" crossOrigin="anonymous" />
           <link rel="preconnect" href="https://f.vimeocdn.com" crossOrigin="anonymous" />

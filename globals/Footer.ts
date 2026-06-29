@@ -1,4 +1,5 @@
 import type { GlobalConfig } from "payload";
+import { revalidateGlobalsTag } from "../lib/revalidate";
 
 const linkFields = [
   { name: "label", type: "text" as const, required: true },
@@ -9,6 +10,7 @@ export const Footer: GlobalConfig = {
   slug: "footer",
   access: { read: () => true },
   admin: { group: "Navigation" },
+  hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {
       type: "collapsible",

@@ -1,8 +1,13 @@
 import type { CollectionConfig } from "payload";
 import { allBlocks } from "../blocks";
+import { revalidatePagesTag } from "../lib/revalidate";
 
 export const Pages: CollectionConfig = {
   slug: "pages",
+  hooks: {
+    afterChange: [revalidatePagesTag],
+    afterDelete: [revalidatePagesTag],
+  },
   access: {
     // Public can read published; authenticated can read drafts.
     read: ({ req }) => {
