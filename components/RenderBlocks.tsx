@@ -434,7 +434,8 @@ function BlockSwitch({
                   {b.body ? <RichText data={b.body as never} /> : null}
                 </div>
                 {hasAside ? (
-                  <div className="border-l border-gold-soft/45 bg-ivory/70 p-7 sm:p-8">
+                  <div className="relative h-fit overflow-hidden border border-line bg-ivory p-7 shadow-[0_1px_30px_-18px_rgba(34,36,32,0.5)] sm:p-8 lg:sticky lg:top-28">
+                    <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/70 to-transparent" />
                     {included.length ? (
                       <>
                         <p className="eyebrow text-gold-ink/80">What&apos;s included</p>
@@ -554,8 +555,11 @@ function BlockSwitch({
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
-          <div className="prose-body mt-6 space-y-4 text-muted">
+          {b.eyebrow ? <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span> : <Ornament start />}
+          {b.heading ? <h2 className={`t-h2 max-w-[24ch] text-ink ${b.eyebrow ? "mt-4" : "mt-7"}`}>{emph(b.heading as string)}</h2> : null}
+          {/* Body kept to a comfortable reading measure even when the section runs
+              wide — long-form internal copy never sprawls past ~66ch. */}
+          <div className="prose-body measure mt-6 space-y-4 text-muted [&>p:first-of-type]:text-[1.1875rem] [&>p:first-of-type]:text-ink-soft">
             {b.body ? <RichText data={b.body as never} /> : null}
           </div>
           {cta ? <CtaRow ctas={[cta]} /> : null}
