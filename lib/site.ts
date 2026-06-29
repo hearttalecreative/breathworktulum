@@ -22,6 +22,10 @@ export const SITE = {
     city: "Tulum",
     region: "Quintana Roo",
     country: "Mexico",
+    // Town-level coordinates (no public street address). Enough for LocalBusiness
+    // geo / Map Pack entity disambiguation; refine if a venue address is published.
+    latitude: 20.2114,
+    longitude: -87.4654,
   },
 
   social: {

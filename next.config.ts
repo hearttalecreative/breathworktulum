@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
     ],
   },
   images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 2_592_000, // 30d — CMS media is effectively immutable per URL
     remotePatterns: [
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],

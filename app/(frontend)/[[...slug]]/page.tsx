@@ -6,7 +6,7 @@ import LivePreviewListener from "@/components/LivePreviewListener";
 import JsonLd from "@/components/JsonLd";
 import { getPage, getGlobals, getAuthUser } from "@/lib/payload";
 import { SITE } from "@/lib/site";
-import { faqLd, serviceLd, personLd } from "@/lib/seo";
+import { faqLd, serviceLd, personLd, breadcrumbLd } from "@/lib/seo";
 
 const OG_FALLBACK = "/images/og-default.jpg";
 
@@ -28,11 +28,16 @@ function pageSchemas(slug: string, title: string, description: string, layout: {
       organizer: { "@type": "Person", name: SITE.founder },
     });
   }
+  // Breadcrumb trail for multi-segment URLs (e.g. /work-with-me/private-sessions/).
+  if (slug !== "home" && slug.includes("/")) schemas.push(breadcrumbLd(slug, title));
   return schemas;
 }
 
-// Pages are rendered per-request (auth check shows drafts to logged-in admins),
-// so there is no build-time DB access. Keeps the build green without env/DB.
+// Rendered dynamically (the draft path reads the admin auth cookie), but the underlying
+// page + globals queries are served from the cross-request data cache
+// (unstable_cache in lib/payload, hourly revalidate), so anonymous traffic does
+// not hit Postgres per request. force-dynamic also keeps the build DB-free —
+// no build-time prerender against the connection-limited Supabase pooler.
 export const dynamic = "force-dynamic";
 
 type Params = { slug?: string[] };
@@ -56,25 +61,34 @@ export async function generateMetadata({
   // Home shares the branded hero portrait (IMG_5306); other pages use their
   // own CMS image, falling back to the same branded card.
   const ogUrl = toSlug(slug) === "home" ? OG_FALLBACK : og?.url || OG_FALLBACK;
+  const title = (p.metaTitle as string) || (p.title as string);
+  const description = (p.metaDescription as string) || undefined;
   return {
-    title: (p.metaTitle as string) || (p.title as string),
-    description: (p.metaDescription as string) || undefined,
+    title,
+    description,
     alternates: { canonical: `${SITE.url}${path}` },
+    ...(p.noindex ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
-      title: (p.metaTitle as string) || (p.title as string),
-      description: (p.metaDescription as string) || undefined,
+      title,
+      description,
       url: `${SITE.url}${path}`,
-      images: [{ url: ogUrl, width: 1200, height: 630 }],
+      images: [{ url: ogUrl, width: 1200, height: 630, alt: title }],
     },
-    twitter: { card: "summary_large_image" },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogUrl],
+    },
   };
 }
 
 export default async function Page({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const { isEnabled } = await draftMode();
-  // Authenticated admins (incl. the Live Preview iframe) see drafts.
-  const draft = isEnabled || !!(await getAuthUser());
+  // Only the draft-preview path does the auth lookup; the published render
+  // reads from the data cache. draftMode is set by the admin Live Preview cookie.
+  const draft = isEnabled && !!(await getAuthUser());
   const page = await getPage(toSlug(slug), draft);
   if (!page) notFound();
 

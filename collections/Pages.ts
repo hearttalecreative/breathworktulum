@@ -59,6 +59,13 @@ export const Pages: CollectionConfig = {
             { name: "metaTitle", type: "text", admin: { description: "≤ 60 chars." } },
             { name: "metaDescription", type: "textarea", admin: { description: "≤ 155 chars." } },
             { name: "ogImage", type: "upload", relationTo: "media" },
+            {
+              name: "noindex",
+              type: "checkbox",
+              defaultValue: false,
+              label: "Hide from search engines",
+              admin: { description: "Adds a noindex meta tag and drops the page from the sitemap." },
+            },
           ],
         },
       ],

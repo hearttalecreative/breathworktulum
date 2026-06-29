@@ -29,17 +29,17 @@ export default function ThreePhases() {
         role="img"
         aria-label="Three phase method: Breathe, Heal, Transform"
       >
-        <circle cx="70" cy="70" r="58" fill="none" stroke="var(--color-gold)" strokeOpacity="0.35" strokeWidth="0.75" />
-        <circle cx="70" cy="70" r="44" fill="none" stroke="var(--color-gold)" strokeOpacity="0.55" strokeWidth="0.75" />
-        <circle cx="70" cy="70" r="30" fill="none" stroke="var(--color-gold)" strokeOpacity="0.85" strokeWidth="0.75" />
-        <circle cx="70" cy="70" r="3" fill="var(--color-gold)" />
+        <circle cx="70" cy="70" r="58" fill="none" stroke="var(--color-gold-soft)" strokeOpacity="0.35" strokeWidth="1" />
+        <circle cx="70" cy="70" r="44" fill="none" stroke="var(--color-gold-soft)" strokeOpacity="0.55" strokeWidth="1" />
+        <circle cx="70" cy="70" r="30" fill="none" stroke="var(--color-gold-soft)" strokeOpacity="0.85" strokeWidth="1" />
+        <circle cx="70" cy="70" r="3" fill="var(--color-gold-soft)" />
       </svg>
 
       {/* Phase legend */}
       <ol className="space-y-7">
         {PHASES.map((p, i) => (
           <li key={p.word} className="flex gap-5">
-            <span className="font-serif text-2xl text-gold/60 tabular-nums">
+            <span className="font-serif text-2xl text-gold-ink/80 tabular-nums">
               0{i + 1}
             </span>
             <div>
