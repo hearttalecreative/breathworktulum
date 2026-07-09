@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type NavLink = { label: string; href: string };
 
@@ -19,6 +19,7 @@ export default function Header({
   email?: string;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   // Transparent + light text while sitting over a full-bleed hero; solid after.
   const [overHero, setOverHero] = useState(false);
   // Subtle shrink once the page is scrolled — a modern, lighter bar.
@@ -55,6 +56,19 @@ export default function Header({
     return () => {
       document.body.style.overflow = "";
     };
+  }, [menuOpen]);
+
+  // Esc closes the menu and returns focus to the trigger (keyboard a11y).
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
   const light = overHero && !menuOpen;
@@ -177,10 +191,12 @@ export default function Header({
 
         {/* Mobile trigger — animated hamburger that morphs to a close glyph. */}
         <button
+          ref={triggerRef}
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className={`relative z-50 flex h-10 w-10 items-center justify-center lg:hidden ${
+          className={`relative z-50 -mr-2 flex h-11 w-11 items-center justify-center lg:hidden ${
             onLight ? "text-pure" : "text-ink"
           }`}
         >
@@ -208,7 +224,12 @@ export default function Header({
       {/* === Full-screen mobile menu (sibling of header so `fixed` maps to the
           viewport, not the backdrop-blurred bar) === */}
       <div
+        id="mobile-menu"
         data-open={menuOpen}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
+        inert={!menuOpen}
         className="fixed inset-0 z-40 overflow-y-auto overscroll-contain bg-night text-cream-dim transition-[opacity,visibility] duration-500 data-[open=false]:invisible data-[open=false]:opacity-0 data-[open=true]:visible data-[open=true]:opacity-100 lg:hidden"
       >
         {/* Faint botanical glow + grain so it reads premium, not flat black. */}

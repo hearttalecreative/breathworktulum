@@ -4,6 +4,8 @@ import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import { en } from "@payloadcms/translations/languages/en";
+import { es } from "@payloadcms/translations/languages/es";
 import sharp from "sharp";
 
 import { Users } from "./collections/Users";
@@ -13,6 +15,7 @@ import { Pages } from "./collections/Pages";
 import { SiteSettings } from "./globals/SiteSettings";
 import { Header } from "./globals/Header";
 import { Footer } from "./globals/Footer";
+import { ChatSettings } from "./globals/ChatSettings";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -26,8 +29,14 @@ export default buildConfig({
     importMap: { baseDir: path.resolve(dirname) },
     meta: { titleSuffix: "· Breathwork Tulum" },
   },
+  // Panel en español por defecto (Sabine). Cada usuario puede cambiar el idioma
+  // desde su perfil; el inglés queda disponible.
+  i18n: {
+    supportedLanguages: { es, en },
+    fallbackLanguage: "es",
+  },
   collections: [Pages, Testimonials, Media, Users],
-  globals: [SiteSettings, Header, Footer],
+  globals: [SiteSettings, Header, Footer, ChatSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },

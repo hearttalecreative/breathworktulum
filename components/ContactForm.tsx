@@ -42,11 +42,11 @@ export default function ContactForm() {
 
   if (status === "done") {
     return (
-      <div className="rounded-none border border-sand-deep bg-cream p-8">
+      <div className="rounded-none border border-line bg-pure p-8">
         <p className="text-[1.05rem] text-ink">
           Got it. I&apos;ll get back to you within 48 hours.
         </p>
-        <p className="mt-2 font-serif italic text-gold">With Love, Sabine.</p>
+        <p className="mt-2 font-serif italic text-gold-ink">With Love, Sabine.</p>
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function ContactForm() {
         <select
           id="subject"
           name="subject"
-          className="min-h-[44px] w-full rounded-none border border-sand-deep bg-cream px-4 py-2.5 text-ink"
+          className="min-h-[44px] w-full rounded-none border border-line bg-pure px-4 py-2.5 text-ink"
         >
           <option>Question</option>
           <option>Private session booking</option>
@@ -95,13 +95,13 @@ export default function ContactForm() {
           name="message"
           rows={5}
           required
-          className="w-full rounded-none border border-sand-deep bg-cream px-4 py-3 text-ink"
+          className="w-full rounded-none border border-line bg-pure px-4 py-3 text-ink"
         />
       </div>
 
-      {error && <p className="text-sm text-clay">{error}</p>}
+      {error && <p className="text-sm text-error">{error}</p>}
       {status === "error" && (
-        <p className="text-sm text-clay">
+        <p className="text-sm text-error">
           Something didn&apos;t go through. Try again, or write me directly at
           breathe@breathworktulum.com.
         </p>
@@ -133,14 +133,14 @@ function Field({
     <div>
       <label htmlFor={name} className="mb-1.5 block text-sm font-medium text-ink">
         {label}
-        {required && <span className="text-clay"> *</span>}
+        {required && <span className="text-error"> *</span>}
       </label>
       <input
         id={name}
         name={name}
         type={type}
         required={required}
-        className="min-h-[44px] w-full rounded-none border border-sand-deep bg-cream px-4 py-2.5 text-ink"
+        className="min-h-[44px] w-full rounded-none border border-line bg-pure px-4 py-2.5 text-ink"
       />
     </div>
   );

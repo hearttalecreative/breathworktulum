@@ -1,7 +1,6 @@
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import Section from "./Section";
 import CTAButton from "./CTAButton";
-import ThreePhases from "./method/ThreePhases";
 import Accordion from "./Accordion";
 import ContactForm from "./ContactForm";
 import PayloadImage from "./PayloadImage";
@@ -202,7 +201,7 @@ function BlockSwitch({
           {b.caption || b.eyebrow ? (
             <>
               <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent" aria-hidden />
-              <div className="relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2rem,6vh,4rem)]">
+              <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2rem,6vh,4rem)]">
                 {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
                 {b.caption ? <p className="mt-3 max-w-2xl font-serif text-2xl text-pure sm:text-3xl">{b.caption as string}</p> : null}
               </div>
@@ -290,7 +289,7 @@ function BlockSwitch({
                 <Wrapper
                   key={i}
                   {...(c.href ? { href: c.href } : {})}
-                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spans[i % spans.length]}`}
+                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 focus-within:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spans[i % spans.length]}`}
                 >
                   <div className={`card-media relative ${ratios[i % ratios.length]} w-full`}>
                     {c.image ? (
@@ -305,9 +304,9 @@ function BlockSwitch({
                       <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-cream-dim transition-colors group-hover:text-pure">
                         <span className="relative">
                           {c.ctaLabel}
-                          <span aria-hidden className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-gold-soft transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" />
+                          <span aria-hidden className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-gold-soft transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 group-focus-within:scale-x-100" />
                         </span>
-                        <span aria-hidden className="text-gold-soft transition-transform duration-300 group-hover:translate-x-1">→</span>
+                        <span aria-hidden className="text-gold-soft transition-transform duration-300 group-hover:translate-x-1 group-focus-within:translate-x-1">→</span>
                       </span>
                     ) : null}
                   </div>
@@ -434,7 +433,8 @@ function BlockSwitch({
                   {b.body ? <RichText data={b.body as never} /> : null}
                 </div>
                 {hasAside ? (
-                  <div className="border-l border-gold-soft/45 bg-ivory/70 p-7 sm:p-8">
+                  <div className="relative h-fit overflow-hidden border border-line bg-ivory p-7 shadow-[0_1px_30px_-18px_rgba(34,36,32,0.5)] sm:p-8 lg:sticky lg:top-28">
+                    <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/70 to-transparent" />
                     {included.length ? (
                       <>
                         <p className="eyebrow text-gold-ink/80">What&apos;s included</p>
@@ -529,7 +529,7 @@ function BlockSwitch({
                   {t.value ? <p className="mt-5 text-sm font-medium text-ink">{t.value}</p> : null}
                   {cta ? (
                     <a href={cta.href} target={cta.external ? "_blank" : undefined} rel={cta.external ? "noopener noreferrer" : undefined} className="link-underline mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gold-ink">
-                      {cta.label} <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+                      {cta.label} <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1 group-focus-within:translate-x-1">&rarr;</span>
                     </a>
                   ) : null}
                 </div>
@@ -554,8 +554,11 @@ function BlockSwitch({
       const cta = resolveCta(b.cta as RawCta, settings);
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
-          {b.heading ? <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
-          <div className="prose-body mt-6 space-y-4 text-muted">
+          {b.eyebrow ? <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span> : <Ornament start />}
+          {b.heading ? <h2 className={`t-h2 max-w-[24ch] text-ink ${b.eyebrow ? "mt-4" : "mt-7"}`}>{emph(b.heading as string)}</h2> : null}
+          {/* Body kept to a comfortable reading measure even when the section runs
+              wide — long-form internal copy never sprawls past ~66ch. */}
+          <div className="prose-body measure mt-6 space-y-4 text-muted [&>p:first-of-type]:text-[1.1875rem] [&>p:first-of-type]:text-ink-soft">
             {b.body ? <RichText data={b.body as never} /> : null}
           </div>
           {cta ? <CtaRow ctas={[cta]} /> : null}

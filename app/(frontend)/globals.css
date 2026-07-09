@@ -224,8 +224,10 @@
   transition:
     opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
 }
+/* Promote to its own layer only while still animating in; released once shown
+   so we don't keep a compositor layer per section for the life of the page. */
+.reveal:not([data-shown="true"]) { will-change: opacity, transform; }
 .reveal[data-shown="true"] { opacity: 1; transform: none; }
 
 /* Gold underline that draws left→right on hover/focus. */
@@ -254,9 +256,8 @@
 .card-media { overflow: clip; }
 .card-media img {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
 }
-.card:hover .card-media img { transform: scale(1.04); }
+.card:hover .card-media img { transform: scale(1.04); will-change: transform; }
 .card-media::after {
   content: "";
   position: absolute;

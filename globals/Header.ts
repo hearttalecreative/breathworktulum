@@ -1,4 +1,5 @@
 import type { GlobalConfig } from "payload";
+import { revalidateGlobalsTag } from "../lib/revalidate";
 
 const linkFields = [
   { name: "label", type: "text" as const, required: true },
@@ -7,8 +8,13 @@ const linkFields = [
 
 export const Header: GlobalConfig = {
   slug: "header",
+  label: "Menú superior",
   access: { read: () => true },
-  admin: { group: "Navigation" },
+  admin: {
+    group: "Navegación",
+    description: "Enlaces del menú de arriba del sitio.",
+  },
+  hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {
       name: "workWithMe",
