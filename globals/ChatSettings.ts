@@ -58,7 +58,7 @@ export const ChatSettings: GlobalConfig = {
       type: "textarea",
       label: "Mensaje de bienvenida",
       defaultValue:
-        "Hi, welcome. I'm here to help you learn about breathwork with Sabine — ask me anything about sessions, retreats, or the method.",
+        "Hi, I'm so glad you're here. I can tell you about Sabine's sessions and retreats, share how breathwork feels, and help you find what's right for you. What brings you here today?",
       admin: {
         description: "Primer mensaje que ve el visitante al abrir el chat.",
       },

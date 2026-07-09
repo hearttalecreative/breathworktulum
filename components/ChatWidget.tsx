@@ -2,9 +2,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 // Floating AI chat for every visitor (replaces the WhatsApp-only sticky).
-// Same quiet, refined language as the rest of the site: small night disc,
-// soft halo, ivory panel. WhatsApp with Sabine stays one tap away — in the
-// panel header, and inline whenever the assistant offers the handoff.
+// Warm, soft, healing language to match why people arrive here: a calm sage
+// and gold palette, a gentle "breathing" launcher, a friendly host avatar, and
+// quick ways to move toward a session with Sabine. WhatsApp with Sabine stays
+// one tap away, in the header and inline whenever the assistant offers it.
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -12,7 +13,15 @@ const STORAGE_KEY = "bwt-chat";
 const MARKER = "[[WHATSAPP]]";
 
 const ERROR_TEXT =
-  "Something went wrong on my side. You can always reach Sabine directly on WhatsApp.";
+  "I could not reach the assistant just now, but Sabine is right here for you on WhatsApp.";
+
+// Warm starters shown before the first question, to make it easy to begin and
+// to gently guide toward a session.
+const QUICK_PROMPTS = [
+  "Which session is right for me?",
+  "What does a session feel like?",
+  "I'd like to book with Sabine",
+];
 
 function loadHistory(): Msg[] {
   try {
@@ -77,63 +86,72 @@ export default function ChatWidget({
     return () => document.removeEventListener("keydown", onKey);
   }, [open, close]);
 
-  const send = useCallback(async () => {
-    const text = input.trim();
-    if (!text || busy) return;
-    setInput("");
-    setBusy(true);
+  const send = useCallback(
+    async (raw: string) => {
+      const text = raw.trim();
+      if (!text || busy) return;
+      setInput("");
+      setBusy(true);
 
-    const history: Msg[] = [...messages, { role: "user", content: text }];
-    // Placeholder assistant bubble that streaming fills in.
-    setMessages([...history, { role: "assistant", content: "" }]);
+      const history: Msg[] = [...messages, { role: "user", content: text }];
+      // Placeholder assistant bubble that streaming fills in.
+      setMessages([...history, { role: "assistant", content: "" }]);
 
-    const fail = () => {
-      setMessages(() => {
-        const next: Msg[] = [...history, { role: "assistant", content: `${ERROR_TEXT}${MARKER}` }];
-        saveHistory(next);
-        return next;
-      });
-    };
+      const fail = () => {
+        setMessages(() => {
+          const next: Msg[] = [...history, { role: "assistant", content: `${ERROR_TEXT}${MARKER}` }];
+          saveHistory(next);
+          return next;
+        });
+      };
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history }),
-      });
-      if (!res.ok || !res.body) {
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: history }),
+        });
+        if (!res.ok || !res.body) {
+          fail();
+          return;
+        }
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let acc = "";
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          acc += decoder.decode(value, { stream: true });
+          const current = acc;
+          setMessages(() => [...history, { role: "assistant", content: current }]);
+        }
+        if (!acc.trim()) {
+          fail();
+          return;
+        }
+        saveHistory([...history, { role: "assistant", content: acc }]);
+      } catch {
         fail();
-        return;
+      } finally {
+        setBusy(false);
       }
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let acc = "";
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        acc += decoder.decode(value, { stream: true });
-        const current = acc;
-        setMessages(() => [...history, { role: "assistant", content: current }]);
-      }
-      if (!acc.trim()) {
-        fail();
-        return;
-      }
-      saveHistory([...history, { role: "assistant", content: acc }]);
-    } catch {
-      fail();
-    } finally {
-      setBusy(false);
-    }
-  }, [input, busy, messages]);
+    },
+    [busy, messages]
+  );
 
   const shown: Msg[] = [
-    { role: "assistant", content: welcomeMessage || "Hi, how can I help you today?" },
+    {
+      role: "assistant",
+      content: welcomeMessage || "Hi, I'm so glad you're here. How can I support you today?",
+    },
     ...messages,
   ];
+  const showStarters = messages.length === 0 && !busy;
 
   return (
     <>
+      <style>{BREATHE_CSS}</style>
+
       {/* Launcher */}
       <button
         ref={launcherRef}
@@ -141,20 +159,22 @@ export default function ChatWidget({
         onClick={() => (open ? close() : setOpen(true))}
         aria-expanded={open}
         aria-label={open ? "Close chat" : "Chat with us"}
-        className="group fixed bottom-[max(1.1rem,env(safe-area-inset-bottom))] right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-night text-pure shadow-[0_10px_30px_-8px_rgba(25,27,23,0.45)] ring-1 ring-inset ring-gold-soft/40 transition-transform duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+        className="group fixed bottom-[max(1.1rem,env(safe-area-inset-bottom))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_14px_34px_-10px_rgba(43,55,48,0.5)] ring-1 ring-inset ring-pure/30 transition-transform duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
       >
-        {/* Soft halo so it sits on the page, never harsh. */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-gold-soft/30"
-          style={{ transform: "scale(1.35)" }}
-        />
+        {/* Gentle breathing halo — a quiet nod to the practice. */}
+        {!open && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 rounded-full bg-whatsapp/25"
+            style={{ animation: "bwtBreathe 4.5s ease-in-out infinite" }}
+          />
+        )}
         {open ? (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" />
           </svg>
         ) : (
-          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
           </svg>
         )}
@@ -165,39 +185,67 @@ export default function ChatWidget({
         <div
           role="dialog"
           aria-label="Chat with Breathwork Tulum"
-          className="fixed inset-x-0 bottom-0 z-40 flex max-h-[85dvh] flex-col overflow-hidden rounded-t-2xl bg-ivory shadow-[0_24px_60px_-20px_rgba(25,27,23,0.35)] ring-1 ring-line sm:inset-x-auto sm:bottom-20 sm:right-4 sm:w-[380px] sm:max-h-[70vh] sm:rounded-2xl"
+          className="fixed inset-x-0 bottom-0 z-40 flex max-h-[88dvh] flex-col overflow-hidden rounded-t-3xl bg-ivory shadow-[0_-18px_60px_-24px_rgba(43,55,48,0.45)] ring-1 ring-line sm:inset-x-auto sm:bottom-24 sm:right-5 sm:w-[390px] sm:max-h-[74vh] sm:rounded-3xl sm:shadow-[0_28px_70px_-24px_rgba(43,55,48,0.4)]"
+          style={{ animation: "bwtIn 0.34s cubic-bezier(0.22,1,0.36,1)" }}
         >
+          {/* Mobile grab handle */}
+          <div aria-hidden className="mx-auto mt-2 h-1 w-10 shrink-0 rounded-full bg-forest/15 sm:hidden" />
+
           {/* Header */}
-          <div className="flex items-center justify-between gap-3 bg-night px-5 py-4 text-pure">
-            <div>
-              <p className="font-serif text-lg leading-tight">Breathwork Tulum</p>
-              <p className="text-xs text-pure/60">Ask me anything about the practice</p>
+          <div className="flex items-center gap-3 bg-gradient-to-br from-[#eaf1ea] to-champagne px-4 py-3.5">
+            <span
+              aria-hidden
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_6px_16px_-6px_rgba(43,55,48,0.5)]"
+            >
+              <WaveMark />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-serif text-[1.05rem] leading-tight text-forest">Breathwork Tulum</p>
+              <p className="flex items-center gap-1.5 text-xs text-forest/60">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-whatsapp" />
+                Here with you, whenever you need
+              </p>
             </div>
             <a
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Chat on WhatsApp with Sabine"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pure/10 text-whatsapp transition-colors hover:bg-pure/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-whatsapp/15 text-[#4d7a62] transition-colors hover:bg-whatsapp/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
             >
               <WhatsAppIcon />
             </a>
+            <button
+              type="button"
+              onClick={close}
+              aria-label="Close chat"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-forest/50 transition-colors hover:bg-forest/5 hover:text-forest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
           </div>
 
           {/* Messages */}
-          <div ref={listRef} aria-live="polite" className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+          <div ref={listRef} aria-live="polite" className="flex-1 space-y-3.5 overflow-y-auto bg-ivory px-4 py-4">
             {shown.map((m, i) => {
               const offersWhatsApp = m.role === "assistant" && m.content.includes(MARKER);
               const text = m.content.replaceAll(MARKER, "").trim();
               const streamingThis = busy && i === shown.length - 1 && m.role === "assistant";
               return (
-                <div key={i} className={m.role === "user" ? "flex justify-end" : "flex justify-start"}>
-                  <div className="max-w-[85%]">
+                <div key={i} className={m.role === "user" ? "flex justify-end" : "flex items-end gap-2 justify-start"}>
+                  {m.role === "assistant" && (
+                    <span aria-hidden className="mb-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure">
+                      <WaveMark size={13} />
+                    </span>
+                  )}
+                  <div className="max-w-[82%]">
                     <div
                       className={
                         m.role === "user"
-                          ? "rounded-2xl rounded-br-md bg-forest px-3.5 py-2.5 text-sm leading-relaxed text-pure"
-                          : "rounded-2xl rounded-bl-md bg-sand px-3.5 py-2.5 text-sm leading-relaxed text-ink"
+                          ? "rounded-3xl rounded-br-md bg-[#e5efe6] px-4 py-2.5 text-[0.9rem] leading-relaxed text-forest"
+                          : "rounded-3xl rounded-bl-md bg-pure px-4 py-2.5 text-[0.9rem] leading-relaxed text-ink shadow-[0_2px_10px_-6px_rgba(43,55,48,0.3)] ring-1 ring-line/70"
                       }
                     >
                       {text || (streamingThis ? <TypingDots /> : null)}
@@ -207,25 +255,41 @@ export default function ChatWidget({
                         href={whatsappHref}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-flex items-center gap-2 rounded-full bg-whatsapp px-4 py-2 text-xs font-medium text-pure transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+                        className="mt-2 inline-flex items-center gap-2 rounded-full bg-whatsapp px-4 py-2.5 text-xs font-medium text-pure shadow-[0_8px_20px_-8px_rgba(123,168,137,0.9)] transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
                       >
-                        <WhatsAppIcon size={14} />
-                        Continue on WhatsApp with Sabine
+                        <WhatsAppIcon size={15} />
+                        Book with Sabine on WhatsApp
                       </a>
                     )}
                   </div>
                 </div>
               );
             })}
+
+            {/* Starter chips */}
+            {showStarters && (
+              <div className="flex flex-wrap gap-2 pl-9 pt-1">
+                {QUICK_PROMPTS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => void send(p)}
+                    className="rounded-full border border-gold-soft/40 bg-pure/70 px-3.5 py-1.5 text-xs text-ink-soft transition-colors hover:border-gold-soft hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Input */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              void send();
+              void send(input);
             }}
-            className="flex items-end gap-2 border-t border-line bg-ivory px-3 py-3"
+            className="flex items-end gap-2 border-t border-line bg-ivory px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
           >
             <textarea
               ref={inputRef}
@@ -236,20 +300,20 @@ export default function ChatWidget({
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  void send();
+                  void send(input);
                 }
               }}
-              placeholder="Write your question…"
+              placeholder="Share what's on your mind…"
               aria-label="Your message"
-              className="max-h-28 min-h-[2.5rem] flex-1 resize-none rounded-xl bg-shell px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-soft/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft disabled:opacity-60"
+              className="max-h-28 min-h-[2.75rem] flex-1 resize-none rounded-2xl bg-pure px-4 py-3 text-[0.9rem] text-ink shadow-[inset_0_1px_2px_rgba(43,55,48,0.04)] ring-1 ring-line placeholder:text-ink-soft/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft disabled:opacity-60"
             />
             <button
               type="submit"
               disabled={busy || !input.trim()}
               aria-label="Send message"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-night text-pure transition-transform active:scale-95 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_8px_20px_-8px_rgba(43,55,48,0.55)] transition-transform active:scale-95 disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z" />
               </svg>
             </button>
@@ -260,13 +324,37 @@ export default function ChatWidget({
   );
 }
 
+const BREATHE_CSS = `
+@keyframes bwtBreathe {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes bwtIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [style*="bwtBreathe"], [style*="bwtIn"] { animation: none !important; }
+}
+`;
+
 function TypingDots() {
   return (
     <span className="inline-flex items-center gap-1 py-1" aria-label="Assistant is typing">
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink-soft/60" />
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink-soft/60 [animation-delay:150ms]" />
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink-soft/60 [animation-delay:300ms]" />
+      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-whatsapp/70" />
+      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-whatsapp/70 [animation-delay:150ms]" />
+      <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-whatsapp/70 [animation-delay:300ms]" />
     </span>
+  );
+}
+
+// A soft wave, echoing the brand mark, used as the assistant's avatar.
+function WaveMark({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 13c2.5 0 2.5-3 5-3s2.5 3 5 3 2.5-3 5-3 2.5 3 5 3" />
+      <path d="M2 17c2.5 0 2.5-3 5-3s2.5 3 5 3 2.5-3 5-3 2.5 3 5 3" opacity="0.55" />
+    </svg>
   );
 }
 
