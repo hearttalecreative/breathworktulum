@@ -86,7 +86,7 @@ export async function POST(request: Request) {
       "X-Title": SITE.name,
     },
     body: JSON.stringify({
-      model: settings.model || "nvidia/nemotron-3-ultra-550b-a55b:free",
+      model: settings.model || "tencent/hy3:free",
       stream: true,
       max_tokens: 700,
       messages: [

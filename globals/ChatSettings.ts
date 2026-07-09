@@ -43,7 +43,9 @@ export const ChatSettings: GlobalConfig = {
       name: "model",
       type: "text",
       label: "Modelo de IA",
-      defaultValue: "nvidia/nemotron-3-ultra-550b-a55b:free",
+      // Best free model that returns clean answers — reasoning models like
+      // nemotron-ultra leak their chain-of-thought into the reply.
+      defaultValue: "tencent/hy3:free",
       admin: {
         components: { Field: "@/components/admin/ModelSelect" },
         description:
