@@ -161,10 +161,16 @@ async function run() {
   // CONTACT — reword the chatbot line (there's an AI assistant now) + add a
   // language note. (Sabine: sessions in English.)
   await patch("contact", (layout) => {
-    let n = deepReplace(layout, [[
-      "No automated chatbots. If you message me, you're getting me.",
-      "The assistant can answer quick questions any time. When you message me, you're getting me.",
-    ]]);
+    let n = deepReplace(layout, [
+      [
+        "No automated chatbots. If you message me, you're getting me.",
+        "NUMA, my assistant on this site, can answer quick questions any time. When you message me, you're getting me.",
+      ],
+      [
+        "The assistant can answer quick questions any time. When you message me, you're getting me.",
+        "NUMA, my assistant on this site, can answer quick questions any time. When you message me, you're getting me.",
+      ],
+    ]);
     const notes = layout.find(
       (b) => b.blockType === "richText" && typeof b.heading === "string" && (b.heading as string).includes("what happens next")
     );
@@ -194,6 +200,20 @@ async function run() {
     faq.items = items;
     return 1;
   });
+
+  // CHAT SETTINGS — NUMA welcome message
+  {
+    const NUMA_WELCOME =
+      "Hi, I'm NUMA, Sabine's assistant. I can tell you about her sessions and retreats, share how breathwork feels, and help you find what's right for you. What brings you here today?";
+    const chat = (await payload.findGlobal({ slug: "chatSettings" })) as unknown as Rec;
+    if (chat.welcomeMessage === NUMA_WELCOME) {
+      log("  = chatSettings no change");
+    } else {
+      changed++;
+      if (DRY) log("  ~ chatSettings would change");
+      else { await payload.updateGlobal({ slug: "chatSettings", data: { welcomeMessage: NUMA_WELCOME } as never }); log("  ✓ chatSettings"); }
+    }
+  }
 
   log(DRY ? `\nDRY RUN. ${changed} change(s).` : `\n✅ Applied. ${changed} change(s).`);
   process.exit(0);

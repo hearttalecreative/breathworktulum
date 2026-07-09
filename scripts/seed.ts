@@ -583,7 +583,7 @@ async function run() {
           "My response. Usually a voice note on WhatsApp, around two minutes. I respond to what you actually asked, not with a template.",
           "Timing. WhatsApp: usually within hours during business hours (Mexico Central Time). Email: within 24 to 48 hours. Discovery calls: within a week.",
           "Language. Sessions are held in English.",
-          "The assistant can answer quick questions any time. When you message me, you're getting me."
+          "NUMA, my assistant on this site, can answer quick questions any time. When you message me, you're getting me."
         ),
       },
       {
