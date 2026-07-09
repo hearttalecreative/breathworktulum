@@ -43,9 +43,10 @@ export const ChatSettings: GlobalConfig = {
       name: "model",
       type: "text",
       label: "Modelo de IA",
-      // Best free model that returns clean answers — reasoning models like
-      // nemotron-ultra leak their chain-of-thought into the reply.
-      defaultValue: "tencent/hy3:free",
+      // A non-reasoning instruct model that streams a clean answer. Reasoning
+      // models (hy3, nemotron-ultra) either leak their thinking or return an
+      // empty answer, so they are avoided as the default.
+      defaultValue: "meta-llama/llama-3.3-70b-instruct:free",
       admin: {
         components: { Field: "@/components/admin/ModelSelect" },
         description:
