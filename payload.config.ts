@@ -13,6 +13,7 @@ import { Pages } from "./collections/Pages";
 import { SiteSettings } from "./globals/SiteSettings";
 import { Header } from "./globals/Header";
 import { Footer } from "./globals/Footer";
+import { ChatSettings } from "./globals/ChatSettings";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -27,7 +28,7 @@ export default buildConfig({
     meta: { titleSuffix: "· Breathwork Tulum" },
   },
   collections: [Pages, Testimonials, Media, Users],
-  globals: [SiteSettings, Header, Footer],
+  globals: [SiteSettings, Header, Footer, ChatSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },

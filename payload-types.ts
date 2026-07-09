@@ -95,11 +95,13 @@ export interface Config {
     siteSettings: SiteSetting;
     header: Header;
     footer: Footer;
+    chatSettings: ChatSetting;
   };
   globalsSelect: {
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    chatSettings: ChatSettingsSelect<false> | ChatSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -130,16 +132,24 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Las páginas del sitio. Cada página se arma con secciones (bloques). Tocá «Vista previa» para ver los cambios en vivo antes de publicar.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
   id: number;
+  /**
+   * Nombre interno de la página (no siempre se muestra en el sitio).
+   */
   title: string;
   /**
-   * URL path. Use "home" for the homepage; e.g. "about", "work-with-me/private-sessions".
+   * Parte final de la URL. Usá "home" para la portada; ej.: "about", "work-with-me/private-sessions". Cambiarlo cambia el enlace de la página.
    */
   slug: string;
+  /**
+   * Armá la página agregando secciones. Arrastralas para reordenar.
+   */
   layout?:
     | (
         | {
@@ -224,7 +234,13 @@ export interface Page {
                */
               href?: string | null;
             };
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Qué tan ancho se ve el texto. Estrecho = más cómodo de leer.
+             */
             width?: ('narrow' | 'default' | 'wide') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -278,6 +294,9 @@ export interface Page {
                */
               href?: string | null;
             };
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -297,6 +316,9 @@ export interface Page {
                 }[]
               | null;
             closing?: string | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -334,6 +356,9 @@ export interface Page {
                   id?: string | null;
                 }[]
               | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -348,6 +373,9 @@ export interface Page {
             items?: (number | Testimonial)[] | null;
             reviewsLabel?: string | null;
             reviewsUrl?: string | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -400,6 +428,9 @@ export interface Page {
                */
               href?: string | null;
             };
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -476,7 +507,13 @@ export interface Page {
                 }[]
               | null;
             align?: ('center' | 'left') | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Qué tan ancho se ve el texto. Estrecho = más cómodo de leer.
+             */
             width?: ('narrow' | 'default' | 'wide') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -543,6 +580,9 @@ export interface Page {
               href?: string | null;
               id?: string | null;
             };
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             id?: string | null;
             blockName?: string | null;
@@ -557,6 +597,9 @@ export interface Page {
                   id?: string | null;
                 }[]
               | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -600,7 +643,13 @@ export interface Page {
                */
               href?: string | null;
             };
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Qué tan ancho se ve el texto. Estrecho = más cómodo de leer.
+             */
             width?: ('narrow' | 'default' | 'wide') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -627,6 +676,9 @@ export interface Page {
                   id?: string | null;
                 }[]
               | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -665,6 +717,9 @@ export interface Page {
                   id?: string | null;
                 }[]
               | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -677,6 +732,9 @@ export interface Page {
         | {
             heading?: string | null;
             intro?: string | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
              * Optional anchor id for #links (e.g. inquiry).
@@ -689,16 +747,19 @@ export interface Page {
       )[]
     | null;
   /**
-   * ≤ 60 chars.
+   * Lo que aparece en Google. Ideal ≤ 60 caracteres.
    */
   metaTitle?: string | null;
   /**
-   * ≤ 155 chars.
+   * Resumen que aparece bajo el título en Google. Ideal ≤ 155 caracteres.
    */
   metaDescription?: string | null;
+  /**
+   * Imagen que se ve al compartir la página en redes (WhatsApp, Facebook…).
+   */
   ogImage?: (number | null) | Media;
   /**
-   * Adds a noindex meta tag and drops the page from the sitemap.
+   * Si lo activás, la página no aparece en Google ni en el mapa del sitio.
    */
   noindex?: boolean | null;
   updatedAt: string;
@@ -706,13 +767,15 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Todas las fotos del sitio. Subí una imagen y usala en cualquier página.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: number;
   /**
-   * Describe the image for accessibility and SEO.
+   * Describí la imagen en pocas palabras (accesibilidad y SEO). Ej: «Sabine guiando una sesión de respiración».
    */
   alt: string;
   updatedAt: string;
@@ -762,24 +825,31 @@ export interface Media {
   };
 }
 /**
+ * Reseñas y testimonios que aparecen en las páginas.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "testimonials".
  */
 export interface Testimonial {
   id: number;
+  /**
+   * El texto de la reseña.
+   */
   quote: string;
   /**
-   * e.g. "Google Review".
+   * De dónde viene, ej. "Google Review".
    */
   source?: string | null;
   /**
-   * Optional client name or initials.
+   * Nombre o iniciales del cliente.
    */
   name?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Quién puede entrar a administrar el sitio.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -1361,6 +1431,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Marca, contacto, redes y mensajes de WhatsApp que usa todo el sitio.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "siteSettings".
  */
@@ -1393,6 +1465,8 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Enlaces del menú de arriba del sitio.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
  */
@@ -1416,6 +1490,8 @@ export interface Header {
   createdAt?: string | null;
 }
 /**
+ * Enlaces y textos del pie del sitio.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */
@@ -1449,6 +1525,41 @@ export interface Footer {
       }[]
     | null;
   bottomNote?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Asistente de chat con IA para visitantes. Responde solo sobre el contenido del sitio y ofrece contacto directo por WhatsApp con Sabine.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chatSettings".
+ */
+export interface ChatSetting {
+  id: number;
+  /**
+   * Si lo apagas, vuelve el botón flotante de WhatsApp.
+   */
+  enabled?: boolean | null;
+  /**
+   * Clave de https://openrouter.ai/settings/keys. Nunca se muestra en el sitio público.
+   */
+  openRouterApiKey?: string | null;
+  /**
+   * Los modelos marcados GRATIS no consumen crédito de OpenRouter.
+   */
+  model?: string | null;
+  /**
+   * Primer mensaje que ve el visitante al abrir el chat.
+   */
+  welcomeMessage?: string | null;
+  /**
+   * Ajustes de tono o reglas extra para el asistente.
+   */
+  extraInstructions?: string | null;
+  /**
+   * Datos que no están en el sitio (precios, horarios, políticas…). El asistente los usará al responder.
+   */
+  extraKnowledge?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1534,6 +1645,21 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   bottomNote?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chatSettings_select".
+ */
+export interface ChatSettingsSelect<T extends boolean = true> {
+  enabled?: T;
+  openRouterApiKey?: T;
+  model?: T;
+  welcomeMessage?: T;
+  extraInstructions?: T;
+  extraKnowledge?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

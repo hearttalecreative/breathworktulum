@@ -4,11 +4,12 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppSticky from "@/components/WhatsAppSticky";
+import ChatWidget from "@/components/ChatWidget";
 import CookieConsent from "@/components/CookieConsent";
 import JsonLd from "@/components/JsonLd";
 import { SITE } from "@/lib/site";
 import { organizationLd, websiteLd, localBusinessLd } from "@/lib/seo";
-import { getGlobals } from "@/lib/payload";
+import { getGlobals, getChatPublicSettings } from "@/lib/payload";
 import { whatsappHref } from "@/lib/cta";
 
 // Premium licensed faces (trial files in /fonts). Canela = display serif,
@@ -86,7 +87,7 @@ export const viewport = { themeColor: "#191b17" };
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const globals = await getGlobals();
+  const [globals, chat] = await Promise.all([getGlobals(), getChatPublicSettings()]);
   const s = globals.siteSettings as unknown as Record<string, never>;
   const header = globals.header as unknown as Record<string, never[]>;
   const footer = globals.footer as unknown as Record<string, never>;
@@ -131,7 +132,11 @@ export default async function RootLayout({
           instagram={(s.instagram as string) || ""}
           googleReviews={(s.googleReviews as string) || ""}
         />
-        <WhatsAppSticky />
+        {chat.enabled ? (
+          <ChatWidget welcomeMessage={chat.welcomeMessage} whatsappHref={waHref} />
+        ) : (
+          <WhatsAppSticky />
+        )}
         <CookieConsent />
       </body>
     </html>

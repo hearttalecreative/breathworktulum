@@ -75,6 +75,22 @@ export const getPublishedPages = unstable_cache(
   { revalidate: TTL, tags: ["pages"] }
 );
 
+/** Safe-for-client chat settings. The API key is deliberately NOT returned so
+ *  it never enters this cache entry nor any RSC prop. */
+export const getChatPublicSettings = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    // Local API read — bypasses the authenticated-only access on the global.
+    const chat = await payload.findGlobal({ slug: "chatSettings" });
+    return {
+      enabled: chat?.enabled !== false,
+      welcomeMessage: chat?.welcomeMessage || "",
+    };
+  },
+  ["chat-public"],
+  { revalidate: TTL, tags: ["chat-settings"] }
+);
+
 // Header/footer/settings change ~never — cache across requests so the layout
 // stops issuing 3 findGlobal round-trips on every pageview.
 export const getGlobals = unstable_cache(

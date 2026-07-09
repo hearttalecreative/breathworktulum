@@ -16,3 +16,4 @@ async function bust(tag: string) {
 
 export const revalidatePagesTag = () => bust("pages");
 export const revalidateGlobalsTag = () => bust("globals");
+export const revalidateChatSettingsTag = () => bust("chat-settings");
