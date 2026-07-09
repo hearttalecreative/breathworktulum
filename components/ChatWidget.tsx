@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import WaveMark from "./WaveMark";
 
 // Floating AI chat for every visitor (replaces the WhatsApp-only sticky).
 // Warm, soft, healing language to match why people arrive here: a calm sage
@@ -174,9 +175,7 @@ export default function ChatWidget({
             <path d="M6 6l12 12M18 6L6 18" />
           </svg>
         ) : (
-          <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z" />
-          </svg>
+          <WaveMark className="w-7 text-pure" />
         )}
       </button>
 
@@ -197,7 +196,7 @@ export default function ChatWidget({
               aria-hidden
               className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_6px_16px_-6px_rgba(43,55,48,0.5)]"
             >
-              <WaveMark />
+              <WaveMark className="w-5 text-pure" />
             </span>
             <div className="min-w-0 flex-1">
               <p className="font-serif text-[1.05rem] leading-tight text-forest">Breathwork Tulum</p>
@@ -237,7 +236,7 @@ export default function ChatWidget({
                 <div key={i} className={m.role === "user" ? "flex justify-end" : "flex items-end gap-2 justify-start"}>
                   {m.role === "assistant" && (
                     <span aria-hidden className="mb-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure">
-                      <WaveMark size={13} />
+                      <WaveMark className="w-4 text-pure" />
                     </span>
                   )}
                   <div className="max-w-[82%]">
@@ -345,16 +344,6 @@ function TypingDots() {
       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-whatsapp/70 [animation-delay:150ms]" />
       <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-whatsapp/70 [animation-delay:300ms]" />
     </span>
-  );
-}
-
-// A soft wave, echoing the brand mark, used as the assistant's avatar.
-function WaveMark({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M2 13c2.5 0 2.5-3 5-3s2.5 3 5 3 2.5-3 5-3 2.5 3 5 3" />
-      <path d="M2 17c2.5 0 2.5-3 5-3s2.5 3 5 3 2.5-3 5-3 2.5 3 5 3" opacity="0.55" />
-    </svg>
   );
 }
 
