@@ -22,6 +22,18 @@ export const getAuthUser = cache(async () => {
   }
 });
 
+// Reject a hung DB call instead of letting the dynamic render (and the
+// full-screen loading fallback) hang forever on a cold pooler connection.
+// The route's error boundary catches this and offers a retry.
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return Promise.race([
+    p,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`Timed out: ${label}`)), ms)
+    ),
+  ]);
+}
+
 // Published page fetch, cached across requests (data cache, not per-request).
 // depth:1 populates the media + testimonial relations the blocks render —
 // nothing deeper exists, so depth:2 only added a wasted population pass.
@@ -29,12 +41,16 @@ const getPagePublished = (slug: string) =>
   unstable_cache(
     async () => {
       const payload = await getPayloadClient();
-      const res = await payload.find({
-        collection: "pages",
-        where: { slug: { equals: slug } },
-        depth: 1,
-        limit: 1,
-      });
+      const res = await withTimeout(
+        payload.find({
+          collection: "pages",
+          where: { slug: { equals: slug } },
+          depth: 1,
+          limit: 1,
+        }),
+        8000,
+        `page:${slug}`
+      );
       return res.docs[0] ?? null;
     },
     ["page", slug],

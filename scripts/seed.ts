@@ -90,6 +90,7 @@ async function run() {
         { context: "curated", message: "Hi Sabine, I'm inquiring about a curated group experience." },
         { context: "corporate", message: "Hi Sabine, I'm reaching out about a corporate program." },
         { context: "signature", message: "Hi Sabine, I'm interested in the Riviera Maya 2026 retreat." },
+        { context: "discoveryCall", message: "Hi Sabine, I'd like to book a discovery call about a retreat." },
         { context: "contact", message: "Hi Sabine, I saw your website." },
       ],
     },
@@ -99,14 +100,18 @@ async function run() {
     slug: "header",
     data: {
       workWithMe: [
-        { label: "Private Sessions", href: "/work-with-me/private-sessions/" },
-        { label: "Personalized Retreats", href: "/work-with-me/personalized-retreats/" },
-        { label: "Curated Group Experiences", href: "/work-with-me/curated-group-experiences/" },
-        { label: "Corporate", href: "/work-with-me/corporate/" },
+        { label: "Private Sessions", href: "/work-with-me/private-sessions/", description: "Find the right starting point for where you are right now." },
+        { label: "Personalized Retreats", href: "/work-with-me/personalized-retreats/", description: "A multi-day process, designed around you." },
+        { label: "Curated Group Experiences", href: "/work-with-me/curated-group-experiences/", description: "Private groups, families, and events." },
+        { label: "Corporate", href: "/work-with-me/corporate/", description: "For teams carrying real pressure." },
+      ],
+      retreats: [
+        { label: "Personalized Retreats", href: "/work-with-me/personalized-retreats/", description: "Built around you, in person or online." },
+        { label: "1 Day Group Retreat", href: "/work-with-me/group-practice/", description: "A day in a national park, small group." },
+        { label: "Signature Retreat", href: "/retreat-riviera-maya-2026/", description: "Five days in community, Riviera Maya." },
       ],
       primary: [
         { label: "The Method", href: "/the-method/" },
-        { label: "Retreats", href: "/retreat-riviera-maya-2026/" },
         { label: "About", href: "/about/" },
         { label: "Contact", href: "/contact/" },
       ],
@@ -205,7 +210,7 @@ async function run() {
         cards: [
           { title: "Private Sessions", body: "Foundation, Immersive, or a full 1 Day Private Retreat. Online or in Tulum. For one person, or two.", ctaLabel: "Explore private sessions", href: "/work-with-me/private-sessions/" },
           { title: "Personalized Retreats", body: "Multi-day retreats designed around you. 3 Day, 5 Day, custom, or virtual. For individuals and couples ready for depth.", ctaLabel: "Explore retreats", href: "/work-with-me/personalized-retreats/" },
-          { title: "Group Practice", body: "Weekly 1 Day Retreats in a national park and regular Group Sessions at Nomade. Open group formats, booked ahead.", ctaLabel: "Explore group practice", href: "/work-with-me/group-practice/" },
+          { title: "Group Practice", body: "Weekly 1 Day Group Retreats in a national park and regular Group Sessions at Nomade. Open group formats, booked ahead.", ctaLabel: "Explore group practice", href: "/work-with-me/group-practice/" },
           { title: "Curated Group Experiences", body: "Private group breathwork for retreat leaders, families, wellness events, and luxury groups. Designed on request.", ctaLabel: "Inquire about group experiences", href: "/work-with-me/curated-group-experiences/" },
           { title: "Corporate Breathwork", body: "Workshops, talks, and team programs for organizations that take wellbeing seriously.", ctaLabel: "Corporate programs", href: "/work-with-me/corporate/" },
         ],
@@ -406,7 +411,7 @@ async function run() {
         included: [
           { text: "A full day, sunrise to sunset roughly." },
           { text: "Two breathwork sessions with integration between them." },
-          { text: "Somatic coaching and conversation." },
+          { text: "Somatic coaching and conversation, with space for inner child themes when they surface." },
           { text: "Quiet meal or nourishment break." },
           { text: "Follow-up WhatsApp check-in within 72 hours." },
         ],
@@ -565,7 +570,7 @@ async function run() {
         tiles: [
           { title: "WhatsApp", line: "Fastest response, usually same day.", value: "+52 55 4109 8336", ctaLabel: "Open WhatsApp", action: "whatsapp", whatsappContext: "contact" },
           { title: "Email", line: "For longer messages or when you want to take your time.", value: "breathe@breathworktulum.com", ctaLabel: "Send an email", action: "email" },
-          { title: "Discovery Call", line: "30 minutes for retreats and corporate inquiries.", value: "By WhatsApp or email", ctaLabel: "Book a discovery call", action: "email" },
+          { title: "Discovery Call", line: "30 minutes for retreats and corporate inquiries.", value: "By WhatsApp or email", ctaLabel: "Book a discovery call", action: "whatsapp", whatsappContext: "discoveryCall" },
         ],
       },
       {

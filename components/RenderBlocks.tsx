@@ -3,6 +3,7 @@ import Section from "./Section";
 import CTAButton from "./CTAButton";
 import Accordion from "./Accordion";
 import ContactForm from "./ContactForm";
+import NewsletterSignup from "./NewsletterSignup";
 import PayloadImage from "./PayloadImage";
 import HeroVideo from "./HeroVideo";
 import WaveMark from "./WaveMark";
@@ -547,6 +548,16 @@ function BlockSwitch({
           {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
           {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
           <div className="mt-9"><ContactForm /></div>
+        </Section>
+      );
+
+    case "newsletter":
+      return (
+        <Section tone={(b.tone as never) || "cream"} width="narrow" id={(b.anchor as string) || undefined}>
+          <Ornament start />
+          {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
+          {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
+          <div className="mt-9 max-w-md"><NewsletterSignup /></div>
         </Section>
       );
 

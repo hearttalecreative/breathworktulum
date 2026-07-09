@@ -95,7 +95,7 @@ export default function Footer({
             )}
           </div>
           <p className="leading-relaxed">
-            Copyright © {year} {brandName}® | Breathe.Heal.Transform. ® &nbsp;All rights reserved. Developed with{" "}
+            Copyright © {year} {brandName}® | Breathe. Heal. Transform.® &nbsp;All rights reserved. Developed with{" "}
             <span className="text-[#e2554c]" aria-hidden>♥</span>
             <span className="sr-only">love</span> by{" "}
             <a

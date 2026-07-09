@@ -305,6 +305,16 @@ export const ContactFormBlock: Block = {
   ],
 };
 
+export const NewsletterBlock: Block = {
+  slug: "newsletter",
+  labels: { singular: "Suscripción newsletter", plural: "Suscripciones newsletter" },
+  fields: [
+    { name: "heading", type: "text" },
+    { name: "intro", type: "textarea" },
+    tone,
+  ],
+};
+
 export const allBlocks: Block[] = [
   HeroBlock,
   RichTextBlock,
@@ -322,6 +332,7 @@ export const allBlocks: Block[] = [
   TwoColumnListsBlock,
   ContactTilesBlock,
   ContactFormBlock,
+  NewsletterBlock,
 ];
 
 // Give every block an optional `anchor` (for in-page #links). FormatDetail

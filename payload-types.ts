@@ -175,6 +175,7 @@ export interface Page {
                         | 'curated'
                         | 'corporate'
                         | 'signature'
+                        | 'discoveryCall'
                         | 'contact'
                       )
                     | null;
@@ -226,6 +227,7 @@ export interface Page {
                     | 'curated'
                     | 'corporate'
                     | 'signature'
+                    | 'discoveryCall'
                     | 'contact'
                   )
                 | null;
@@ -286,6 +288,7 @@ export interface Page {
                     | 'curated'
                     | 'corporate'
                     | 'signature'
+                    | 'discoveryCall'
                     | 'contact'
                   )
                 | null;
@@ -420,6 +423,7 @@ export interface Page {
                     | 'curated'
                     | 'corporate'
                     | 'signature'
+                    | 'discoveryCall'
                     | 'contact'
                   )
                 | null;
@@ -461,6 +465,7 @@ export interface Page {
                     | 'curated'
                     | 'corporate'
                     | 'signature'
+                    | 'discoveryCall'
                     | 'contact'
                   )
                 | null;
@@ -496,6 +501,7 @@ export interface Page {
                         | 'curated'
                         | 'corporate'
                         | 'signature'
+                        | 'discoveryCall'
                         | 'contact'
                       )
                     | null;
@@ -571,6 +577,7 @@ export interface Page {
                     | 'curated'
                     | 'corporate'
                     | 'signature'
+                    | 'discoveryCall'
                     | 'contact'
                   )
                 | null;
@@ -635,6 +642,7 @@ export interface Page {
                     | 'curated'
                     | 'corporate'
                     | 'signature'
+                    | 'discoveryCall'
                     | 'contact'
                   )
                 | null;
@@ -707,6 +715,7 @@ export interface Page {
                         | 'curated'
                         | 'corporate'
                         | 'signature'
+                        | 'discoveryCall'
                         | 'contact'
                       )
                     | null;
@@ -743,6 +752,21 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'contactForm';
+          }
+        | {
+            heading?: string | null;
+            intro?: string | null;
+            /**
+             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             */
+            tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsletter';
           }
       )[]
     | null;
@@ -1285,6 +1309,16 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        newsletter?:
+          | T
+          | {
+              heading?: T;
+              intro?: T;
+              tone?: T;
+              anchor?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   metaTitle?: T;
   metaDescription?: T;
@@ -1476,6 +1510,21 @@ export interface Header {
     | {
         label: string;
         href: string;
+        /**
+         * Micro-copy opcional bajo el enlace en el submenú.
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  retreats?:
+    | {
+        label: string;
+        href: string;
+        /**
+         * Micro-copy opcional bajo el enlace en el submenú.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1483,6 +1532,10 @@ export interface Header {
     | {
         label: string;
         href: string;
+        /**
+         * Micro-copy opcional bajo el enlace en el submenú.
+         */
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1599,6 +1652,15 @@ export interface HeaderSelect<T extends boolean = true> {
     | {
         label?: T;
         href?: T;
+        description?: T;
+        id?: T;
+      };
+  retreats?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        description?: T;
         id?: T;
       };
   primary?:
@@ -1606,6 +1668,7 @@ export interface HeaderSelect<T extends boolean = true> {
     | {
         label?: T;
         href?: T;
+        description?: T;
         id?: T;
       };
   updatedAt?: T;
