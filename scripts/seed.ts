@@ -160,8 +160,8 @@ async function run() {
     layout: [
       {
         blockType: "hero",
-        heading: "A grounded space to feel what you've been avoiding, and to move forward with clarity.",
-        lede: "Trauma informed breathwork and somatic coaching for people moving through life transitions. In Tulum, online, or in a personalized retreat.",
+        heading: "Breathwork in Tulum for life transitions and deeper emotional work.",
+        lede: "For people who are functioning on the outside, but know something deeper is asking for change.",
         image: palapa,
         imageSide: "right",
         ctas: [link("Book an Immersive Session", "/work-with-me/private-sessions/#immersive"), link("Explore the Method", "/the-method/", "secondary")],
@@ -177,6 +177,15 @@ async function run() {
           { text: "You're moving through midlife, menopause, or a quiet identity shift. You're not in crisis. You just want to meet what's underneath, with someone who knows how to hold it." },
         ],
         closing: "This is the work.",
+      },
+      {
+        blockType: "richText",
+        heading: "Underneath the surface.",
+        tone: "cream",
+        width: "narrow",
+        body: lex(
+          "Many of the challenges we experience on the surface, stress, overthinking, relationship patterns, burnout, are often connected to deeper emotional imprints, sometimes referred to as core wounds. This work helps you access and understand those patterns through the body, not just the mind."
+        ),
       },
       {
         blockType: "threePhases",
@@ -196,7 +205,7 @@ async function run() {
         cards: [
           { title: "Private Sessions", body: "Foundation, Immersive, or a full 1 Day Private Retreat. Online or in Tulum. For one person, or two.", ctaLabel: "Explore private sessions", href: "/work-with-me/private-sessions/" },
           { title: "Personalized Retreats", body: "Multi-day retreats designed around you. 3 Day, 5 Day, custom, or virtual. For individuals and couples ready for depth.", ctaLabel: "Explore retreats", href: "/work-with-me/personalized-retreats/" },
-          { title: "Group Practice", body: "Weekly 1 Day Retreats in a national park and regular Group Sessions at Nomade. Open to drop ins.", ctaLabel: "Explore group practice", href: "/work-with-me/group-practice/" },
+          { title: "Group Practice", body: "Weekly 1 Day Retreats in a national park and regular Group Sessions at Nomade. Open group formats, booked ahead.", ctaLabel: "Explore group practice", href: "/work-with-me/group-practice/" },
           { title: "Curated Group Experiences", body: "Private group breathwork for retreat leaders, families, wellness events, and luxury groups. Designed on request.", ctaLabel: "Inquire about group experiences", href: "/work-with-me/curated-group-experiences/" },
           { title: "Corporate Breathwork", body: "Workshops, talks, and team programs for organizations that take wellbeing seriously.", ctaLabel: "Corporate programs", href: "/work-with-me/corporate/" },
         ],
@@ -224,7 +233,7 @@ async function run() {
         blockType: "signatureBand",
         eyebrow: "Signature Event · 2026",
         heading: "Five days. Twenty people. One process. Riviera Maya.",
-        body: "A residential breathwork retreat in Xpu Ha, designed for people ready to step out of daily life for a week and walk through the full method in community. Limited to twenty places. First retreat Q1 2026.",
+        body: "A residential breathwork retreat in Xpu Ha, designed for people ready to step out of daily life for a week and walk through the full method in community. Limited to twenty places. First edition late 2026 or early 2027, announced to the waitlist first.",
         image: riviera,
         cta: { ...link("Join the waitlist", "/retreat-riviera-maya-2026/"), enabled: true },
       },
@@ -289,6 +298,17 @@ async function run() {
         ),
       },
       {
+        blockType: "richText",
+        heading: "Core wounds, and why we work through the body.",
+        tone: "cream",
+        width: "narrow",
+        body: lex(
+          "A lot of what we struggle with on the surface, the overthinking, the same relationship pattern on repeat, the burnout that rest doesn't fix, traces back to something older. Emotional imprints from earlier moments that taught your nervous system how to brace. These are what I mean by core wounds.",
+          "They don't live in the thinking mind, which is why understanding them rarely resolves them. They live in the body, in how you hold tension, in what your system reaches for under pressure before you've decided anything.",
+          "When the breath softens the nervous system, those imprints become reachable. Not to relive them, but to let the body finish what it never got to. That's the layer talking alone keeps circling but can't quite touch."
+        ),
+      },
+      {
         blockType: "list",
         heading: "A few honest disclaimers.",
         tone: "cream",
@@ -338,16 +358,17 @@ async function run() {
         tagline: "Where most people start.",
         tone: "cream",
         body: lex(
-          "The Foundation is the entry point. Two hours, an intake conversation, a Clarity Breathwork™ session, and time to come back to the room together at the end.",
+          "The Foundation is the entry point. 2 to 2.5 hours, an intake conversation, a Clarity Breathwork™ session, and time to come back to the room together at the end.",
           "If you've never done breathwork before, this is the right format. Softer. Slower. Trauma informed. By the end you'll have a clearer sense of what's stored where in your body, and a first felt experience of working with it instead of around it."
         ),
         included: [
           { text: "Pre-session intake conversation (around 30 minutes)." },
           { text: "Around 60 to 75 minutes of guided breathwork." },
+          { text: "A Life Alignment or Core Wound snapshot, so you leave with a sense of the deeper pattern." },
           { text: "Integration conversation at the end." },
           { text: "A simple practice to take with you." },
         ],
-        investment: "From $[price on inquiry]. Couples from $[price on inquiry].",
+        investment: "Investment shared when we talk. Couples welcome.",
         cta: wa("Book a Foundation", "foundation", "whatsapp"),
       },
       {
@@ -365,10 +386,11 @@ async function run() {
           { text: "Deeper intake (around 45 minutes)." },
           { text: "Around 90 minutes of guided breathwork." },
           { text: "Somatic and conversational integration." },
+          { text: "Core wound decoding, connecting what surfaces to the pattern underneath." },
           { text: "Time for whatever is asking for time." },
           { text: "Pre-session and post-session voice notes via WhatsApp." },
         ],
-        investment: "From $[price on inquiry]. Couples from $[price on inquiry].",
+        investment: "Investment shared when we talk. Couples welcome.",
         cta: wa("Book an Immersive", "immersive", "whatsapp"),
       },
       {
@@ -388,7 +410,7 @@ async function run() {
           { text: "Quiet meal or nourishment break." },
           { text: "Follow-up WhatsApp check-in within 72 hours." },
         ],
-        investment: "From $[price on inquiry] for one person. From $[price on inquiry] for couples.",
+        investment: "Investment shared when we talk. Available for one or two people.",
         cta: wa("Inquire about a 1 Day Private Retreat", "oneDayPrivate", "whatsapp"),
       },
       {
@@ -543,7 +565,7 @@ async function run() {
         tiles: [
           { title: "WhatsApp", line: "Fastest response, usually same day.", value: "+52 55 4109 8336", ctaLabel: "Open WhatsApp", action: "whatsapp", whatsappContext: "contact" },
           { title: "Email", line: "For longer messages or when you want to take your time.", value: "breathe@breathworktulum.com", ctaLabel: "Send an email", action: "email" },
-          { title: "Discovery Call", line: "30 minutes for retreats and corporate inquiries.", value: "Booking link coming soon", ctaLabel: "Book a discovery call", action: "email" },
+          { title: "Discovery Call", line: "30 minutes for retreats and corporate inquiries.", value: "By WhatsApp or email", ctaLabel: "Book a discovery call", action: "email" },
         ],
       },
       {
