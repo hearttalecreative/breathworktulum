@@ -8,8 +8,12 @@ const linkFields = [
 
 export const Header: GlobalConfig = {
   slug: "header",
+  label: "Menú superior",
   access: { read: () => true },
-  admin: { group: "Navigation" },
+  admin: {
+    group: "Navegación",
+    description: "Enlaces del menú de arriba del sitio.",
+  },
   hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {

@@ -8,8 +8,12 @@ const linkFields = [
 
 export const Footer: GlobalConfig = {
   slug: "footer",
+  label: "Pie de página",
   access: { read: () => true },
-  admin: { group: "Navigation" },
+  admin: {
+    group: "Navegación",
+    description: "Enlaces y textos del pie del sitio.",
+  },
   hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {

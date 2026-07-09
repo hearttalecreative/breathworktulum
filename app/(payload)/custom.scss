@@ -1,1 +1,145 @@
-/* Project-level Payload admin overrides. Empty for now. */
+/* =========================================================================
+   Breathwork Tulum — admin panel brand theme.
+   Earthy-luxury: porcelain canvas, forest/night chrome, gold-soft accents,
+   softer radii. Layers on top of Payload's neutral system (we don't remap the
+   base ramp, so light/dark contrast stays intact) — only canvas + accents.
+   ========================================================================= */
+
+:root {
+  --brand-gold: #c2a878;
+  --brand-gold-ink: #8a6a18;
+  --brand-forest: #2b3730;
+  --brand-night: #191b17;
+  --brand-porcelain: #f3f3ee;
+  --brand-ivory: #f9f9f6;
+
+  /* Warm the canvas + soften corners — the two cheapest "premium" levers. */
+  --theme-bg: var(--brand-porcelain);
+  --theme-input-bg: var(--brand-ivory);
+
+  --style-radius-s: 6px;
+  --style-radius-m: 10px;
+  --style-radius-l: 16px;
+}
+
+/* Dark mode: a deep forest-black canvas instead of flat neutral gray. */
+[data-theme="dark"] {
+  --brand-porcelain: #14160f;
+  --theme-bg: #14160f;
+  --theme-input-bg: #1c1f17;
+}
+
+/* --- Sidebar nav: gold active filet, calmer type --------------------------- */
+.nav {
+  background: color-mix(in srgb, var(--theme-bg) 88%, var(--brand-forest));
+  border-right: 1px solid color-mix(in srgb, var(--brand-gold) 22%, transparent);
+}
+.nav .nav__link,
+.nav a {
+  border-radius: var(--style-radius-s);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.nav .nav__link.active,
+.nav .nav__link--active,
+.nav a[aria-current="page"] {
+  color: var(--brand-gold-ink);
+  background: color-mix(in srgb, var(--brand-gold) 14%, transparent);
+  box-shadow: inset 2px 0 0 0 var(--brand-gold);
+}
+.nav-group__toggle,
+.nav__label {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--brand-gold-ink);
+  opacity: 0.85;
+}
+
+/* --- Primary actions: forest fill, gold focus ----------------------------- */
+.btn--style-primary .btn__content,
+.btn--style-primary {
+  background-color: var(--brand-forest);
+  border-color: var(--brand-forest);
+  border-radius: var(--style-radius-s);
+}
+.btn--style-primary:hover .btn__content,
+.btn--style-primary:hover {
+  background-color: var(--brand-night);
+  border-color: var(--brand-night);
+}
+.btn--style-secondary {
+  border-radius: var(--style-radius-s);
+}
+
+/* Links + interactive accents read gold-ink (AA on light). */
+a:not(.btn):not(.nav__link):not(.card):hover {
+  color: var(--brand-gold-ink);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--brand-gold) !important;
+  outline-offset: 2px;
+}
+
+/* --- Cards / inputs: softer, lifted ---------------------------------------- */
+.card,
+.collection-list .table,
+.list-controls,
+.doc-controls,
+table {
+  border-radius: var(--style-radius-m);
+}
+.field-type input,
+.field-type textarea,
+.field-type .rs__control,
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  border-radius: var(--style-radius-s);
+}
+.card {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -28px rgba(25, 27, 23, 0.55);
+}
+
+/* --- App header: thin gold filet under the bar ---------------------------- */
+.app-header {
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-gold) 28%, transparent);
+}
+
+/* --- Login / create-first-user / forgot: full brand treatment ------------- */
+.template-minimal {
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(194, 168, 120, 0.16), transparent 60%),
+    linear-gradient(180deg, var(--brand-night), var(--brand-forest));
+}
+.template-minimal .login__brand,
+.template-minimal .graphic-logo,
+.template-minimal svg {
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+.template-minimal .login__wrap,
+.template-minimal .form-wrap,
+.template-minimal form {
+  background: rgba(249, 249, 246, 0.97);
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border-radius: var(--style-radius-l);
+  box-shadow: 0 50px 90px -40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+}
+.template-minimal h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Gentle reduced-motion respect. */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .nav .nav__link,
+  .nav a { transition: none; }
+}

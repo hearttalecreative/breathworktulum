@@ -4,28 +4,32 @@ import { ctaArray, ctaGroup, ctaFields } from "../fields/cta";
 const tone = {
   name: "tone",
   type: "select" as const,
+  label: "Color de fondo",
   defaultValue: "cream",
+  admin: { description: "Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros." },
   options: [
-    { label: "Cream", value: "cream" },
-    { label: "Sand", value: "sand" },
-    { label: "Night (dark)", value: "night" },
+    { label: "Claro (crema)", value: "cream" },
+    { label: "Arena", value: "sand" },
+    { label: "Noche (oscuro)", value: "night" },
   ],
 };
 
 const width = {
   name: "width",
   type: "select" as const,
+  label: "Ancho del contenido",
   defaultValue: "default",
+  admin: { description: "Qué tan ancho se ve el texto. Estrecho = más cómodo de leer." },
   options: [
-    { label: "Narrow", value: "narrow" },
-    { label: "Default", value: "default" },
-    { label: "Wide", value: "wide" },
+    { label: "Estrecho", value: "narrow" },
+    { label: "Normal", value: "default" },
+    { label: "Ancho", value: "wide" },
   ],
 };
 
 export const HeroBlock: Block = {
   slug: "hero",
-  labels: { singular: "Hero", plural: "Heroes" },
+  labels: { singular: "Portada (encabezado)", plural: "Portadas" },
   fields: [
     {
       name: "variant",
@@ -56,7 +60,7 @@ export const HeroBlock: Block = {
 
 export const RichTextBlock: Block = {
   slug: "richText",
-  labels: { singular: "Rich text", plural: "Rich text" },
+  labels: { singular: "Texto", plural: "Bloques de texto" },
   fields: [
     { name: "heading", type: "text" },
     { name: "body", type: "richText" },
@@ -68,7 +72,7 @@ export const RichTextBlock: Block = {
 
 export const ThreePhasesBlock: Block = {
   slug: "threePhases",
-  labels: { singular: "Three Phases (method)", plural: "Three Phases" },
+  labels: { singular: "Tres fases (método)", plural: "Tres fases" },
   fields: [
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "text" },
@@ -82,7 +86,7 @@ export const ThreePhasesBlock: Block = {
 
 export const SituationsBlock: Block = {
   slug: "situations",
-  labels: { singular: "Situations list", plural: "Situations lists" },
+  labels: { singular: "Lista de situaciones", plural: "Listas de situaciones" },
   fields: [
     { name: "heading", type: "text", required: true },
     { name: "image", type: "upload", relationTo: "media" },
@@ -99,7 +103,7 @@ export const SituationsBlock: Block = {
 // Full-bleed photographic band — a breath between sections (doc 18 §6.1).
 export const PhotoBandBlock: Block = {
   slug: "photoBand",
-  labels: { singular: "Photo band", plural: "Photo bands" },
+  labels: { singular: "Banda de foto", plural: "Bandas de foto" },
   fields: [
     { name: "image", type: "upload", relationTo: "media", required: true },
     { name: "eyebrow", type: "text" },
@@ -118,7 +122,7 @@ export const PhotoBandBlock: Block = {
 
 export const WaysGridBlock: Block = {
   slug: "waysGrid",
-  labels: { singular: "Ways grid", plural: "Ways grids" },
+  labels: { singular: "Cuadrícula de tarjetas", plural: "Cuadrículas de tarjetas" },
   fields: [
     { name: "heading", type: "text", required: true },
     {
@@ -138,7 +142,7 @@ export const WaysGridBlock: Block = {
 
 export const TestimonialsBlock: Block = {
   slug: "testimonialsBlock",
-  labels: { singular: "Testimonials", plural: "Testimonials" },
+  labels: { singular: "Testimonios", plural: "Testimonios" },
   fields: [
     { name: "heading", type: "text" },
     { name: "items", type: "relationship", relationTo: "testimonials", hasMany: true },
@@ -150,7 +154,7 @@ export const TestimonialsBlock: Block = {
 
 export const SplitImageTextBlock: Block = {
   slug: "splitImageText",
-  labels: { singular: "Split image + text", plural: "Split image + text" },
+  labels: { singular: "Imagen + texto", plural: "Imagen + texto" },
   fields: [
     { name: "image", type: "upload", relationTo: "media" },
     {
@@ -171,7 +175,7 @@ export const SplitImageTextBlock: Block = {
 
 export const SignatureBandBlock: Block = {
   slug: "signatureBand",
-  labels: { singular: "Signature band", plural: "Signature bands" },
+  labels: { singular: "Banda destacada (foto + texto)", plural: "Bandas destacadas" },
   fields: [
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "textarea", required: true },
@@ -183,7 +187,7 @@ export const SignatureBandBlock: Block = {
 
 export const CtaSectionBlock: Block = {
   slug: "ctaSection",
-  labels: { singular: "CTA section", plural: "CTA sections" },
+  labels: { singular: "Llamada a la acción", plural: "Llamadas a la acción" },
   fields: [
     { name: "heading", type: "text", required: true },
     { name: "body", type: "textarea" },
@@ -204,7 +208,7 @@ export const CtaSectionBlock: Block = {
 
 export const FormatDetailBlock: Block = {
   slug: "formatDetail",
-  labels: { singular: "Format detail", plural: "Format details" },
+  labels: { singular: "Detalle de servicio o formato", plural: "Detalles de servicio" },
   fields: [
     { name: "anchor", type: "text", admin: { description: "Anchor id, e.g. immersive" } },
     { name: "title", type: "text", required: true },
@@ -225,7 +229,7 @@ export const FormatDetailBlock: Block = {
 
 export const FaqBlock: Block = {
   slug: "faq",
-  labels: { singular: "FAQ", plural: "FAQs" },
+  labels: { singular: "Preguntas frecuentes", plural: "Preguntas frecuentes" },
   fields: [
     { name: "heading", type: "text" },
     {
@@ -242,7 +246,7 @@ export const FaqBlock: Block = {
 
 export const ListBlock: Block = {
   slug: "list",
-  labels: { singular: "List section", plural: "List sections" },
+  labels: { singular: "Lista", plural: "Listas" },
   fields: [
     { name: "heading", type: "text", required: true },
     { name: "intro", type: "textarea" },
@@ -260,7 +264,7 @@ export const ListBlock: Block = {
 
 export const TwoColumnListsBlock: Block = {
   slug: "twoColumnLists",
-  labels: { singular: "Two-column lists", plural: "Two-column lists" },
+  labels: { singular: "Dos listas en columnas", plural: "Dos listas en columnas" },
   fields: [
     { name: "heading", type: "text", required: true },
     { name: "intro", type: "textarea" },
@@ -274,7 +278,7 @@ export const TwoColumnListsBlock: Block = {
 
 export const ContactTilesBlock: Block = {
   slug: "contactTiles",
-  labels: { singular: "Contact tiles", plural: "Contact tiles" },
+  labels: { singular: "Tarjetas de contacto", plural: "Tarjetas de contacto" },
   fields: [
     {
       name: "tiles",
@@ -293,7 +297,7 @@ export const ContactTilesBlock: Block = {
 
 export const ContactFormBlock: Block = {
   slug: "contactForm",
-  labels: { singular: "Contact form", plural: "Contact forms" },
+  labels: { singular: "Formulario de contacto", plural: "Formularios de contacto" },
   fields: [
     { name: "heading", type: "text" },
     { name: "intro", type: "textarea" },

@@ -3,8 +3,12 @@ import { revalidateGlobalsTag } from "../lib/revalidate";
 
 export const SiteSettings: GlobalConfig = {
   slug: "siteSettings",
+  label: "Datos del sitio",
   access: { read: () => true },
-  admin: { group: "Settings" },
+  admin: {
+    group: "Ajustes",
+    description: "Marca, contacto, redes y mensajes de WhatsApp que usa todo el sitio.",
+  },
   hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {
