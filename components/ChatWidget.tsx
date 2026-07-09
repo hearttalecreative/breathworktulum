@@ -54,7 +54,6 @@ export default function ChatWidget({
   whatsappHref: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [opened, setOpened] = useState(false);
   const [nudge, setNudge] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -85,7 +84,6 @@ export default function ChatWidget({
 
   const openChat = useCallback(() => {
     setOpen(true);
-    setOpened(true);
     setNudge(false);
   }, []);
 
@@ -240,10 +238,6 @@ export default function ChatWidget({
               style={{ animation: "bwtBreathe 4.5s ease-in-out infinite" }}
             />
           </>
-        )}
-        {/* Unread-style dot until the visitor opens the chat. */}
-        {!open && !opened && (
-          <span aria-hidden className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-shell bg-gold" />
         )}
         {open ? (
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">

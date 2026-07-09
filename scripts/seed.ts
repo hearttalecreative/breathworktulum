@@ -453,6 +453,7 @@ async function run() {
           { question: "How long until I see effects?", answer: "Some shifts land within hours, others over weeks. Most people notice a difference in how they sleep and how they respond to stress within the first few days." },
           { question: "Is online really equivalent to in person?", answer: "Functionally yes, with some honest differences. In person, I can read your body more directly. Online, you're in your own space which has its own value. Both work." },
           { question: "Can I do this if I'm in therapy?", answer: "Yes, and it often pairs well. Bring it up so I know the context. If your therapist wants to coordinate, I'm open to it." },
+          { question: "What language are sessions in?", answer: "Sessions are held in English." },
           { question: "How do I book?", answer: "WhatsApp is the fastest. Email also works. We'll exchange a few messages, decide on format and timing, and book it from there." },
         ],
       },
@@ -581,7 +582,8 @@ async function run() {
           "First message. Doesn't need to be long. “Hi, I'm thinking about a session” or “I have a question about retreats” is enough.",
           "My response. Usually a voice note on WhatsApp, around two minutes. I respond to what you actually asked, not with a template.",
           "Timing. WhatsApp: usually within hours during business hours (Mexico Central Time). Email: within 24 to 48 hours. Discovery calls: within a week.",
-          "No automated chatbots. If you message me, you're getting me."
+          "Language. Sessions are held in English.",
+          "The assistant can answer quick questions any time. When you message me, you're getting me."
         ),
       },
       {

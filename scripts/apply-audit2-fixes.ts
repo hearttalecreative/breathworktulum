@@ -158,6 +158,43 @@ async function run() {
     return n;
   });
 
+  // CONTACT — reword the chatbot line (there's an AI assistant now) + add a
+  // language note. (Sabine: sessions in English.)
+  await patch("contact", (layout) => {
+    let n = deepReplace(layout, [[
+      "No automated chatbots. If you message me, you're getting me.",
+      "The assistant can answer quick questions any time. When you message me, you're getting me.",
+    ]]);
+    const notes = layout.find(
+      (b) => b.blockType === "richText" && typeof b.heading === "string" && (b.heading as string).includes("what happens next")
+    );
+    const root = (notes?.body as { root?: { children?: unknown[] } } | undefined)?.root;
+    if (root && Array.isArray(root.children) && !JSON.stringify(root.children).includes("Sessions are held in English")) {
+      const para = {
+        type: "paragraph", version: 1, format: "", indent: 0, direction: "ltr", textFormat: 0,
+        children: [{ type: "text", version: 1, text: "Language. Sessions are held in English.", format: 0, detail: 0, mode: "normal", style: "" }],
+      };
+      root.children.splice(Math.max(0, root.children.length - 1), 0, para);
+      n++;
+    }
+    return n;
+  });
+
+  // PRIVATE SESSIONS — language FAQ
+  await patch("work-with-me/private-sessions", (layout) => {
+    const faq = layout.find((b) => b.blockType === "faq");
+    if (!faq) return 0;
+    const items = (faq.items as Rec[]) || [];
+    if (items.some((i) => i.question === "What language are sessions in?")) return 0;
+    const at = items.findIndex((i) => i.question === "How do I book?");
+    items.splice(at >= 0 ? at : items.length, 0, {
+      question: "What language are sessions in?",
+      answer: "Sessions are held in English.",
+    });
+    faq.items = items;
+    return 1;
+  });
+
   log(DRY ? `\nDRY RUN. ${changed} change(s).` : `\n✅ Applied. ${changed} change(s).`);
   process.exit(0);
 }
