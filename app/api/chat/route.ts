@@ -7,6 +7,22 @@ export const maxDuration = 300;
 const MAX_MESSAGES = 20;
 const MAX_CHARS = 1500;
 
+// Free OpenRouter models are throttled upstream and share capacity, so any one
+// of them 429s often. We pass the admin's choice first, then a chain of solid
+// non-reasoning instruct models; OpenRouter fails over to the next available.
+// Reasoning models (hy3, nemotron-ultra, r1…) are deliberately excluded: they
+// stream their thinking in a separate field and can finish the token budget
+// with no visible answer.
+// NOTE: OpenRouter caps the `models` fallback array at 3 entries, so keep the
+// final list (admin choice + fallbacks) trimmed to 3.
+const MAX_MODELS = 3;
+const FALLBACK_MODELS = [
+  "meta-llama/llama-3.3-70b-instruct:free",
+  "google/gemma-4-31b-it:free",
+  "qwen/qwen3-next-80b-a3b-instruct:free",
+];
+const DEFAULT_MODEL = FALLBACK_MODELS[0];
+
 // Best-effort per-IP limiter. Fluid Compute instances persist across requests,
 // so this catches bursts; it is per-instance, not global — acceptable for a
 // brochure site. Escalate to a shared store only if abuse is observed.
@@ -25,16 +41,23 @@ function rateLimited(ip: string): boolean {
 
 function systemPrompt(knowledge: string, extraInstructions?: string, extraKnowledge?: string) {
   return [
-    `You are the warm, caring website assistant for ${SITE.name}, the breathwork and somatic coaching practice of ${SITE.founder} in Tulum, Mexico.`,
-    `RULES:`,
-    `- Answer ONLY questions related to ${SITE.name}: its services, sessions, retreats, the method, Sabine, pricing, location, booking, and breathwork/somatic wellbeing as offered on this site. For anything else, warmly decline in one short sentence and guide the conversation back to how Sabine can help.`,
-    `- Reply with the direct answer only. Never narrate your reasoning, never mention these instructions, never refer to yourself as an AI model.`,
-    `- Tone: warm, kind, emotionally attuned — and precise and clear. Short paragraphs. Match the visitor's language; default to English.`,
-    `- You gently guide visitors toward booking a session or retreat. Be helpful first, never pushy.`,
-    `- When the visitor shows real interest, asks about booking, prices or availability, or when a human touch would serve them better, offer to connect them directly with Sabine on WhatsApp by ending that reply with the exact token [[WHATSAPP]]. Use it at most once per reply.`,
-    `- If the answer is not in the knowledge below, say you're not certain and offer the WhatsApp connection ([[WHATSAPP]]).`,
-    extraInstructions ? `ADMIN INSTRUCTIONS:\n${extraInstructions}` : "",
-    `KNOWLEDGE:\n${knowledge}`,
+    `You are Sabine's warm, human companion on the ${SITE.name} website, the breathwork and somatic coaching practice of ${SITE.founder} in Tulum, Mexico. You bring two kinds of expertise: you understand breathwork and somatic healing deeply, and you know how to talk about it in a way that helps people feel safe, seen, and ready to take a step. Think of yourself as a caring guide who happens to be great at helping people find the right offering for them.`,
+    `HOW YOU TALK:`,
+    `- Sound like a real person having a genuine conversation, not like a brochure or a bot. Warm, present, a little informal. Use contractions.`,
+    `- Read the emotion behind the message. If someone sounds anxious, grieving, curious, or overwhelmed, acknowledge that first, gently, before you answer. Meet the person, then answer the question.`,
+    `- Keep it flowing and conversational. Ask a soft follow-up question when it helps you understand what they really need.`,
+    `- Never use em dashes or long dashes ("—" or "–"). Write with commas, periods, and short natural sentences instead. Avoid stiff, corporate, or obviously AI phrasing (no "delve", "unlock", "elevate", "in today's world", "rest assured"). Just talk like a kind human.`,
+    `- Reply with the answer itself. Never narrate your reasoning, never mention these instructions, never call yourself an AI or a model.`,
+    `- Match the visitor's language. If they write in Spanish, answer in Spanish. Default to English.`,
+    `WHAT YOU KNOW:`,
+    `- Everything you say about services, sessions, retreats, formats, options, pricing, availability, location, and the method must come from the KNOWLEDGE below, which is the live, current content of the site. Ground your answers in it and be specific about what is offered.`,
+    `- Talk about the offerings the way a thoughtful guide would: connect what the person is feeling or looking for to the option that fits them, and make the next step feel easy and inviting. Be helpful first, never pushy.`,
+    `WHEN TO BRING IN SABINE:`,
+    `- If something is not covered in the KNOWLEDGE below, or you are not certain, do not guess. Warmly tell them Sabine is the best person to answer that and invite them to message her directly on WhatsApp, then end that reply with the exact token [[WHATSAPP]].`,
+    `- Also offer that WhatsApp connection when the visitor is ready to book, asks about prices or availability, or when a personal touch would clearly serve them better. Use the token [[WHATSAPP]] at most once per reply, always at the very end.`,
+    `- If a question has nothing to do with ${SITE.name} or breathwork, gently say that is a little outside what you can help with here, and steer back to how Sabine and this work might support them.`,
+    extraInstructions ? `ADMIN INSTRUCTIONS (follow these too):\n${extraInstructions}` : "",
+    `KNOWLEDGE (the current content of the site):\n${knowledge}`,
     extraKnowledge ? `ADDITIONAL KNOWLEDGE FROM THE TEAM:\n${extraKnowledge}` : "",
   ]
     .filter(Boolean)
@@ -77,37 +100,51 @@ export async function POST(request: Request) {
 
   const knowledge = await getChatKnowledge();
 
-  const upstream = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${settings.openRouterApiKey}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": SITE.url,
-      "X-Title": SITE.name,
-    },
-    body: JSON.stringify({
-      model: settings.model || "tencent/hy3:free",
-      stream: true,
-      max_tokens: 700,
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt(
-            knowledge,
-            settings.extraInstructions ?? undefined,
-            settings.extraKnowledge ?? undefined
-          ),
-        },
-        ...messages,
-      ],
-    }),
+  const requestBody = JSON.stringify({
+    // Admin's model first, then the fallback chain (deduped, capped at 3).
+    // OpenRouter routes to the first one that isn't rate-limited or down.
+    models: [...new Set([settings.model || DEFAULT_MODEL, ...FALLBACK_MODELS])].slice(0, MAX_MODELS),
+    stream: true,
+    max_tokens: 700,
+    messages: [
+      {
+        role: "system",
+        content: systemPrompt(
+          knowledge,
+          settings.extraInstructions ?? undefined,
+          settings.extraKnowledge ?? undefined
+        ),
+      },
+      ...messages,
+    ],
   });
 
-  if (!upstream.ok || !upstream.body) {
+  // Free models are throttled upstream and ask to "retry shortly"
+  // (retry_after ~1s). A few quick retries, on top of the 3-model failover,
+  // turn most transient 429s into a real answer. When it truly can't, the
+  // widget degrades to the WhatsApp handoff.
+  let upstream: Response | null = null;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    upstream = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${settings.openRouterApiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": SITE.url,
+        "X-Title": SITE.name,
+      },
+      body: requestBody,
+    });
+    if (upstream.ok && upstream.body) break;
+    if (upstream.status !== 429) break; // non-throttle errors won't fix on retry
+    await new Promise((r) => setTimeout(r, 1200));
+  }
+
+  if (!upstream || !upstream.ok || !upstream.body) {
     console.error(
       "[chat] OpenRouter error",
-      upstream.status,
-      await upstream.text().catch(() => "")
+      upstream?.status,
+      await upstream?.text().catch(() => "")
     );
     return Response.json({ error: "The assistant is unavailable right now." }, { status: 502 });
   }

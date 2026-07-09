@@ -43,9 +43,10 @@ export const ChatSettings: GlobalConfig = {
       name: "model",
       type: "text",
       label: "Modelo de IA",
-      // Best free model that returns clean answers — reasoning models like
-      // nemotron-ultra leak their chain-of-thought into the reply.
-      defaultValue: "tencent/hy3:free",
+      // A non-reasoning instruct model that streams a clean answer. Reasoning
+      // models (hy3, nemotron-ultra) either leak their thinking or return an
+      // empty answer, so they are avoided as the default.
+      defaultValue: "meta-llama/llama-3.3-70b-instruct:free",
       admin: {
         components: { Field: "@/components/admin/ModelSelect" },
         description:
@@ -57,7 +58,7 @@ export const ChatSettings: GlobalConfig = {
       type: "textarea",
       label: "Mensaje de bienvenida",
       defaultValue:
-        "Hi, welcome. I'm here to help you learn about breathwork with Sabine — ask me anything about sessions, retreats, or the method.",
+        "Hi, I'm so glad you're here. I can tell you about Sabine's sessions and retreats, share how breathwork feels, and help you find what's right for you. What brings you here today?",
       admin: {
         description: "Primer mensaje que ve el visitante al abrir el chat.",
       },
