@@ -240,7 +240,8 @@ async function run() {
     const page = await getPage(slug);
     if (!page) return log(`  ! ${slug} not found`);
     const changes: Rec = {};
-    for (const k of Object.keys(next)) if (page[k] !== next[k]) changes[k] = next[k];
+    const cur = page as unknown as Rec;
+    for (const k of Object.keys(next)) if (cur[k] !== next[k]) changes[k] = next[k];
     if (!Object.keys(changes).length) return log(`  = ${slug} meta no change`);
     changed++;
     if (DRY) return log(`  ~ ${slug} meta would change (${Object.keys(changes).join(", ")})`);
