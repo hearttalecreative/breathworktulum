@@ -4,6 +4,11 @@ import { revalidateGlobalsTag } from "../lib/revalidate";
 const linkFields = [
   { name: "label", type: "text" as const, required: true },
   { name: "href", type: "text" as const, required: true },
+  {
+    name: "description",
+    type: "text" as const,
+    admin: { description: "Micro-copy opcional bajo el enlace en el submenú." },
+  },
 ];
 
 export const Header: GlobalConfig = {
@@ -20,6 +25,12 @@ export const Header: GlobalConfig = {
       name: "workWithMe",
       type: "array",
       label: "Work With Me submenu",
+      fields: linkFields,
+    },
+    {
+      name: "retreats",
+      type: "array",
+      label: "Retreats submenu",
       fields: linkFields,
     },
     {

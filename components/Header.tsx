@@ -3,17 +3,19 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-type NavLink = { label: string; href: string };
+type NavLink = { label: string; href: string; description?: string };
 
 export default function Header({
   brandName = "Breathwork Tulum",
   workWithMe = [],
+  retreats = [],
   primary = [],
   whatsappHref = "#",
   email = "",
 }: {
   brandName?: string;
   workWithMe?: NavLink[];
+  retreats?: NavLink[];
   primary?: NavLink[];
   whatsappHref?: string;
   email?: string;
@@ -117,55 +119,8 @@ export default function Header({
         </Link>
 
         <nav className="hidden items-center gap-10 lg:flex" aria-label="Primary">
-          {workWithMe.length > 0 && (
-            <div className="group relative">
-              <button className={`flex items-center gap-1.5 py-2 text-[0.98rem] transition-colors ${linkColor}`}>
-                Work With Me
-                <span aria-hidden className="text-[0.55rem] transition-transform duration-300 group-hover:rotate-180">
-                  ▾
-                </span>
-              </button>
-              {/* Editorial dropdown — numbered, gold-filet, items rise in sequence. */}
-              <div className="invisible absolute left-0 top-full w-[336px] origin-top translate-y-2 pt-4 opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                <div className="relative overflow-hidden bg-ivory/95 shadow-[0_40px_80px_-36px_rgba(25,27,23,0.45)] ring-1 ring-line backdrop-blur-md">
-                  {/* Gold hairline that draws across the top as the panel opens. */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-gold-soft via-gold-soft/70 to-transparent transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
-                  />
-                  <p className="eyebrow px-5 pb-1 pt-4 text-gold-ink/80">Ways to work together</p>
-                  <div className="px-1.5 pb-2 pt-1">
-                    {workWithMe.map((item, i) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        style={{ transitionDelay: `${80 + i * 55}ms` }}
-                        className="group/it relative flex translate-y-1 items-center gap-3.5 px-3.5 py-2.5 opacity-0 transition-[opacity,transform,background-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-sand/60 group-hover:translate-y-0 group-hover:opacity-100"
-                      >
-                        {/* Gold filet that grows on hover. */}
-                        <span
-                          aria-hidden
-                          className="absolute left-0 top-1/2 h-0 w-[2px] -translate-y-1/2 bg-gold-soft transition-[height] duration-300 group-hover/it:h-7"
-                        />
-                        <span className="font-serif text-[0.95rem] tabular-nums text-gold-soft/90 transition-colors group-hover/it:text-gold-ink">
-                          0{i + 1}
-                        </span>
-                        <span className="flex-1 text-[0.95rem] text-ink/80 transition-colors group-hover/it:text-ink">
-                          {item.label}
-                        </span>
-                        <span
-                          aria-hidden
-                          className="-translate-x-1 text-gold-soft opacity-0 transition-all duration-300 group-hover/it:translate-x-0 group-hover/it:opacity-100"
-                        >
-                          &rarr;
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          <NavDropdown label="Work With Me" eyebrow="Ways to work together" items={workWithMe} linkColor={linkColor} />
+          <NavDropdown label="Retreats" eyebrow="Retreat offerings" items={retreats} linkColor={linkColor} />
 
           {primary.map((item) => (
             <Link key={item.href} href={item.href} className={`link-underline py-2 text-[0.98rem] transition-colors ${linkColor}`}>
@@ -255,6 +210,23 @@ export default function Header({
             </>
           )}
 
+          {retreats.length > 0 && (
+            <>
+              <span className="eyebrow mb-2 text-gold-soft">Retreats</span>
+              {retreats.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="py-0.5 font-sans text-[0.95rem] text-cream-dim/80 transition-colors hover:text-pure"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <span aria-hidden className="my-4 h-px w-10 bg-gold-soft/50" />
+            </>
+          )}
+
           {primary.map((item) => (
             <Link
               key={item.href}
@@ -279,6 +251,78 @@ export default function Header({
         </div>
       </div>
     </>
+  );
+}
+
+// Editorial hover/focus dropdown — numbered, gold-filet, items rise in
+// sequence. Shared by the "Work With Me" and "Retreats" menus.
+function NavDropdown({
+  label,
+  eyebrow,
+  items,
+  linkColor,
+}: {
+  label: string;
+  eyebrow: string;
+  items: NavLink[];
+  linkColor: string;
+}) {
+  if (!items.length) return null;
+  return (
+    <div className="group relative">
+      <button className={`flex items-center gap-1.5 py-2 text-[0.98rem] transition-colors ${linkColor}`}>
+        {label}
+        <span aria-hidden className="text-[0.55rem] transition-transform duration-300 group-hover:rotate-180">
+          ▾
+        </span>
+      </button>
+      <div className="invisible absolute left-0 top-full w-[336px] origin-top translate-y-2 pt-4 opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        <div className="relative overflow-hidden bg-ivory/95 shadow-[0_40px_80px_-36px_rgba(25,27,23,0.45)] ring-1 ring-line backdrop-blur-md">
+          <span
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-gold-soft via-gold-soft/70 to-transparent transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+          />
+          <p className="eyebrow px-5 pb-1 pt-4 text-gold-ink/80">{eyebrow}</p>
+          <div className="px-1.5 pb-2 pt-1">
+            {items.map((item, i) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                // Release focus so the CSS group-focus-within dropdown closes
+                // after the client-side navigation.
+                onClick={() => (document.activeElement as HTMLElement | null)?.blur()}
+                style={{ transitionDelay: `${80 + i * 55}ms` }}
+                className="group/it relative flex translate-y-1 items-start gap-3.5 px-3.5 py-2.5 opacity-0 transition-[opacity,transform,background-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-sand/60 group-hover:translate-y-0 group-hover:opacity-100"
+              >
+                <span
+                  aria-hidden
+                  className="absolute left-0 top-1/2 h-0 w-[2px] -translate-y-1/2 bg-gold-soft transition-[height] duration-300 group-hover/it:h-7"
+                />
+                <span className="mt-0.5 font-serif text-[0.95rem] tabular-nums text-gold-soft/90 transition-colors group-hover/it:text-gold-ink">
+                  0{i + 1}
+                </span>
+                <span className="flex-1">
+                  <span className="block text-[0.95rem] text-ink/80 transition-colors group-hover/it:text-ink">
+                    {item.label}
+                  </span>
+                  {item.description ? (
+                    <span className="mt-0.5 block text-[0.78rem] leading-snug text-ink-soft/70">
+                      {item.description}
+                    </span>
+                  ) : null}
+                </span>
+                <span
+                  aria-hidden
+                  className="mt-0.5 -translate-x-1 text-gold-soft opacity-0 transition-all duration-300 group-hover/it:translate-x-0 group-hover/it:opacity-100"
+                >
+                  &rarr;
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

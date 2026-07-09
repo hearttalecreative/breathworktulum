@@ -12,6 +12,7 @@ export const WA_MESSAGES = {
   curated: "Hi Sabine, I'm inquiring about a curated group experience.",
   corporate: "Hi Sabine, I'm reaching out about a corporate program.",
   signature: "Hi Sabine, I'm interested in the Riviera Maya 2026 retreat.",
+  discoveryCall: "Hi Sabine, I'd like to book a discovery call about a retreat.",
   contact: "Hi Sabine, I saw your website.",
 } as const;
 

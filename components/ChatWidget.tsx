@@ -14,7 +14,7 @@ const STORAGE_KEY = "bwt-chat";
 const NUDGE_KEY = "bwt-chat-nudge";
 const MARKER = "[[WHATSAPP]]";
 
-const NUDGE_TEXT = "Hi, I'm right here if you have any questions about sessions, retreats, or getting started.";
+const NUDGE_TEXT = "Hi, I'm NUMA, Sabine's assistant. Ask me anything about sessions, retreats, or getting started.";
 
 const ERROR_TEXT =
   "I could not reach the assistant just now, but Sabine is right here for you on WhatsApp.";
@@ -54,7 +54,6 @@ export default function ChatWidget({
   whatsappHref: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [opened, setOpened] = useState(false);
   const [nudge, setNudge] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -85,7 +84,6 @@ export default function ChatWidget({
 
   const openChat = useCallback(() => {
     setOpen(true);
-    setOpened(true);
     setNudge(false);
   }, []);
 
@@ -178,7 +176,7 @@ export default function ChatWidget({
   const shown: Msg[] = [
     {
       role: "assistant",
-      content: welcomeMessage || "Hi, I'm so glad you're here. How can I support you today?",
+      content: welcomeMessage || "Hi, I'm NUMA, Sabine's assistant. How can I support you today?",
     },
     ...messages,
   ];
@@ -241,10 +239,6 @@ export default function ChatWidget({
             />
           </>
         )}
-        {/* Unread-style dot until the visitor opens the chat. */}
-        {!open && !opened && (
-          <span aria-hidden className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-shell bg-gold" />
-        )}
         {open ? (
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" />
@@ -274,10 +268,10 @@ export default function ChatWidget({
               <WaveMark className="w-5 text-pure" />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="font-serif text-[1.05rem] leading-tight text-forest">Breathwork Tulum</p>
+              <p className="font-serif text-[1.05rem] leading-tight text-forest">NUMA</p>
               <p className="flex items-center gap-1.5 text-xs text-forest/60">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-whatsapp" />
-                Here with you, whenever you need
+                Your guide at Breathwork Tulum
               </p>
             </div>
             <a

@@ -41,6 +41,7 @@ export const ctaFields: Field[] = [
       "curated",
       "corporate",
       "signature",
+      "discoveryCall",
       "contact",
     ].map((v) => ({ label: v, value: v })),
   },
