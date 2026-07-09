@@ -11,7 +11,10 @@ import WaveMark from "./WaveMark";
 type Msg = { role: "user" | "assistant"; content: string };
 
 const STORAGE_KEY = "bwt-chat";
+const NUDGE_KEY = "bwt-chat-nudge";
 const MARKER = "[[WHATSAPP]]";
+
+const NUDGE_TEXT = "Hi, I'm right here if you have any questions about sessions, retreats, or getting started.";
 
 const ERROR_TEXT =
   "I could not reach the assistant just now, but Sabine is right here for you on WhatsApp.";
@@ -51,6 +54,8 @@ export default function ChatWidget({
   whatsappHref: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const [nudge, setNudge] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -61,6 +66,36 @@ export default function ChatWidget({
   // Restore history after mount (avoids hydration mismatch).
   useEffect(() => {
     setMessages(loadHistory());
+  }, []);
+
+  // A gentle proactive greeting so visitors notice they can chat live. Shows
+  // once per session, a few seconds in, unless they've already opened or
+  // dismissed it.
+  useEffect(() => {
+    let dismissed = false;
+    try {
+      dismissed = sessionStorage.getItem(NUDGE_KEY) === "1";
+    } catch {
+      /* ignore */
+    }
+    if (dismissed) return;
+    const t = setTimeout(() => setNudge(true), 3500);
+    return () => clearTimeout(t);
+  }, []);
+
+  const openChat = useCallback(() => {
+    setOpen(true);
+    setOpened(true);
+    setNudge(false);
+  }, []);
+
+  const dismissNudge = useCallback(() => {
+    setNudge(false);
+    try {
+      sessionStorage.setItem(NUDGE_KEY, "1");
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   useEffect(() => {
@@ -153,22 +188,62 @@ export default function ChatWidget({
     <>
       <style>{BREATHE_CSS}</style>
 
+      {/* Proactive greeting — draws the eye and says the chat is live. */}
+      {nudge && !open && (
+        <div
+          className="fixed bottom-[max(5.5rem,calc(env(safe-area-inset-bottom)+5.5rem))] right-4 z-40 w-[15.5rem] max-w-[calc(100vw-2rem)]"
+          style={{ animation: "bwtNudge 0.4s cubic-bezier(0.22,1,0.36,1)" }}
+        >
+          <button
+            type="button"
+            onClick={openChat}
+            className="flex w-full items-start gap-2.5 rounded-2xl rounded-br-md bg-pure px-3.5 py-3 text-left shadow-[0_16px_40px_-16px_rgba(43,55,48,0.5)] ring-1 ring-line transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+          >
+            <span aria-hidden className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure">
+              <WaveMark className="w-4 text-pure" />
+            </span>
+            <span className="text-[0.82rem] leading-snug text-ink">{NUDGE_TEXT}</span>
+          </button>
+          <button
+            type="button"
+            onClick={dismissNudge}
+            aria-label="Dismiss"
+            className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-forest text-pure shadow-md transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {/* Launcher */}
       <button
         ref={launcherRef}
         type="button"
-        onClick={() => (open ? close() : setOpen(true))}
+        onClick={() => (open ? close() : openChat())}
         aria-expanded={open}
         aria-label={open ? "Close chat" : "Chat with us"}
         className="group fixed bottom-[max(1.1rem,env(safe-area-inset-bottom))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_14px_34px_-10px_rgba(43,55,48,0.5)] ring-1 ring-inset ring-pure/30 transition-transform duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
       >
-        {/* Gentle breathing halo — a quiet nod to the practice. */}
+        {/* Attention ring + gentle breathing halo, before the first open. */}
         {!open && (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-full bg-whatsapp/25"
-            style={{ animation: "bwtBreathe 4.5s ease-in-out infinite" }}
-          />
+          <>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-whatsapp/50"
+              style={{ animation: "bwtPing 2.6s cubic-bezier(0,0,0.2,1) infinite" }}
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 rounded-full bg-whatsapp/25"
+              style={{ animation: "bwtBreathe 4.5s ease-in-out infinite" }}
+            />
+          </>
+        )}
+        {/* Unread-style dot until the visitor opens the chat. */}
+        {!open && !opened && (
+          <span aria-hidden className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-shell bg-gold" />
         )}
         {open ? (
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
@@ -328,12 +403,20 @@ const BREATHE_CSS = `
   0%, 100% { transform: scale(1); opacity: 0.55; }
   50% { transform: scale(1.5); opacity: 0; }
 }
+@keyframes bwtPing {
+  0% { transform: scale(1); opacity: 0.7; }
+  75%, 100% { transform: scale(1.8); opacity: 0; }
+}
 @keyframes bwtIn {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes bwtNudge {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
 @media (prefers-reduced-motion: reduce) {
-  [style*="bwtBreathe"], [style*="bwtIn"] { animation: none !important; }
+  [style*="bwtBreathe"], [style*="bwtIn"], [style*="bwtPing"], [style*="bwtNudge"] { animation: none !important; }
 }
 `;
 
