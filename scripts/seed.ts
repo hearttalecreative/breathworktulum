@@ -112,6 +112,7 @@ async function run() {
       ],
       primary: [
         { label: "The Method", href: "/the-method/" },
+        { label: "Blog", href: "/blog/" },
         { label: "About", href: "/about/" },
         { label: "Contact", href: "/contact/" },
       ],

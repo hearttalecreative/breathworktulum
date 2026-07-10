@@ -91,6 +91,72 @@ export const getPublishedPages = unstable_cache(
   { revalidate: TTL, tags: ["pages"] }
 );
 
+// ---- Blog posts (same published/draft + cross-request cache pattern) ----
+
+const getPostPublished = (slug: string) =>
+  unstable_cache(
+    async () => {
+      const payload = await getPayloadClient();
+      const res = await withTimeout(
+        payload.find({
+          collection: "posts",
+          where: { slug: { equals: slug } },
+          // depth:1 populates heroImage + the upload nodes inside the body.
+          depth: 1,
+          limit: 1,
+        }),
+        8000,
+        `post:${slug}`
+      );
+      return res.docs[0] ?? null;
+    },
+    ["post", slug],
+    { revalidate: TTL, tags: ["posts", `post:${slug}`] }
+  )();
+
+/** Fetch a single post by slug. Published from cache; draft path live + uncached. */
+export const getPost = cache(async (slug: string, draft = false) => {
+  if (!draft) return getPostPublished(slug);
+  const payload = await getPayloadClient();
+  const res = await payload.find({
+    collection: "posts",
+    where: { slug: { equals: slug } },
+    draft: true,
+    depth: 1,
+    limit: 1,
+    overrideAccess: true,
+  });
+  return res.docs[0] ?? null;
+});
+
+/** Published posts for the blog index and sitemap. Cached, newest first. */
+export const getPublishedPosts = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const res = await payload.find({
+      collection: "posts",
+      where: { _status: { equals: "published" } },
+      limit: 500,
+      pagination: false,
+      // depth:1 so heroImage is populated for the cards.
+      depth: 1,
+      sort: "-publishedAt",
+      select: {
+        title: true,
+        slug: true,
+        excerpt: true,
+        heroImage: true,
+        publishedAt: true,
+        updatedAt: true,
+        noindex: true,
+      },
+    });
+    return res.docs;
+  },
+  ["published-posts"],
+  { revalidate: TTL, tags: ["posts"] }
+);
+
 /** Safe-for-client chat settings. The API key is deliberately NOT returned so
  *  it never enters this cache entry nor any RSC prop. */
 export const getChatPublicSettings = unstable_cache(

@@ -349,10 +349,11 @@ async function run() {
     metaDescription: "Articles, audio practices, and updates on breathwork, somatic coaching, and life transitions. From Sabine at Breathwork Tulum.",
     layout: [
       { blockType: "ctaSection", heading: "Articles, audio practices, and quiet updates.", width: "narrow", align: "center", tone: "cream",
-        body: "Writing and short practices on breathwork, somatic coaching, and moving through life transitions. The blog is on its way." },
-      { blockType: "richText", heading: "Coming soon.", tone: "sand", width: "narrow",
-        body: lex("I'm putting together a small library of writing and audio practices: what happens during a session, nervous system regulation tools, notes on burnout and transitions, and the difference between release and transformation.", "Until then, the most direct way to follow along is the monthly letter. A short note once a month, with new writing and occasional audio practices. Sign up in the footer below."),
-        cta: { ...wa("Or message me on WhatsApp", "general"), enabled: true } },
+        body: "Writing on breathwork, somatic coaching, and moving through life transitions, with audio practices on the way.",
+        ctas: [link("Read the blog", "/blog/")] },
+      { blockType: "richText", heading: "The blog is live.", tone: "sand", width: "narrow",
+        body: lex("The blog holds writing on the breath, the nervous system, core wounds, and moving through burnout, grief, and change. New pieces are added over time.", "I'm also putting together a small library of audio practices and mini-courses. The most direct way to hear when they land is the monthly letter, a short note once a month. Sign up in the footer below."),
+        cta: { ...link("Read the blog", "/blog/"), enabled: true } },
       { blockType: "list", heading: "In the works.", tone: "cream", width: "narrow",
         intro: "A few things I'm building for when you want to keep the work going between sessions.",
         items: items(

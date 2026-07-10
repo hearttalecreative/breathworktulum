@@ -12,6 +12,7 @@ import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Testimonials } from "./collections/Testimonials";
 import { Pages } from "./collections/Pages";
+import { Posts } from "./collections/Posts";
 import { SiteSettings } from "./globals/SiteSettings";
 import { Header } from "./globals/Header";
 import { Footer } from "./globals/Footer";
@@ -35,7 +36,7 @@ export default buildConfig({
     supportedLanguages: { es, en },
     fallbackLanguage: "es",
   },
-  collections: [Pages, Testimonials, Media, Users],
+  collections: [Pages, Posts, Testimonials, Media, Users],
   globals: [SiteSettings, Header, Footer, ChatSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
