@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     pages: Page;
+    posts: Post;
     testimonials: Testimonial;
     media: Media;
     users: User;
@@ -79,6 +80,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -872,6 +874,76 @@ export interface Testimonial {
   createdAt: string;
 }
 /**
+ * Los artículos del blog. Escribí el contenido, subí una imagen de portada y publicá. Tocá «Vista previa» para verlo en vivo antes de publicar.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  /**
+   * El título del artículo, tal como se muestra en el sitio.
+   */
+  title: string;
+  /**
+   * Parte final de la URL del artículo, ej.: "breathing-into-grief". El artículo vive en /blog/<dirección>/.
+   */
+  slug: string;
+  /**
+   * Fecha que se muestra y que ordena el blog. Si la dejás vacía, se usa la fecha de creación.
+   */
+  publishedAt?: string | null;
+  /**
+   * Ruta del artículo en el sitio anterior, para los redirects. No editar.
+   */
+  oldPath?: string | null;
+  /**
+   * Imagen principal del artículo (arriba del texto y en las tarjetas del blog).
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Uno o dos renglones que resumen el artículo. Se muestra en la lista del blog.
+   */
+  excerpt?: string | null;
+  /**
+   * El cuerpo del artículo. Podés agregar títulos, párrafos, listas e imágenes.
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Lo que aparece en Google. Ideal ≤ 60 caracteres. Si lo dejás vacío se usa el título.
+   */
+  metaTitle?: string | null;
+  /**
+   * Resumen que aparece bajo el título en Google. Ideal ≤ 155 caracteres. Si lo dejás vacío se usa el resumen.
+   */
+  metaDescription?: string | null;
+  /**
+   * Imagen al compartir en redes. Si lo dejás vacío se usa la portada.
+   */
+  ogImage?: (number | null) | Media;
+  /**
+   * Si lo activás, el artículo no aparece en Google ni en el mapa del sitio.
+   */
+  noindex?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * Quién puede entrar a administrar el sitio.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -926,6 +998,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
       } | null)
     | ({
         relationTo: 'testimonials';
@@ -1320,6 +1396,26 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
+  metaTitle?: T;
+  metaDescription?: T;
+  ogImage?: T;
+  noindex?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  publishedAt?: T;
+  oldPath?: T;
+  heroImage?: T;
+  excerpt?: T;
+  body?: T;
   metaTitle?: T;
   metaDescription?: T;
   ogImage?: T;

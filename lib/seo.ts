@@ -183,6 +183,30 @@ export function breadcrumbLd(slug: string, leafTitle: string) {
   };
 }
 
+/** BlogPosting schema for a blog article, wired into the entity graph. */
+export function blogPostingLd(args: {
+  title: string;
+  description?: string;
+  url: string;
+  image?: string;
+  datePublished?: string;
+  dateModified?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: args.title,
+    description: args.description,
+    url: args.url,
+    mainEntityOfPage: args.url,
+    ...(args.image ? { image: [args.image] } : {}),
+    ...(args.datePublished ? { datePublished: args.datePublished } : {}),
+    dateModified: args.dateModified || args.datePublished,
+    author: { "@id": PERSON_ID },
+    publisher: { "@id": ORG_ID },
+  };
+}
+
 export function faqLd(items: { q: string; a: string }[]) {
   return {
     "@context": "https://schema.org",
