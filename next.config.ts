@@ -10,6 +10,10 @@ const blogRedirects = JSON.parse(
 ) as { source: string; destination: string; permanent: boolean }[];
 
 const nextConfig: NextConfig = {
+  // Canonical URLs, internal links, and the sitemap all use trailing slashes;
+  // without this Next 308-redirects every /slug/ to /slug, so each internal
+  // click and every crawler hit paid a redirect. Align the server with them.
+  trailingSlash: true,
   // sharp ships native binaries — keep it external so it's required from
   // node_modules at runtime instead of bundled (fixes Vercel runtime load error).
   serverExternalPackages: ["sharp"],
@@ -26,6 +30,19 @@ const nextConfig: NextConfig = {
       // Old blog index → new blog.
       { source: "/blog/f", destination: "/blog/", permanent: true },
       ...blogRedirects,
+    ];
+  },
+  async headers() {
+    return [
+      // The provisional domain must never be indexed: canonical/OG/sitemap all
+      // point at the final breathworktulum.com, and letting Google index the
+      // temp host would split signals. Scoped by Host so the final domain and
+      // previews are unaffected.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "breathworktulum.hearttalecreative.com" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
     ];
   },
   images: {

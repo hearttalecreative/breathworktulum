@@ -16,6 +16,13 @@ import { SITE } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 const OG_FALLBACK = "/images/og-default.jpg";
+
+// Re-anchor same-app media URLs (absolutized with the runtime host) onto the
+// final public domain for social cards.
+function toPublicOg(url: string | undefined | null): string | null {
+  if (!url) return null;
+  return url.replace(/^https?:\/\/[^/]+(\/api\/media\/)/, `${SITE.url}$1`);
+}
 type Params = { slug: string };
 type Media = { url?: string | null; alt?: string | null } | null | undefined;
 
@@ -41,7 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const url = `${SITE.url}/blog/${slug}/`;
   const title = post.metaTitle || post.title;
   const description = post.metaDescription || post.excerpt || undefined;
-  const ogUrl = post.ogImage?.url || post.heroImage?.url || OG_FALLBACK;
+  const ogUrl = toPublicOg(post.ogImage?.url) || toPublicOg(post.heroImage?.url) || OG_FALLBACK;
   return {
     title,
     description,
@@ -81,7 +88,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
       title: post.title,
       description: post.metaDescription || post.excerpt || undefined,
       url,
-      image: post.heroImage?.url || post.ogImage?.url || undefined,
+      image: toPublicOg(post.heroImage?.url) || toPublicOg(post.ogImage?.url) || undefined,
       datePublished: published || undefined,
       dateModified: post.updatedAt || undefined,
     }),
