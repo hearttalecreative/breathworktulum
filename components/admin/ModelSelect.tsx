@@ -14,7 +14,7 @@ const ModelSelect: TextFieldClientComponent = ({ field, path }) => {
 
   useEffect(() => {
     let live = true;
-    fetch("/api/chat/models", { credentials: "include" })
+    fetch("/api/chat/models/", { credentials: "include" })
       .then((r) => r.json())
       .then((d) => {
         if (live) setModels(d.models ?? []);

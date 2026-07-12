@@ -53,8 +53,10 @@ export default function Footer({
       <div className="relative z-10 mx-auto max-w-6xl px-6 pt-16 pb-28 lg:pb-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/logo-allb.svg" alt={brandName} className="h-10 w-auto" />
+            <Link href="/" aria-label={`${brandName} home`} className="inline-block transition-opacity hover:opacity-80">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/logo-allb.svg" alt={brandName} className="h-10 w-auto" />
+            </Link>
             {brandBlurb ? <p className="mt-5 text-sm leading-relaxed text-cream-dim/80">{brandBlurb}</p> : null}
             {locationBlurb ? <p className="mt-3 text-sm leading-relaxed text-cream-dim/80">{locationBlurb}</p> : null}
             {subBrandName ? (

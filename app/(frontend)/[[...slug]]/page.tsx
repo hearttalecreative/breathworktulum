@@ -10,6 +10,14 @@ import { faqLd, serviceLd, personLd, breadcrumbLd } from "@/lib/seo";
 
 const OG_FALLBACK = "/images/og-default.jpg";
 
+// CMS media URLs are absolutized with the runtime serverURL (localhost in dev,
+// the deployment host on Vercel). Social cards must always advertise the final
+// domain, so re-anchor same-app media paths onto SITE.url.
+function toPublicOg(url: string | undefined | null): string {
+  if (!url) return OG_FALLBACK;
+  return url.replace(/^https?:\/\/[^/]+(\/api\/media\/)/, `${SITE.url}$1`);
+}
+
 // Per-page structured data derived from slug + blocks.
 function pageSchemas(slug: string, title: string, description: string, layout: { blockType: string; items?: { question: string; answer: string }[] }[]) {
   const schemas: object[] = [];
@@ -60,7 +68,7 @@ export async function generateMetadata({
   const og = p.ogImage as { url?: string } | undefined;
   // Home shares the branded hero portrait (IMG_5306); other pages use their
   // own CMS image, falling back to the same branded card.
-  const ogUrl = toSlug(slug) === "home" ? OG_FALLBACK : og?.url || OG_FALLBACK;
+  const ogUrl = toSlug(slug) === "home" ? OG_FALLBACK : toPublicOg(og?.url);
   const title = (p.metaTitle as string) || (p.title as string);
   const description = (p.metaDescription as string) || undefined;
   return {

@@ -59,6 +59,12 @@ async function run() {
   const somatic = await media("breathwork-tulum-somatic-session.jpg", "Sabine doing hands-on somatic work with a client during a breathwork session");
   const privateImg = await media("breathwork-tulum-private-session.jpg", "Sabine outdoors in Tulum, relaxed and present");
   const riviera = await media("breathwork-tulum-riviera-maya.jpg", "Turquoise water of Riviera Maya");
+  // Sabine photo set (CHOSEN/SABINE, processed to head-safe crops).
+  const sabineJungleBench = await media("sabine-jungle-bench.jpg", "Sabine Binns smiling, seated on a wooden bench in the Tulum jungle");
+  const sabineJungleSeated = await media("sabine-jungle-seated.jpg", "Sabine Binns sitting cross-legged on a jungle branch in Tulum, smiling");
+  const sabineBeachSky = await media("sabine-beach-sky.jpg", "Sabine Binns on the beach with open arms, face lifted to the sky");
+  const sabineBeachRock = await media("sabine-beach-rock.jpg", "Sabine Binns seated on beach rocks under a palm tree, calm and present");
+  const sabineMeditation = await media("sabine-meditation.jpg", "Sabine Binns meditating cross-legged with open palms");
 
   // --- testimonials ---
   const t = async (quote: string) =>
@@ -198,6 +204,7 @@ async function run() {
         eyebrow: "The Method",
         heading: "A method, not a moment.",
         tone: "cream",
+        image: sabineMeditation,
         body: lex(
           "Every session and every retreat follows the same three phase process. Breathe to open the body. Heal to meet what's stored beneath the surface. Transform to integrate what shifted, in language and choices that hold beyond the session.",
           "The technical backbone is Clarity Breathwork™, a soft, trauma informed approach I've practiced for over ten years and trained under its founders."
@@ -218,7 +225,7 @@ async function run() {
       },
       {
         blockType: "splitImageText",
-        image: portrait,
+        image: sabineJungleBench,
         imageSide: "left",
         heading: "I lived the version of you that's reading this.",
         body: lex(
@@ -267,7 +274,7 @@ async function run() {
         eyebrow: "The Method",
         heading: "The method behind the work.",
         lede: "Every person arrives with their own story. But the process of coming back to the body, meeting what's stored there, and choosing from a different place, has a shape. This is mine.",
-        image: somatic,
+        image: sabineBeachSky,
         ctas: [link("See the three phases", "#phases"), link("Experience the method", "/work-with-me/private-sessions/", "secondary")],
       },
       {
@@ -354,7 +361,7 @@ async function run() {
         eyebrow: "Private Sessions",
         heading: "Private breathwork sessions, in Tulum or online.",
         lede: "One on one, or two on the mat together. Three formats, one process. Choose the one that fits where you are.",
-        image: privateImg,
+        image: sabineBeachRock,
         ctas: [wa("Message me on WhatsApp", "general", "whatsapp"), link("Compare formats", "#compare", "secondary")],
       },
       {
@@ -481,7 +488,7 @@ async function run() {
         blockType: "hero",
         eyebrow: "Hi. I'm Sabine Binns.",
         heading: "I lived the burnout. I learned to breathe through it. Now I guide others through theirs.",
-        image: portrait,
+        image: sabineJungleSeated,
       },
       {
         blockType: "richText",

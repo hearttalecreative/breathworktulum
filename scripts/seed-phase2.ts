@@ -38,6 +38,7 @@ async function run() {
   const bandPalapaWide = await mediaId("bw-band-palapa-wide.jpg");
   const retreatCoupleSea = await mediaId("bw-retreat-couple-sea.jpg");
   const cenote = await mediaId("bw-cenote.jpg");
+  const sabineOpenArms = await mediaId("sabine-beach-open-arms.jpg");
 
   const reviews = await payload.find({ collection: "testimonials", limit: 3 });
   const tIds = reviews.docs.map((d) => d.id);
@@ -88,7 +89,7 @@ async function run() {
     layout: [
       { blockType: "hero", eyebrow: "Personalized Retreats", heading: "A retreat built around you. In person, or online.",
         lede: "A multi-day process designed around your specific moment. The same method, two formats. Choose the container that fits your life right now.",
-        image: riviera, ctas: [wa("Book a discovery call", "discoveryCall", "primary"), link("Compare formats", "#formats", "secondary")] },
+        image: sabineOpenArms || riviera, ctas: [wa("Book a discovery call", "discoveryCall", "primary"), link("Compare formats", "#formats", "secondary")] },
       { blockType: "richText", heading: "One process. Two containers.", tone: "sand",
         body: lex(
           "A Personalized Retreat is a custom designed multi-day breathwork and somatic coaching process, built around what you're moving through right now. Not a packaged program with set modules. We map the ground first, then design the days.",
