@@ -256,6 +256,99 @@ body:has(.template-minimal) .btw-admin-credit a:hover { color: #fff; }
 /* Clear the fixed credit so page content never hides behind it. */
 .template-default { padding-bottom: 3rem; }
 
+/* ==========================================================================
+   Edit-view design — add color + separate each section/field so the forms
+   aren't a flat wall. Accents live on borders (safe on light & dark); text
+   uses Payload's theme-elevation vars so contrast holds in both themes.
+   Unknown selectors simply no-op, so this only ever adds polish.
+   ========================================================================== */
+
+/* Document title → serif, with a gold hairline under the header bar. */
+.doc-header__title,
+.doc-header h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.doc-header {
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-gold) 26%, var(--theme-elevation-100));
+}
+
+/* Labels a touch bolder + more air between top-level fields. */
+.field-label { font-weight: 600; }
+.field-description { color: var(--theme-elevation-500); }
+.render-fields > .field-type { margin-bottom: 1.4rem; }
+
+/* Tabs (e.g. Content / SEO): clear active state with a gold underline. */
+.tabs-field__tabs {
+  gap: 4px;
+  border-bottom: 1px solid var(--theme-elevation-150);
+}
+.tabs-field__tab-button {
+  border-radius: var(--style-radius-s) var(--style-radius-s) 0 0;
+  padding: 8px 14px;
+  color: var(--theme-elevation-500);
+  transition: color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.tabs-field__tab-button:hover {
+  color: var(--theme-elevation-800);
+  background: color-mix(in srgb, var(--brand-gold) 9%, transparent);
+}
+.tabs-field__tab-button--active {
+  color: var(--theme-elevation-900);
+  background: color-mix(in srgb, var(--brand-gold) 13%, transparent);
+  box-shadow: inset 0 -2px 0 0 var(--brand-gold);
+}
+
+/* Collapsibles, array rows, and page-section (block) rows → cards with a
+   gold-accented header, so each editable unit reads as its own panel.
+   All three render a `.collapsible`, so styling that covers every case
+   (and avoids double borders). */
+.collapsible {
+  border: 1px solid color-mix(in srgb, var(--brand-gold) 20%, var(--theme-elevation-150));
+  border-radius: var(--style-radius-m);
+  background: var(--theme-input-bg);
+  overflow: hidden;
+  transition: box-shadow .25s ease, border-color .2s ease;
+}
+.collapsible:hover {
+  border-color: color-mix(in srgb, var(--brand-gold) 42%, transparent);
+  box-shadow: 0 14px 34px -26px rgba(25, 27, 23, .5);
+}
+.collapsible__toggle-wrap,
+.collapsible__toggle {
+  background: color-mix(in srgb, var(--brand-gold) 8%, transparent);
+  border-left: 3px solid var(--brand-gold);
+  font-weight: 600;
+  color: var(--theme-elevation-800);
+}
+/* Breathing room between stacked rows. */
+.array-field__draggable-rows > * + *,
+.blocks-field__rows > * + * { margin-top: .8rem; }
+
+/* Sidebar (URL, publish date, etc.) → a distinct tinted panel. */
+.document-fields__sidebar,
+.document-fields__sidebar-wrap {
+  background: color-mix(in srgb, var(--brand-porcelain) 55%, var(--theme-input-bg));
+  border-left: 1px solid color-mix(in srgb, var(--brand-gold) 18%, transparent);
+}
+
+/* Rich-text field: rounded frame + a soft, always-visible toolbar bar. */
+.rich-text-lexical { border-radius: var(--style-radius-s); }
+.rich-text-lexical .fixed-toolbar,
+.rich-text-lexical [class*="toolbar"]:first-child {
+  background: color-mix(in srgb, var(--brand-gold) 7%, var(--theme-input-bg));
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-gold) 22%, transparent);
+}
+
+/* List view: zebra + gold hover so rows are easy to scan. */
+.table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--brand-porcelain) 45%, transparent);
+}
+.table tbody tr:hover {
+  background: color-mix(in srgb, var(--brand-gold) 9%, transparent);
+}
+
 /* Gentle reduced-motion respect. */
 @media (prefers-reduced-motion: reduce) {
   .card,

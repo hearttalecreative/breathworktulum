@@ -2,7 +2,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { lexicalEditor, FixedToolbarFeature } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { en } from "@payloadcms/translations/languages/en";
@@ -85,7 +85,13 @@ export default buildConfig({
   },
   collections: [Pages, Posts, Testimonials, Media, Users],
   globals: [SiteSettings, Header, Footer, ChatSettings],
-  editor: lexicalEditor(),
+  // A persistent (fixed) formatting toolbar on every rich-text field, so the
+  // blog body reads as an obvious, easy WYSIWYG editor instead of relying on the
+  // hover/selection toolbar. Keeps all Payload defaults (headings, lists, links,
+  // images, blockquote, etc.).
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()],
+  }),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
   db: postgresAdapter({
