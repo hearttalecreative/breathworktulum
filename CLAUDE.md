@@ -23,6 +23,13 @@ Variables en `.env.local`:
 - `PAYLOAD_SECRET`
 - `NEXT_PUBLIC_SERVER_URL` — origen público (Live Preview, canonical/OG)
 
+**Email / SMTP** — habilita el envío del correo de "olvidé contraseña" del admin. Sin `SMTP_HOST`, Payload escribe el correo (con el link de reset) en la consola en vez de enviarlo.
+- `SMTP_HOST` — host SMTP (vacío en dev)
+- `SMTP_PORT` — 587 (STARTTLS) o 465 (SSL); 465 activa `secure`
+- `SMTP_USER` / `SMTP_PASS` — credenciales SMTP
+- `SMTP_FROM` — remitente; debe ser un buzón del dominio SMTP (default `breathe@breathworktulum.com`)
+- `SMTP_FROM_NAME` — nombre visible (default `Breathwork Tulum`)
+
 **Vercel (proyecto + deploy + Blob)**
 - `BLOB_READ_WRITE_TOKEN` — almacenamiento de media (vacío = disco local en dev)
 - `VERCEL_PROJECT_ID`
