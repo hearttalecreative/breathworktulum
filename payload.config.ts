@@ -23,6 +23,22 @@ const dirname = path.dirname(filename);
 
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
 
+// Origins allowed to send cookie-authenticated mutations. Payload only honors
+// the auth cookie on a POST/PATCH/DELETE when the request Origin is in `csrf`
+// (it auto-adds serverURL). The admin currently runs on the provisional domain
+// while NEXT_PUBLIC_SERVER_URL points at the final domain, so without listing
+// both here every save fails with "You are not allowed to perform this action".
+// Keep the final + provisional + local origins so it works before and after the
+// domain cutover. Extra origins can be supplied via ADMIN_ORIGINS (comma-sep).
+const trustedOrigins = [
+  "https://breathworktulum.com",
+  "https://www.breathworktulum.com",
+  "https://breathworktulum.hearttalecreative.com",
+  "http://localhost:3000",
+  "http://localhost:4123",
+  ...(process.env.ADMIN_ORIGINS?.split(",").map((s) => s.trim()).filter(Boolean) ?? []),
+];
+
 // Email is only wired when SMTP credentials exist (Vercel prod). Without them —
 // e.g. local dev — Payload falls back to logging emails to the console, so the
 // forgot-password flow still generates a reset link you can grab from the logs.
@@ -46,6 +62,8 @@ const email = smtpHost
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
+  cors: trustedOrigins,
+  csrf: trustedOrigins,
   ...(email ? { email } : {}),
   admin: {
     user: Users.slug,
