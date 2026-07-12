@@ -29,7 +29,7 @@ const ModelSelect: TextFieldClientComponent = ({ field, path }) => {
 
   const options = useMemo(() => {
     const opts = (models ?? []).map((m) => ({
-      label: m.free ? `GRATIS · ${m.label}` : m.label,
+      label: m.free ? `FREE · ${m.label}` : m.label,
       value: m.value,
     }));
     // Keep the saved value selectable even if it left the live catalog.
@@ -55,8 +55,8 @@ const ModelSelect: TextFieldClientComponent = ({ field, path }) => {
       />
       <div className="field-description">
         {models === null
-          ? "Cargando modelos desde OpenRouter…"
-          : "Los modelos GRATIS aparecen primero y no consumen crédito de OpenRouter."}
+          ? "Loading models from OpenRouter…"
+          : "FREE models appear first and don’t use up your OpenRouter credit."}
       </div>
     </div>
   );

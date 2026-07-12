@@ -134,7 +134,7 @@ export interface UserAuthOperations {
   };
 }
 /**
- * Las páginas del sitio. Cada página se arma con secciones (bloques). Tocá «Vista previa» para ver los cambios en vivo antes de publicar.
+ * Your website pages. Each page is built from sections (blocks). Tap 'Preview' to see your changes live before publishing.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
@@ -142,15 +142,15 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   /**
-   * Nombre interno de la página (no siempre se muestra en el sitio).
+   * Internal name for the page (it isn't always shown on the site).
    */
   title: string;
   /**
-   * Parte final de la URL. Usá "home" para la portada; ej.: "about", "work-with-me/private-sessions". Cambiarlo cambia el enlace de la página.
+   * The last part of the URL. Use "home" for the front page; e.g. "about", "work-with-me/private-sessions". Changing it changes the page link.
    */
   slug: string;
   /**
-   * Armá la página agregando secciones. Arrastralas para reordenar.
+   * Build the page by adding sections. Drag them to reorder.
    */
   layout?:
     | (
@@ -239,11 +239,11 @@ export interface Page {
               href?: string | null;
             };
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
-             * Qué tan ancho se ve el texto. Estrecho = más cómodo de leer.
+             * How wide the text appears. Narrow = easier to read.
              */
             width?: ('narrow' | 'default' | 'wide') | null;
             /**
@@ -300,7 +300,7 @@ export interface Page {
               href?: string | null;
             };
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -322,7 +322,7 @@ export interface Page {
               | null;
             closing?: string | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -362,7 +362,7 @@ export interface Page {
                 }[]
               | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -379,7 +379,7 @@ export interface Page {
             reviewsLabel?: string | null;
             reviewsUrl?: string | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -435,7 +435,7 @@ export interface Page {
               href?: string | null;
             };
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -516,11 +516,11 @@ export interface Page {
               | null;
             align?: ('center' | 'left') | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
-             * Qué tan ancho se ve el texto. Estrecho = más cómodo de leer.
+             * How wide the text appears. Narrow = easier to read.
              */
             width?: ('narrow' | 'default' | 'wide') | null;
             /**
@@ -590,7 +590,7 @@ export interface Page {
               id?: string | null;
             };
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             id?: string | null;
@@ -607,7 +607,7 @@ export interface Page {
                 }[]
               | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -654,11 +654,11 @@ export interface Page {
               href?: string | null;
             };
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
-             * Qué tan ancho se ve el texto. Estrecho = más cómodo de leer.
+             * How wide the text appears. Narrow = easier to read.
              */
             width?: ('narrow' | 'default' | 'wide') | null;
             /**
@@ -687,7 +687,7 @@ export interface Page {
                 }[]
               | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -729,7 +729,7 @@ export interface Page {
                 }[]
               | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -744,7 +744,7 @@ export interface Page {
             heading?: string | null;
             intro?: string | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -759,7 +759,7 @@ export interface Page {
             heading?: string | null;
             intro?: string | null;
             /**
-             * Fondo de la sección. Alterná claro/arena para dar ritmo; «noche» para tramos oscuros.
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
             /**
@@ -773,19 +773,19 @@ export interface Page {
       )[]
     | null;
   /**
-   * Lo que aparece en Google. Ideal ≤ 60 caracteres.
+   * What shows up in Google. Ideally 60 characters or fewer.
    */
   metaTitle?: string | null;
   /**
-   * Resumen que aparece bajo el título en Google. Ideal ≤ 155 caracteres.
+   * The summary that shows under the title in Google. Ideally 155 characters or fewer.
    */
   metaDescription?: string | null;
   /**
-   * Imagen que se ve al compartir la página en redes (WhatsApp, Facebook…).
+   * The image shown when the page is shared on social media (WhatsApp, Facebook…).
    */
   ogImage?: (number | null) | Media;
   /**
-   * Si lo activás, la página no aparece en Google ni en el mapa del sitio.
+   * If you turn this on, the page won't appear in Google or the sitemap.
    */
   noindex?: boolean | null;
   updatedAt: string;
@@ -793,7 +793,7 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Todas las fotos del sitio. Subí una imagen y usala en cualquier página.
+ * All the site's photos. Upload an image and use it on any page.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -801,7 +801,7 @@ export interface Page {
 export interface Media {
   id: number;
   /**
-   * Describí la imagen en pocas palabras (accesibilidad y SEO). Ej: «Sabine guiando una sesión de respiración».
+   * Describe the image in a few words (for accessibility and SEO). E.g. 'Sabine guiding a breathwork session'.
    */
   alt: string;
   updatedAt: string;
@@ -851,7 +851,7 @@ export interface Media {
   };
 }
 /**
- * Reseñas y testimonios que aparecen en las páginas.
+ * Reviews and testimonials shown across the pages.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "testimonials".
@@ -859,22 +859,22 @@ export interface Media {
 export interface Testimonial {
   id: number;
   /**
-   * El texto de la reseña.
+   * The text of the review.
    */
   quote: string;
   /**
-   * De dónde viene, ej. "Google Review".
+   * Where it comes from, e.g. "Google Review".
    */
   source?: string | null;
   /**
-   * Nombre o iniciales del cliente.
+   * The client's name or initials.
    */
   name?: string | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
- * Los artículos del blog. Escribí el contenido, subí una imagen de portada y publicá. Tocá «Vista previa» para verlo en vivo antes de publicar.
+ * The blog articles. Write the content, upload a cover image, and publish. Tap 'Preview' to see it live before publishing.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
@@ -882,31 +882,31 @@ export interface Testimonial {
 export interface Post {
   id: number;
   /**
-   * El título del artículo, tal como se muestra en el sitio.
+   * The article title, exactly as it shows on the site.
    */
   title: string;
   /**
-   * Parte final de la URL del artículo, ej.: "breathing-into-grief". El artículo vive en /blog/<dirección>/.
+   * The last part of the article URL, e.g. "breathing-into-grief". The article lives at /blog/<address>/.
    */
   slug: string;
   /**
-   * Fecha que se muestra y que ordena el blog. Si la dejás vacía, se usa la fecha de creación.
+   * The date shown and used to order the blog. If you leave it empty, the creation date is used.
    */
   publishedAt?: string | null;
   /**
-   * Ruta del artículo en el sitio anterior, para los redirects. No editar.
+   * The article's path on the old site, used for redirects. Don't edit.
    */
   oldPath?: string | null;
   /**
-   * Imagen principal del artículo (arriba del texto y en las tarjetas del blog).
+   * The article's main image (above the text and on the blog cards).
    */
   heroImage?: (number | null) | Media;
   /**
-   * Uno o dos renglones que resumen el artículo. Se muestra en la lista del blog.
+   * One or two lines that summarize the article. Shown in the blog list.
    */
   excerpt?: string | null;
   /**
-   * El cuerpo del artículo. Podés agregar títulos, párrafos, listas e imágenes.
+   * The body of the article. You can add headings, paragraphs, lists, and images.
    */
   body?: {
     root: {
@@ -924,19 +924,19 @@ export interface Post {
     [k: string]: unknown;
   } | null;
   /**
-   * Lo que aparece en Google. Ideal ≤ 60 caracteres. Si lo dejás vacío se usa el título.
+   * What shows up in Google. Ideally 60 characters or fewer. If left empty, the title is used.
    */
   metaTitle?: string | null;
   /**
-   * Resumen que aparece bajo el título en Google. Ideal ≤ 155 caracteres. Si lo dejás vacío se usa el resumen.
+   * The summary that shows under the title in Google. Ideally 155 characters or fewer. If left empty, the summary is used.
    */
   metaDescription?: string | null;
   /**
-   * Imagen al compartir en redes. Si lo dejás vacío se usa la portada.
+   * The image shown when shared on social media. If left empty, the cover image is used.
    */
   ogImage?: (number | null) | Media;
   /**
-   * Si lo activás, el artículo no aparece en Google ni en el mapa del sitio.
+   * If you turn this on, the article won't appear in Google or the sitemap.
    */
   noindex?: boolean | null;
   updatedAt: string;
@@ -944,7 +944,7 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Quién puede entrar a administrar el sitio.
+ * Who can log in to manage the site.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
@@ -1561,7 +1561,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
- * Marca, contacto, redes y mensajes de WhatsApp que usa todo el sitio.
+ * Brand, contact, social links, and WhatsApp messages used across the whole site.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "siteSettings".
@@ -1595,7 +1595,7 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * Enlaces del menú de arriba del sitio.
+ * Links for the site's top menu.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header".
@@ -1603,42 +1603,42 @@ export interface SiteSetting {
 export interface Header {
   id: number;
   /**
-   * Enlaces dentro del desplegable «Work With Me».
+   * Links inside the "Work With Me" dropdown.
    */
   workWithMe?:
     | {
         label: string;
         href: string;
         /**
-         * Micro-copy opcional bajo el enlace en el submenú.
+         * Optional micro-copy shown under the link in the submenu.
          */
         description?: string | null;
         id?: string | null;
       }[]
     | null;
   /**
-   * Enlaces dentro del desplegable «Retreats».
+   * Links inside the "Retreats" dropdown.
    */
   retreats?:
     | {
         label: string;
         href: string;
         /**
-         * Micro-copy opcional bajo el enlace en el submenú.
+         * Optional micro-copy shown under the link in the submenu.
          */
         description?: string | null;
         id?: string | null;
       }[]
     | null;
   /**
-   * Enlaces sueltos de la barra superior (ej.: The Method, Blog, About, Contact).
+   * Standalone top-bar links (e.g. The Method, Blog, About, Contact).
    */
   primary?:
     | {
         label: string;
         href: string;
         /**
-         * Micro-copy opcional bajo el enlace en el submenú.
+         * Optional micro-copy shown under the link in the submenu.
          */
         description?: string | null;
         id?: string | null;
@@ -1648,7 +1648,7 @@ export interface Header {
   createdAt?: string | null;
 }
 /**
- * Enlaces y textos del pie del sitio.
+ * Links and text for the site footer.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
@@ -1687,7 +1687,7 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
- * Asistente de chat con IA para visitantes. Responde solo sobre el contenido del sitio y ofrece contacto directo por WhatsApp con Sabine.
+ * AI chat assistant for visitors. It answers only about the site's content and offers direct WhatsApp contact with Sabine.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "chatSettings".
@@ -1695,27 +1695,27 @@ export interface Footer {
 export interface ChatSetting {
   id: number;
   /**
-   * Si lo apagas, vuelve el botón flotante de WhatsApp.
+   * Turn it off to bring back the floating WhatsApp button.
    */
   enabled?: boolean | null;
   /**
-   * Clave de https://openrouter.ai/settings/keys. Nunca se muestra en el sitio público.
+   * Key from https://openrouter.ai/settings/keys. Never shown on the public site.
    */
   openRouterApiKey?: string | null;
   /**
-   * Los modelos marcados GRATIS no consumen crédito de OpenRouter.
+   * Models marked FREE don't use up your OpenRouter credit.
    */
   model?: string | null;
   /**
-   * Primer mensaje que ve el visitante al abrir el chat.
+   * The first message a visitor sees when they open the chat.
    */
   welcomeMessage?: string | null;
   /**
-   * Ajustes de tono o reglas extra para el asistente.
+   * Tone tweaks or extra rules for the assistant.
    */
   extraInstructions?: string | null;
   /**
-   * Datos que no están en el sitio (precios, horarios, políticas…). El asistente los usará al responder.
+   * Details that aren't on the site (prices, schedules, policies…). The assistant will use them when answering.
    */
   extraKnowledge?: string | null;
   updatedAt?: string | null;

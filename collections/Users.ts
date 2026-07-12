@@ -8,12 +8,12 @@ const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 
 export const Users: CollectionConfig = {
   slug: "users",
-  labels: { singular: "Usuario", plural: "Usuarios" },
+  labels: { singular: "User", plural: "Users" },
   auth: {
     // Branded password-reset email. Delivery needs SMTP creds (see payload.config);
     // without them Payload logs this HTML to the console so the link is still usable.
     forgotPassword: {
-      generateEmailSubject: () => "Restablece tu contraseña · Breathwork Tulum",
+      generateEmailSubject: () => "Reset your password · Breathwork Tulum",
       generateEmailHTML: (args) => {
         const token = (args as { token?: string })?.token ?? "";
         const resetURL = `${serverURL}/admin/reset/${token}`;
@@ -24,16 +24,16 @@ export const Users: CollectionConfig = {
       <img src="${serverURL}/brand/logo-color.svg" alt="Breathwork Tulum" width="220" style="width:220px;max-width:80%;height:auto" />
     </td></tr>
     <tr><td style="padding:12px 40px 0">
-      <h1 style="margin:0 0 12px;font-size:20px;font-weight:600;color:${BRAND_INK}">Restablece tu contraseña</h1>
+      <h1 style="margin:0 0 12px;font-size:20px;font-weight:600;color:${BRAND_INK}">Reset your password</h1>
       <p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#5c5850">
-        Recibimos una solicitud para restablecer la contraseña de tu cuenta de administración.
-        Haz clic en el botón para elegir una nueva. Si no fuiste tú, ignora este mensaje.
+        We received a request to reset the password for your admin account.
+        Click the button to choose a new one. If this wasn't you, just ignore this message.
       </p>
       <p style="margin:0 0 28px;text-align:center">
-        <a href="${resetURL}" style="display:inline-block;padding:13px 28px;background:${BRAND_GOLD};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none">Elegir nueva contraseña</a>
+        <a href="${resetURL}" style="display:inline-block;padding:13px 28px;background:${BRAND_GOLD};color:#ffffff;font-size:15px;font-weight:600;text-decoration:none">Choose a new password</a>
       </p>
       <p style="margin:0 0 8px;font-size:13px;line-height:1.6;color:#8a857b">
-        O copia esta dirección en tu navegador:<br />
+        Or copy this address into your browser:<br />
         <a href="${resetURL}" style="color:${BRAND_GOLD};word-break:break-all">${resetURL}</a>
       </p>
     </td></tr>
@@ -47,10 +47,10 @@ export const Users: CollectionConfig = {
   },
   admin: {
     useAsTitle: "email",
-    group: "Ajustes",
-    description: "Quién puede entrar a administrar el sitio.",
+    group: "Settings",
+    description: "Who can log in to manage the site.",
   },
   fields: [
-    { name: "name", type: "text", label: "Nombre" },
+    { name: "name", type: "text", label: "Name" },
   ],
 };

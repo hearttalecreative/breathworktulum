@@ -2,40 +2,40 @@ import type { GlobalConfig } from "payload";
 import { revalidateGlobalsTag } from "../lib/revalidate";
 
 const linkFields = [
-  { name: "label", type: "text" as const, required: true, label: "Texto del enlace" },
-  { name: "href", type: "text" as const, required: true, label: "Destino (URL)" },
+  { name: "label", type: "text" as const, required: true, label: "Link text" },
+  { name: "href", type: "text" as const, required: true, label: "Destination (URL)" },
 ];
 
 export const Footer: GlobalConfig = {
   slug: "footer",
-  label: "Pie de página",
+  label: "Footer",
   access: { read: () => true },
   admin: {
-    group: "Navegación",
-    description: "Enlaces y textos del pie del sitio.",
+    group: "Navigation",
+    description: "Links and text for the site footer.",
   },
   hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {
       type: "collapsible",
-      label: "Columna de marca",
+      label: "Brand column",
       fields: [
-        { name: "brandBlurb", type: "textarea", label: "Texto de marca" },
-        { name: "locationBlurb", type: "textarea", label: "Ubicación" },
-        { name: "subBrandTitle", type: "text", label: "Título del proyecto hermano", defaultValue: "Sister project" },
-        { name: "subBrandName", type: "text", label: "Nombre del proyecto hermano" },
-        { name: "subBrandBlurb", type: "textarea", label: "Descripción del proyecto hermano" },
+        { name: "brandBlurb", type: "textarea", label: "Brand text" },
+        { name: "locationBlurb", type: "textarea", label: "Location" },
+        { name: "subBrandTitle", type: "text", label: "Sister project title", defaultValue: "Sister project" },
+        { name: "subBrandName", type: "text", label: "Sister project name" },
+        { name: "subBrandBlurb", type: "textarea", label: "Sister project description" },
       ],
     },
-    { name: "workWithMe", type: "array", label: "Columna «Work With Me»", labels: { singular: "Enlace", plural: "Enlaces" }, fields: linkFields },
-    { name: "explore", type: "array", label: "Columna «Explore»", labels: { singular: "Enlace", plural: "Enlaces" }, fields: linkFields },
+    { name: "workWithMe", type: "array", label: "\"Work With Me\" column", labels: { singular: "Link", plural: "Links" }, fields: linkFields },
+    { name: "explore", type: "array", label: "\"Explore\" column", labels: { singular: "Link", plural: "Links" }, fields: linkFields },
     {
       type: "collapsible",
       label: "Newsletter + legal",
       fields: [
-        { name: "newsletterBlurb", type: "textarea", label: "Texto del newsletter" },
-        { name: "legal", type: "array", label: "Enlaces legales", labels: { singular: "Enlace", plural: "Enlaces" }, fields: linkFields },
-        { name: "bottomNote", type: "text", label: "Nota al pie" },
+        { name: "newsletterBlurb", type: "textarea", label: "Newsletter text" },
+        { name: "legal", type: "array", label: "Legal links", labels: { singular: "Link", plural: "Links" }, fields: linkFields },
+        { name: "bottomNote", type: "text", label: "Bottom note" },
       ],
     },
   ],

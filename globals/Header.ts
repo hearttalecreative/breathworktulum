@@ -2,48 +2,48 @@ import type { GlobalConfig } from "payload";
 import { revalidateGlobalsTag } from "../lib/revalidate";
 
 const linkFields = [
-  { name: "label", type: "text" as const, required: true, label: "Texto del enlace" },
-  { name: "href", type: "text" as const, required: true, label: "Destino (URL)" },
+  { name: "label", type: "text" as const, required: true, label: "Link text" },
+  { name: "href", type: "text" as const, required: true, label: "Destination (URL)" },
   {
     name: "description",
     type: "text" as const,
-    label: "Descripción",
-    admin: { description: "Micro-copy opcional bajo el enlace en el submenú." },
+    label: "Description",
+    admin: { description: "Optional micro-copy shown under the link in the submenu." },
   },
 ];
 
 export const Header: GlobalConfig = {
   slug: "header",
-  label: "Menú superior",
+  label: "Top menu",
   access: { read: () => true },
   admin: {
-    group: "Navegación",
-    description: "Enlaces del menú de arriba del sitio.",
+    group: "Navigation",
+    description: "Links for the site's top menu.",
   },
   hooks: { afterChange: [revalidateGlobalsTag] },
   fields: [
     {
       name: "workWithMe",
       type: "array",
-      label: "Submenú «Work With Me»",
-      labels: { singular: "Enlace", plural: "Enlaces" },
-      admin: { description: "Enlaces dentro del desplegable «Work With Me»." },
+      label: "\"Work With Me\" submenu",
+      labels: { singular: "Link", plural: "Links" },
+      admin: { description: "Links inside the \"Work With Me\" dropdown." },
       fields: linkFields,
     },
     {
       name: "retreats",
       type: "array",
-      label: "Submenú «Retreats»",
-      labels: { singular: "Enlace", plural: "Enlaces" },
-      admin: { description: "Enlaces dentro del desplegable «Retreats»." },
+      label: "\"Retreats\" submenu",
+      labels: { singular: "Link", plural: "Links" },
+      admin: { description: "Links inside the \"Retreats\" dropdown." },
       fields: linkFields,
     },
     {
       name: "primary",
       type: "array",
-      label: "Enlaces principales",
-      labels: { singular: "Enlace", plural: "Enlaces" },
-      admin: { description: "Enlaces sueltos de la barra superior (ej.: The Method, Blog, About, Contact)." },
+      label: "Primary links",
+      labels: { singular: "Link", plural: "Links" },
+      admin: { description: "Standalone top-bar links (e.g. The Method, Blog, About, Contact)." },
       fields: linkFields,
     },
   ],

@@ -1,6 +1,6 @@
 import React from "react";
 
-// Friendly Spanish "start here" panel rendered above the admin dashboard
+// Friendly "start here" panel rendered above the admin dashboard
 // (admin.components.beforeDashboard). Gives Sabine plain-language entry points
 // instead of a bare list of collections. Styling lives in custom.scss (.btw-dash).
 const siteURL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
@@ -8,28 +8,28 @@ const siteURL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
 const cards: { href: string; title: string; body: string; external?: boolean }[] = [
   {
     href: "/admin/collections/pages",
-    title: "Páginas del sitio",
-    body: "Editá el texto, las fotos y las secciones de cada página. Arrastrá para reordenar.",
+    title: "Site pages",
+    body: "Edit the text, photos, and sections of each page. Drag to reorder.",
   },
   {
     href: "/admin/collections/posts",
     title: "Blog",
-    body: "Escribí un artículo nuevo o editá los existentes. Suma SEO al sitio.",
+    body: "Write a new article or edit the existing ones. It adds SEO to the site.",
   },
   {
     href: "/admin/collections/media",
-    title: "Fotos y archivos",
-    body: "Subí y organizá las imágenes que usás en las páginas y el blog.",
+    title: "Photos & files",
+    body: "Upload and organize the images you use across the pages and the blog.",
   },
   {
     href: "/admin/globals/header",
-    title: "Menús y pie",
-    body: "Cambiá los enlaces del menú de arriba y del pie del sitio.",
+    title: "Menus & footer",
+    body: "Change the links in the top menu and in the site footer.",
   },
   {
     href: siteURL,
-    title: "Ver el sitio",
-    body: "Abrí el sitio público en una pestaña nueva para revisar los cambios.",
+    title: "View the site",
+    body: "Open the public site in a new tab to review your changes.",
     external: true,
   },
 ];
@@ -38,10 +38,10 @@ export default function DashboardWelcome() {
   return (
     <section className="btw-dash">
       <header className="btw-dash__intro">
-        <h2 className="btw-dash__title">Hola, Sabine</h2>
+        <h2 className="btw-dash__title">Hi, Sabine</h2>
         <p className="btw-dash__lede">
-          Desde acá controlás todo el sitio. Elegí por dónde empezar. Los cambios se guardan solos;
-          usá «Vista previa» dentro de cada página para verlos antes de publicar.
+          This is where you manage the whole site. Pick where to start. Changes save on their own;
+          use “Preview” inside each page to see them before publishing.
         </p>
       </header>
       <div className="btw-dash__grid">

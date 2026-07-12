@@ -2,11 +2,11 @@ import type { CollectionConfig } from "payload";
 
 export const Media: CollectionConfig = {
   slug: "media",
-  labels: { singular: "Imagen", plural: "Imágenes" },
+  labels: { singular: "Image", plural: "Images" },
   access: { read: () => true },
   admin: {
-    group: "Contenido",
-    description: "Todas las fotos del sitio. Subí una imagen y usala en cualquier página.",
+    group: "Content",
+    description: "All the site's photos. Upload an image and use it on any page.",
   },
   upload: {
     // Pre-generate WebP derivatives at upload so pages never pull the full-res
@@ -24,8 +24,8 @@ export const Media: CollectionConfig = {
       name: "alt",
       type: "text",
       required: true,
-      label: "Texto alternativo",
-      admin: { description: "Describí la imagen en pocas palabras (accesibilidad y SEO). Ej: «Sabine guiando una sesión de respiración»." },
+      label: "Alt text",
+      admin: { description: "Describe the image in a few words (for accessibility and SEO). E.g. 'Sabine guiding a breathwork session'." },
     },
   ],
 };

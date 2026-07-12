@@ -6,7 +6,6 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { en } from "@payloadcms/translations/languages/en";
-import { es } from "@payloadcms/translations/languages/es";
 import sharp from "sharp";
 
 import { Users } from "./collections/Users";
@@ -61,11 +60,10 @@ export default buildConfig({
       providers: ["@/components/admin/AdminCredit"],
     },
   },
-  // Panel en español por defecto (Sabine). Cada usuario puede cambiar el idioma
-  // desde su perfil; el inglés queda disponible.
+  // Admin UI is English-only.
   i18n: {
-    supportedLanguages: { es, en },
-    fallbackLanguage: "es",
+    supportedLanguages: { en },
+    fallbackLanguage: "en",
   },
   collections: [Pages, Posts, Testimonials, Media, Users],
   globals: [SiteSettings, Header, Footer, ChatSettings],

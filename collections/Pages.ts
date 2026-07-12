@@ -4,7 +4,7 @@ import { revalidatePagesTag } from "../lib/revalidate";
 
 export const Pages: CollectionConfig = {
   slug: "pages",
-  labels: { singular: "Página", plural: "Páginas" },
+  labels: { singular: "Page", plural: "Pages" },
   hooks: {
     afterChange: [revalidatePagesTag],
     afterDelete: [revalidatePagesTag],
@@ -19,8 +19,8 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "slug", "_status", "updatedAt"],
-    group: "Contenido",
-    description: "Las páginas del sitio. Cada página se arma con secciones (bloques). Tocá «Vista previa» para ver los cambios en vivo antes de publicar.",
+    group: "Content",
+    description: "Your website pages. Each page is built from sections (blocks). Tap 'Preview' to see your changes live before publishing.",
     livePreview: {
       url: ({ data }) => {
         const slug = (data?.slug as string) || "";
@@ -34,31 +34,31 @@ export const Pages: CollectionConfig = {
     maxPerDoc: 25,
   },
   fields: [
-    { name: "title", type: "text", required: true, label: "Título", admin: { description: "Nombre interno de la página (no siempre se muestra en el sitio)." } },
+    { name: "title", type: "text", required: true, label: "Title", admin: { description: "Internal name for the page (it isn't always shown on the site)." } },
     {
       name: "slug",
       type: "text",
       required: true,
       unique: true,
       index: true,
-      label: "Dirección (URL)",
+      label: "URL (address)",
       admin: {
         position: "sidebar",
-        description: 'Parte final de la URL. Usá "home" para la portada; ej.: "about", "work-with-me/private-sessions". Cambiarlo cambia el enlace de la página.',
+        description: 'The last part of the URL. Use "home" for the front page; e.g. "about", "work-with-me/private-sessions". Changing it changes the page link.',
       },
     },
     {
       type: "tabs",
       tabs: [
         {
-          label: "Contenido",
+          label: "Content",
           fields: [
             {
               name: "layout",
               type: "blocks",
-              label: "Secciones",
-              labels: { singular: "Sección", plural: "Secciones" },
-              admin: { description: "Armá la página agregando secciones. Arrastralas para reordenar." },
+              label: "Sections",
+              labels: { singular: "Section", plural: "Sections" },
+              admin: { description: "Build the page by adding sections. Drag them to reorder." },
               blocks: allBlocks,
             },
           ],
@@ -66,15 +66,15 @@ export const Pages: CollectionConfig = {
         {
           label: "SEO",
           fields: [
-            { name: "metaTitle", type: "text", label: "Título SEO", admin: { description: "Lo que aparece en Google. Ideal ≤ 60 caracteres." } },
-            { name: "metaDescription", type: "textarea", label: "Descripción SEO", admin: { description: "Resumen que aparece bajo el título en Google. Ideal ≤ 155 caracteres." } },
-            { name: "ogImage", type: "upload", relationTo: "media", label: "Imagen para redes", admin: { description: "Imagen que se ve al compartir la página en redes (WhatsApp, Facebook…)." } },
+            { name: "metaTitle", type: "text", label: "SEO title", admin: { description: "What shows up in Google. Ideally 60 characters or fewer." } },
+            { name: "metaDescription", type: "textarea", label: "SEO description", admin: { description: "The summary that shows under the title in Google. Ideally 155 characters or fewer." } },
+            { name: "ogImage", type: "upload", relationTo: "media", label: "Social share image", admin: { description: "The image shown when the page is shared on social media (WhatsApp, Facebook…)." } },
             {
               name: "noindex",
               type: "checkbox",
               defaultValue: false,
-              label: "Ocultar de los buscadores",
-              admin: { description: "Si lo activás, la página no aparece en Google ni en el mapa del sitio." },
+              label: "Hide from search engines",
+              admin: { description: "If you turn this on, the page won't appear in Google or the sitemap." },
             },
           ],
         },
