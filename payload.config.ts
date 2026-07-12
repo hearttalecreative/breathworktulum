@@ -6,7 +6,6 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { en } from "@payloadcms/translations/languages/en";
-import { es } from "@payloadcms/translations/languages/es";
 import sharp from "sharp";
 
 import { Users } from "./collections/Users";
@@ -23,6 +22,22 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+
+// Origins allowed to send cookie-authenticated mutations. Payload only honors
+// the auth cookie on a POST/PATCH/DELETE when the request Origin is in `csrf`
+// (it auto-adds serverURL). The admin currently runs on the provisional domain
+// while NEXT_PUBLIC_SERVER_URL points at the final domain, so without listing
+// both here every save fails with "You are not allowed to perform this action".
+// Keep the final + provisional + local origins so it works before and after the
+// domain cutover. Extra origins can be supplied via ADMIN_ORIGINS (comma-sep).
+const trustedOrigins = [
+  "https://breathworktulum.com",
+  "https://www.breathworktulum.com",
+  "https://breathworktulum.hearttalecreative.com",
+  "http://localhost:3000",
+  "http://localhost:4123",
+  ...(process.env.ADMIN_ORIGINS?.split(",").map((s) => s.trim()).filter(Boolean) ?? []),
+];
 
 // Email is only wired when SMTP credentials exist (Vercel prod). Without them —
 // e.g. local dev — Payload falls back to logging emails to the console, so the
@@ -47,6 +62,8 @@ const email = smtpHost
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
+  cors: trustedOrigins,
+  csrf: trustedOrigins,
   ...(email ? { email } : {}),
   admin: {
     user: Users.slug,
@@ -58,13 +75,13 @@ export default buildConfig({
         Icon: "@/components/admin/BrandIcon",
       },
       beforeDashboard: ["@/components/admin/DashboardWelcome"],
+      providers: ["@/components/admin/AdminCredit"],
     },
   },
-  // Panel en español por defecto (Sabine). Cada usuario puede cambiar el idioma
-  // desde su perfil; el inglés queda disponible.
+  // Admin UI is English-only.
   i18n: {
-    supportedLanguages: { es, en },
-    fallbackLanguage: "es",
+    supportedLanguages: { en },
+    fallbackLanguage: "en",
   },
   collections: [Pages, Posts, Testimonials, Media, Users],
   globals: [SiteSettings, Header, Footer, ChatSettings],

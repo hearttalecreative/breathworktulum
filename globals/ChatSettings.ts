@@ -7,24 +7,24 @@ const authenticatedOnly = ({ req }: { req: { user?: unknown } }) => Boolean(req.
 
 export const ChatSettings: GlobalConfig = {
   slug: "chatSettings",
-  label: "Chat IA",
+  label: "AI Chat",
   // Never exposed through public REST/GraphQL — the frontend reads it only via
   // the server-side Local API (see lib/payload + app/api/chat).
   access: { read: authenticatedOnly },
   admin: {
-    group: "Ajustes",
+    group: "Settings",
     description:
-      "Asistente de chat con IA para visitantes. Responde solo sobre el contenido del sitio y ofrece contacto directo por WhatsApp con Sabine.",
+      "AI chat assistant for visitors. It answers only about the site's content and offers direct WhatsApp contact with Sabine.",
   },
   hooks: { afterChange: [revalidateChatSettingsTag] },
   fields: [
     {
       name: "enabled",
       type: "checkbox",
-      label: "Activado",
+      label: "Enabled",
       defaultValue: true,
       admin: {
-        description: "Si lo apagas, vuelve el botón flotante de WhatsApp.",
+        description: "Turn it off to bring back the floating WhatsApp button.",
       },
     },
     {
@@ -36,13 +36,13 @@ export const ChatSettings: GlobalConfig = {
       access: { read: authenticatedOnly },
       admin: {
         description:
-          "Clave de https://openrouter.ai/settings/keys. Nunca se muestra en el sitio público.",
+          "Key from https://openrouter.ai/settings/keys. Never shown on the public site.",
       },
     },
     {
       name: "model",
       type: "text",
-      label: "Modelo de IA",
+      label: "AI model",
       // A non-reasoning instruct model that streams a clean answer. Reasoning
       // models (hy3, nemotron-ultra) either leak their thinking or return an
       // empty answer, so they are avoided as the default.
@@ -50,34 +50,34 @@ export const ChatSettings: GlobalConfig = {
       admin: {
         components: { Field: "@/components/admin/ModelSelect" },
         description:
-          "Los modelos marcados GRATIS no consumen crédito de OpenRouter.",
+          "Models marked FREE don't use up your OpenRouter credit.",
       },
     },
     {
       name: "welcomeMessage",
       type: "textarea",
-      label: "Mensaje de bienvenida",
+      label: "Welcome message",
       defaultValue:
         "Hi, I'm NUMA, Sabine's assistant. I can tell you about her sessions and retreats, share how breathwork feels, and help you find what's right for you. What brings you here today?",
       admin: {
-        description: "Primer mensaje que ve el visitante al abrir el chat.",
+        description: "The first message a visitor sees when they open the chat.",
       },
     },
     {
       name: "extraInstructions",
       type: "textarea",
-      label: "Instrucciones adicionales (opcional)",
+      label: "Additional instructions (optional)",
       admin: {
-        description: "Ajustes de tono o reglas extra para el asistente.",
+        description: "Tone tweaks or extra rules for the assistant.",
       },
     },
     {
       name: "extraKnowledge",
       type: "textarea",
-      label: "Información adicional (opcional)",
+      label: "Additional information (optional)",
       admin: {
         description:
-          "Datos que no están en el sitio (precios, horarios, políticas…). El asistente los usará al responder.",
+          "Details that aren't on the site (prices, schedules, policies…). The assistant will use them when answering.",
       },
     },
   ],
