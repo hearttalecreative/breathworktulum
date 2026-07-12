@@ -1602,6 +1602,9 @@ export interface SiteSetting {
  */
 export interface Header {
   id: number;
+  /**
+   * Enlaces dentro del desplegable «Work With Me».
+   */
   workWithMe?:
     | {
         label: string;
@@ -1613,6 +1616,9 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Enlaces dentro del desplegable «Retreats».
+   */
   retreats?:
     | {
         label: string;
@@ -1624,6 +1630,9 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Enlaces sueltos de la barra superior (ej.: The Method, Blog, About, Contact).
+   */
   primary?:
     | {
         label: string;

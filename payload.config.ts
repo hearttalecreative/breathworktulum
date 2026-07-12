@@ -58,6 +58,7 @@ export default buildConfig({
         Icon: "@/components/admin/BrandIcon",
       },
       beforeDashboard: ["@/components/admin/DashboardWelcome"],
+      providers: ["@/components/admin/AdminCredit"],
     },
   },
   // Panel en español por defecto (Sabine). Cada usuario puede cambiar el idioma
