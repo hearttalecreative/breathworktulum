@@ -157,8 +157,10 @@ input[type="password"] {
    blending with the theme text/surface vars.
    ========================================================================== */
 .dsh {
-  max-width: 1120px;
-  padding-bottom: 1rem;
+  /* The custom view replaces Payload's default gutter, so add our own —
+     responsive so nothing hugs the edge, on desktop or phone. */
+  max-width: 1200px;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 4.5vw, 2.75rem) 2rem;
 }
 
 /* Header: greeting + "View the site" action, gold hairline below. */
@@ -244,8 +246,16 @@ input[type="password"] {
 
 .dsh__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 0.85rem;
+}
+
+/* Phones: stack the header, keep the action left-aligned, single-column cards. */
+@media (max-width: 640px) {
+  .dsh__head { align-items: flex-start; gap: 1rem; }
+  .dsh__view { align-self: flex-start; }
+  .dsh__grid { grid-template-columns: 1fr; }
+  .dsh__group-head { flex-wrap: wrap; row-gap: 0.15rem; }
 }
 
 /* Card: icon chip + text + arrow, with an accent left edge. */
