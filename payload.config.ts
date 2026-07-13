@@ -68,7 +68,15 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: "· Breathwork Tulum" },
+    meta: {
+      titleSuffix: "· Breathwork Tulum",
+      // Match the admin browser-tab favicon to the public site's brand mark.
+      icons: [
+        { rel: "icon", type: "image/x-icon", url: "/favicon.ico" },
+        { rel: "icon", type: "image/png", sizes: "512x512", url: "/brand/icon-512.png" },
+        { rel: "apple-touch-icon", url: "/brand/icon-512.png" },
+      ],
+    },
     components: {
       graphics: {
         Logo: "@/components/admin/BrandLogo",
