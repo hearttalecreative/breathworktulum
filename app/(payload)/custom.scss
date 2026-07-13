@@ -438,19 +438,105 @@ body:has(.template-minimal) .btw-admin-credit a:hover { color: #fff; }
   border-bottom: 1px solid color-mix(in srgb, var(--brand-gold) 22%, transparent);
 }
 
-/* List view: zebra + gold hover so rows are easy to scan. */
+/* ==========================================================================
+   List views + chrome — lift the collection lists, controls, buttons, and nav
+   out of flatness with cards, tints, and branded accents. Additive: any
+   selector Payload doesn't use simply no-ops.
+   ========================================================================== */
+
+/* List page title → serif, matching the dashboard. */
+.list-header h1,
+.collection-list h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Search + controls bar → a soft bordered panel. */
+.list-controls {
+  background: var(--theme-input-bg);
+  border: 1px solid color-mix(in srgb, var(--brand-gold) 16%, var(--theme-elevation-150));
+  border-radius: var(--style-radius-m);
+}
+.search-filter input,
+input[type="search"] { border-radius: var(--style-radius-s); }
+.search-filter input:focus,
+input[type="search"]:focus { border-color: var(--brand-gold); }
+
+/* The table → a lifted card with a tinted header row and clean separators. */
+.table {
+  border: 1px solid color-mix(in srgb, var(--brand-gold) 16%, var(--theme-elevation-150));
+  border-radius: var(--style-radius-m);
+  overflow: hidden;
+  background: var(--theme-input-bg);
+  box-shadow: 0 22px 54px -42px rgba(25, 27, 23, 0.42);
+}
+.table thead th {
+  background: color-mix(in srgb, var(--brand-gold) 9%, var(--theme-input-bg));
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-gold) 24%, var(--theme-elevation-150));
+  font-weight: 600;
+  color: var(--theme-elevation-700);
+  letter-spacing: 0.01em;
+}
+.table tbody td { border-bottom: 1px solid var(--theme-elevation-100); }
+.table tbody tr:last-child td { border-bottom: none; }
 .table tbody tr:nth-child(even) {
   background: color-mix(in srgb, var(--brand-porcelain) 45%, transparent);
 }
 .table tbody tr:hover {
   background: color-mix(in srgb, var(--brand-gold) 9%, transparent);
 }
+.table a { color: var(--theme-elevation-900); text-decoration: none; }
+.table a:hover { color: var(--brand-gold-ink); text-decoration: underline; }
+
+/* "Create New" (href ends in /create) → branded forest button. */
+.collection-list a[href$="/create"],
+a.btn[href$="/create"],
+.list-header a[href$="/create"] {
+  background: var(--brand-forest);
+  color: #f4f2ea;
+  border-color: var(--brand-forest);
+  border-radius: var(--style-radius-s);
+  font-weight: 600;
+}
+.collection-list a[href$="/create"]:hover,
+a.btn[href$="/create"]:hover,
+.list-header a[href$="/create"]:hover {
+  background: var(--brand-night);
+  border-color: var(--brand-night);
+}
+
+/* Pagination: gold current page. */
+.paginator .paginator__page--is-current,
+.paginator button[class*="is-current"] {
+  background: var(--brand-gold);
+  color: #fff;
+  border-color: var(--brand-gold);
+}
+
+/* --- Sidebar nav: roomier, with hover so it isn't bare -------------------- */
+.nav a {
+  padding: 0.5rem 0.65rem;
+  margin: 1px 0;
+  border-radius: var(--style-radius-s);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.nav a:hover {
+  background: color-mix(in srgb, var(--brand-gold) 12%, transparent);
+  color: var(--theme-elevation-900);
+}
+.nav-group + .nav-group { margin-top: 0.5rem; }
+
+/* App header: a whisper of warmth so it separates from the canvas. */
+.app-header {
+  background: color-mix(in srgb, var(--brand-porcelain) 45%, var(--theme-bg));
+}
 
 /* Gentle reduced-motion respect. */
 @media (prefers-reduced-motion: reduce) {
   .card,
-  .btw-dash__card,
-  .btw-dash__arrow,
+  .dsh__card,
+  .dsh__card-arrow,
   .btw-admin-credit a,
   .nav .nav__link,
   .nav a { transition: none; }
