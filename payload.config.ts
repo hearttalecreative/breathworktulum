@@ -74,8 +74,10 @@ export default buildConfig({
         Logo: "@/components/admin/BrandLogo",
         Icon: "@/components/admin/BrandIcon",
       },
-      beforeDashboard: ["@/components/admin/DashboardWelcome"],
       providers: ["@/components/admin/AdminCredit"],
+      views: {
+        dashboard: { Component: "@/components/admin/Dashboard" },
+      },
     },
   },
   // Admin UI is English-only.
