@@ -25,9 +25,9 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_72c2e5217534f2d2d1bbc29849c4a89c } from '@/components/admin/ModelSelect'
 import { default as default_d9087a380941d12f95aff168665b00b4 } from '@/components/admin/BrandIcon'
 import { default as default_fd0a9bbb35693e340bbbfa9596236d37 } from '@/components/admin/BrandLogo'
-import { default as default_b81acdec2f847f3a2418fa446f7762ad } from '@/components/admin/DashboardWelcome'
 import { default as default_974f50e3a24031a2a89c75dc42713b12 } from '@/components/admin/AdminCredit'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
+import { default as default_0e7b23c75ea046975e1784ba01f82886 } from '@/components/admin/Dashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -59,8 +59,8 @@ export const importMap = {
   "@/components/admin/ModelSelect#default": default_72c2e5217534f2d2d1bbc29849c4a89c,
   "@/components/admin/BrandIcon#default": default_d9087a380941d12f95aff168665b00b4,
   "@/components/admin/BrandLogo#default": default_fd0a9bbb35693e340bbbfa9596236d37,
-  "@/components/admin/DashboardWelcome#default": default_b81acdec2f847f3a2418fa446f7762ad,
   "@/components/admin/AdminCredit#default": default_974f50e3a24031a2a89c75dc42713b12,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
+  "@/components/admin/Dashboard#default": default_0e7b23c75ea046975e1784ba01f82886,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
