@@ -218,7 +218,7 @@ async function run() {
         cards: [
           { title: "Private Sessions", body: "Foundation, Immersive, or a full 1 Day Private Retreat. Online or in Tulum. For one person, or two.", ctaLabel: "Explore private sessions", href: "/work-with-me/private-sessions/" },
           { title: "Personalized Retreats", body: "Multi-day retreats designed around you. 3 Day, 5 Day, custom, or virtual. For individuals and couples ready for depth.", ctaLabel: "Explore retreats", href: "/work-with-me/personalized-retreats/" },
-          { title: "Group Practice", body: "Weekly 1 Day Group Retreats in a national park and regular Group Sessions at Nomade. Open group formats, booked ahead.", ctaLabel: "Explore group practice", href: "/work-with-me/group-practice/" },
+          { title: "Group Practice", body: "Weekly 1 Day Group Retreats in a national park. An open group format, booked ahead.", ctaLabel: "Explore group practice", href: "/work-with-me/group-practice/" },
           { title: "Curated Group Experiences", body: "Private group breathwork for retreat leaders, families, wellness events, and luxury groups. Designed on request.", ctaLabel: "Inquire about group experiences", href: "/work-with-me/curated-group-experiences/" },
           { title: "Corporate Breathwork", body: "Workshops, talks, and team programs for organizations that take wellbeing seriously.", ctaLabel: "Corporate programs", href: "/work-with-me/corporate/" },
         ],
