@@ -46,6 +46,13 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Vercel's image optimizer hit the plan's quota and started returning 402
+    // (Payment Required) for every /_next/image request, so NO image rendered.
+    // CMS media is already WebP (Payload/Sharp generates it at upload) and the
+    // static assets are pre-sized, so bypass the optimizer entirely and serve
+    // originals. Re-enable optimization (drop `unoptimized`) after upgrading the
+    // Vercel plan if responsive resizing is wanted back.
+    unoptimized: true,
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 2_592_000, // 30d — CMS media is effectively immutable per URL
     remotePatterns: [
