@@ -17,9 +17,18 @@
   --theme-bg: var(--brand-porcelain);
   --theme-input-bg: var(--brand-ivory);
 
-  --style-radius-s: 6px;
-  --style-radius-m: 10px;
+  /* Radius scale — TailAdmin-ish (inputs/buttons 8, panels 12, cards 16). */
+  --style-radius-s: 8px;
+  --style-radius-m: 12px;
   --style-radius-l: 16px;
+
+  /* Soft elevation tokens (ported from TailAdmin, tinted to warm ink) so the
+     admin reads layered instead of flat. */
+  --shadow-xs: 0 1px 2px 0 rgba(25, 27, 23, 0.06);
+  --shadow-card: 0 1px 3px 0 rgba(25, 27, 23, 0.08), 0 1px 2px -1px rgba(25, 27, 23, 0.05);
+  --shadow-pop: 0 16px 40px -22px rgba(25, 27, 23, 0.32);
+  --ring-gold: 0 0 0 3px color-mix(in srgb, var(--brand-gold) 24%, transparent);
+  --field-border: color-mix(in srgb, var(--brand-gold) 14%, var(--theme-elevation-150));
 }
 
 /* Dark mode: a deep forest-black canvas instead of flat neutral gray. */
@@ -532,6 +541,75 @@ a.btn[href$="/create"]:hover,
 /* App header: a whisper of warmth so it separates from the canvas. */
 .app-header {
   background: color-mix(in srgb, var(--brand-porcelain) 45%, var(--theme-bg));
+}
+
+/* ==========================================================================
+   Depth polish (TailAdmin direction, on-brand palette) — soft shadows, rounded
+   inputs with gold focus rings, calmer labels, and card elevation so the panel
+   stops reading flat. Structure borrowed from TailAdmin; colours stay on-brand.
+   ========================================================================== */
+
+/* Form controls: bordered, rounded, subtle shadow, gold focus ring. */
+.field-type input:not([type="checkbox"]):not([type="radio"]),
+.field-type textarea,
+.field-type .rs__control,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+textarea {
+  border: 1px solid var(--field-border);
+  border-radius: var(--style-radius-s);
+  box-shadow: var(--shadow-xs);
+  background: var(--theme-input-bg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.field-type input:not([type="checkbox"]):not([type="radio"]):focus,
+.field-type textarea:focus,
+.field-type .rs__control--is-focused,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+textarea:focus {
+  border-color: var(--brand-gold) !important;
+  box-shadow: var(--ring-gold) !important;
+  outline: none;
+}
+input[type="checkbox"]:checked { accent-color: var(--brand-gold-ink); }
+
+/* Labels: smaller, medium weight, quiet — TailAdmin cadence. */
+.field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--theme-elevation-600);
+  letter-spacing: 0.01em;
+}
+.field-description { font-size: 12.5px; color: var(--theme-elevation-500); }
+
+/* Roomier rhythm between top-level fields. */
+.render-fields > .field-type { margin-bottom: 1.5rem; }
+
+/* Elevation: soft TailAdmin shadow on panels/cards (table keeps its own lift). */
+.card,
+.collapsible,
+.list-controls,
+.dsh__card,
+.doc-controls {
+  box-shadow: var(--shadow-card);
+}
+
+/* Buttons: rounded + a whisper of shadow. */
+.btn { border-radius: var(--style-radius-s); box-shadow: var(--shadow-xs); }
+
+/* Overlays lift more so they read above the page. */
+.popup__content,
+.drawer__content,
+.rs__menu {
+  border-radius: var(--style-radius-m);
+  box-shadow: var(--shadow-pop);
 }
 
 /* Gentle reduced-motion respect. */
