@@ -38,6 +38,32 @@
   --theme-input-bg: #1c1f17;
 }
 
+/* --- Typography: force a modern, readable stack -----------------------------
+   Payload sets --font-body via next/font, but it wasn't loading here → the UI
+   fell back to a condensed, hard-to-read face. Redefine the var (everything
+   uses var(--font-body)) so labels, inputs, buttons all render clean sans. */
+html,
+:root {
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+body,
+input,
+textarea,
+select,
+button,
+.field-label,
+.field-description,
+.btn,
+.btn__content,
+.row-label,
+.pill,
+.nav a,
+.tabs-field__tab-button,
+table {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 /* --- Sidebar nav: gold active filet, calmer type --------------------------- */
 .nav {
   background: color-mix(in srgb, var(--theme-bg) 88%, var(--brand-forest));
@@ -64,17 +90,19 @@
   opacity: 0.85;
 }
 
-/* --- Primary actions: forest fill, gold focus ----------------------------- */
+/* --- Primary actions: forest fill, LIGHT text (was dark-on-dark) ----------- */
 .btn--style-primary .btn__content,
 .btn--style-primary {
   background-color: var(--brand-forest);
   border-color: var(--brand-forest);
+  color: #f4f2ea !important;
   border-radius: var(--style-radius-s);
 }
 .btn--style-primary:hover .btn__content,
 .btn--style-primary:hover {
   background-color: var(--brand-night);
   border-color: var(--brand-night);
+  color: #ffffff !important;
 }
 .btn--style-secondary {
   border-radius: var(--style-radius-s);
@@ -580,14 +608,24 @@ textarea:focus {
 }
 input[type="checkbox"]:checked { accent-color: var(--brand-gold-ink); }
 
-/* Labels: smaller, medium weight, quiet — TailAdmin cadence. */
+/* Labels: clear, medium-bold, readable. */
 .field-label {
   font-size: 13px;
-  font-weight: 500;
-  color: var(--theme-elevation-600);
-  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: var(--theme-elevation-700);
+  letter-spacing: 0;
 }
 .field-description { font-size: 12.5px; color: var(--theme-elevation-500); }
+
+/* Structure: wrap the main edit fields in a panel card so the form reads as a
+   contained unit instead of loose elements on the canvas. */
+.document-fields__edit {
+  background: var(--theme-input-bg);
+  border: 1px solid var(--field-border);
+  border-radius: var(--style-radius-l);
+  box-shadow: var(--shadow-card);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
 
 /* Roomier rhythm between top-level fields. */
 .render-fields > .field-type { margin-bottom: 1.5rem; }
