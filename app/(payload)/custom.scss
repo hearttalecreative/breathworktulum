@@ -412,13 +412,15 @@ body:has(.template-minimal) .btw-admin-credit a:hover { color: #fff; }
   border-color: color-mix(in srgb, var(--brand-gold) 42%, transparent);
   box-shadow: 0 14px 34px -26px rgba(25, 27, 23, .5);
 }
-.collapsible__toggle-wrap,
-.collapsible__toggle {
-  background: color-mix(in srgb, var(--brand-gold) 8%, transparent);
+/* Tint only the header BAR (.collapsible__toggle-wrap) with a gold accent.
+   Never touch .collapsible__toggle — Payload keeps it color:transparent to hide
+   its "Toggle block" label (it's the absolute-positioned click target); setting
+   a color there makes that hidden text show over the row label. */
+.collapsible__toggle-wrap {
   border-left: 3px solid var(--brand-gold);
-  font-weight: 600;
-  color: var(--theme-elevation-800);
+  background: color-mix(in srgb, var(--brand-gold) 7%, var(--theme-elevation-50));
 }
+.collapsible__toggle-wrap .row-label { font-weight: 600; }
 /* Breathing room between stacked rows. */
 .array-field__draggable-rows > * + *,
 .blocks-field__rows > * + * { margin-top: .8rem; }
