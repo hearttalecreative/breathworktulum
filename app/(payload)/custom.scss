@@ -665,6 +665,29 @@ input[type="checkbox"]:checked { accent-color: var(--brand-gold-ink); }
   box-shadow: var(--shadow-pop);
 }
 
+/* List selection toolbar (Select all / Edit / Publish / Unpublish / Delete):
+   the light pills nearly vanished on the pale bar — make them read as real
+   little buttons with a border, fill, and clear hover. */
+.list-selection .pill,
+.list-selection__actions button,
+.list-selection__actions .pill {
+  border: 1px solid var(--field-border);
+  background: var(--theme-input-bg);
+  color: var(--theme-elevation-800);
+  border-radius: var(--style-radius-s);
+  box-shadow: var(--shadow-xs);
+  padding: 4px 12px;
+  font-weight: 500;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.list-selection .pill:hover,
+.list-selection__actions button:hover,
+.list-selection__actions .pill:hover {
+  border-color: color-mix(in srgb, var(--brand-gold) 45%, transparent);
+  background: color-mix(in srgb, var(--brand-gold) 9%, var(--theme-input-bg));
+  color: var(--brand-gold-ink);
+}
+
 /* Gentle reduced-motion respect. */
 @media (prefers-reduced-motion: reduce) {
   .card,
