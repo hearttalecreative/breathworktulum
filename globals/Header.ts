@@ -39,6 +39,14 @@ export const Header: GlobalConfig = {
       fields: linkFields,
     },
     {
+      // Retired: Couples now lives inside Work With Me. Kept (hidden) so the
+      // schema keeps its table instead of a destructive drop on push.
+      name: "couples",
+      type: "array",
+      admin: { hidden: true },
+      fields: linkFields,
+    },
+    {
       name: "primary",
       type: "array",
       label: "Primary links",

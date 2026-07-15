@@ -45,6 +45,17 @@ function CtaRow({
   );
 }
 
+// Turn a Vimeo/YouTube link into a background-style embed URL (autoplay, muted,
+// looped, no chrome). Returns "" for anything unrecognized so callers fall back
+// to the poster image.
+function toVideoEmbed(url: string): string {
+  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}?background=1&autoplay=1&muted=1&loop=1&dnt=1`;
+  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]+)/i);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1&mute=1&loop=1&playlist=${yt[1]}&controls=0&modestbranding=1&rel=0`;
+  return "";
+}
+
 // Delicate divider: a gold filet flanking the brand wave mark.
 function Ornament({ start = false, tone = "gold" }: { start?: boolean; tone?: "gold" | "champagne" }) {
   return (
@@ -188,6 +199,53 @@ function BlockSwitch({
             </div>
           </div>
         </section>
+      );
+    }
+
+    case "mediaFeature": {
+      const ctas = resolveCtas(b.ctas as RawCta[], settings);
+      const video = ((b.videoUrl as string) || "").trim();
+      const mp4 = /\.mp4($|\?)/i.test(video);
+      const embed = video && !mp4 ? toVideoEmbed(video) : "";
+      return (
+        <section className="on-dark relative flex min-h-[84svh] items-end overflow-clip bg-night" id={(b.anchor as string) || undefined}>
+          {mp4 ? (
+            <video className="absolute inset-0 h-full w-full object-cover" src={video} autoPlay muted loop playsInline />
+          ) : embed ? (
+            <iframe className="absolute inset-0 h-full w-full" src={embed} title={(b.heading as string) || "Video"} allow="autoplay; fullscreen; picture-in-picture" loading="lazy" />
+          ) : (
+            <PayloadImage media={b.image as never} fill sizes="100vw" className="kenburns object-cover" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-night/85 via-night/25 to-transparent" aria-hidden />
+          <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2.5rem,7vh,5rem)]">
+            {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
+            {b.heading ? <h2 className="mt-3 max-w-3xl font-serif text-[clamp(1.9rem,4vw,3rem)] leading-[1.1] text-pure">{b.heading as string}</h2> : null}
+            {b.body ? <p className="mt-4 max-w-2xl text-[1.05rem] leading-relaxed text-cream-dim/90">{b.body as string}</p> : null}
+            <CtaRow ctas={ctas} onDark />
+          </div>
+        </section>
+      );
+    }
+
+    case "gallery": {
+      const imgs = (b.images as { image: unknown; caption?: string }[]) || [];
+      return (
+        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "wide"} id={(b.anchor as string) || undefined}>
+          {b.heading ? <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
+          {b.intro ? <p className="mt-5 max-w-2xl text-muted">{b.intro as string}</p> : null}
+          <div className="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+            {imgs.map((it, i) => (
+              <figure key={i} className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-sand ring-1 ring-line">
+                <PayloadImage media={it.image as never} fill sizes="(max-width:640px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                {it.caption ? (
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night/75 to-transparent p-3 text-xs text-pure opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    {it.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            ))}
+          </div>
+        </Section>
       );
     }
 
