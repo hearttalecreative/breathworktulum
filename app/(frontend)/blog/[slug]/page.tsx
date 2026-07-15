@@ -139,7 +139,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
                 href={whatsappLink("general")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[3rem] items-center bg-whatsapp px-7 text-sm font-medium text-pure transition-transform active:scale-95"
+                className="inline-flex min-h-[3rem] items-center bg-gold-soft px-7 text-sm font-medium text-ink transition-transform hover:bg-[#b7975f] active:scale-95"
               >
                 Message me on WhatsApp
               </a>
