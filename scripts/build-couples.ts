@@ -46,10 +46,16 @@ const data = {
   if (existing) { await p.update({ collection: "pages", id: existing.id, data: data as any, overrideAccess: true }); console.log("couples page UPDATED", existing.id); }
   else { const d = await p.create({ collection: "pages", data: data as any, overrideAccess: true }); console.log("couples page CREATED", (d as any).id); }
 
-  // Add the Couples dropdown to the header (idempotent).
+  // Add "Couples Sessions" INSIDE the Work With Me dropdown (idempotent), and
+  // clear the standalone couples dropdown that a prior version set.
   const header = (await p.findGlobal({ slug: "header", overrideAccess: true })) as any;
-  const couples = [{ label: "Couples Sessions", href: "/work-with-me/couples/", description: "A shared space for two" }];
-  await p.updateGlobal({ slug: "header", data: { ...header, couples } as any, overrideAccess: true });
-  console.log("header.couples set");
+  const wwm = (header.workWithMe || []).map((x: any) => ({ label: x.label, href: x.href, description: x.description }));
+  if (!wwm.some((x: any) => x.href === "/work-with-me/couples/")) {
+    const item = { label: "Couples Sessions", href: "/work-with-me/couples/", description: "A shared space for two." };
+    const idx = wwm.findIndex((x: any) => /corporate/i.test(x.href || ""));
+    if (idx >= 0) wwm.splice(idx, 0, item); else wwm.push(item);
+  }
+  await p.updateGlobal({ slug: "header", data: { ...header, workWithMe: wwm, couples: [] } as any, overrideAccess: true });
+  console.log("header.workWithMe updated with Couples; standalone dropdown cleared");
   process.exit(0);
 })().catch((e) => { console.error("ERR", e.message); process.exit(1); });
