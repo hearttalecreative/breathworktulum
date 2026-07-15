@@ -100,7 +100,7 @@ function BlockSwitch({
         return (
           <section
             data-fullbleed-hero
-            className="relative flex min-h-[92svh] items-end overflow-clip bg-night"
+            className="relative flex min-h-[100svh] items-end overflow-clip bg-night"
           >
             <div className="absolute inset-0">
               <HeroVideo url="https://vimeo.com/773408641/7c81c6bfcc" poster="/hero/hero-poster.jpg" loopEnd={25.8} />

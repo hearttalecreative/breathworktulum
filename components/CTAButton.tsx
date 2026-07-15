@@ -12,7 +12,7 @@ const filledBase =
 // Light variants pop on dark photography (no dark-on-dark).
 // Each carries a sheen glint (color matched to its fill); the primary also glows.
 function filledVariant(variant: "primary" | "whatsapp", onDark: boolean) {
-  if (variant === "whatsapp") return `${filledBase} btn-sheen bg-whatsapp text-pure hover:bg-ink`;
+  if (variant === "whatsapp") return `${filledBase} btn-sheen-gold bg-gold-soft text-ink hover:bg-[#b7975f]`;
   return onDark
     ? `${filledBase} btn-sheen-gold btn-glow bg-shell text-ink hover:bg-champagne`
     : `${filledBase} btn-sheen btn-glow bg-ink text-pure hover:bg-forest`;

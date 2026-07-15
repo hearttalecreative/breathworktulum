@@ -32,7 +32,7 @@ export const SITE = {
     instagram: "https://www.instagram.com/breathworktulum/",
     googleReviews: "https://g.page/r/CXT0CCkbKfFWEBM/review",
     linkedin: "https://www.linkedin.com/in/sabine-binns-039787a/",
-    facebook: "https://www.facebook.com/2105142943041254",
+    facebook: "https://www.facebook.com/breathworktulum",
   },
 } as const;
 
