@@ -315,13 +315,50 @@ export const NewsletterBlock: Block = {
   ],
 };
 
+export const GalleryBlock: Block = {
+  slug: "gallery",
+  labels: { singular: "Photo gallery", plural: "Photo galleries" },
+  fields: [
+    { name: "heading", type: "text" },
+    { name: "intro", type: "textarea" },
+    {
+      name: "images",
+      type: "array",
+      labels: { singular: "Photo", plural: "Photos" },
+      admin: { description: "Add photos. Drag to reorder. They lay out in a responsive grid." },
+      fields: [
+        { name: "image", type: "upload", relationTo: "media", required: true },
+        { name: "caption", type: "text", admin: { description: "Optional caption." } },
+      ],
+    },
+    tone,
+    width,
+  ],
+};
+
+export const MediaFeatureBlock: Block = {
+  slug: "mediaFeature",
+  labels: { singular: "Feature band (big media)", plural: "Feature bands" },
+  fields: [
+    { name: "image", type: "upload", relationTo: "media", required: true, admin: { description: "Large background image. Used as the poster if a video is set." } },
+    { name: "videoUrl", type: "text", admin: { description: "Optional video (Vimeo/YouTube link, or a direct .mp4). Shows instead of the image — space for drone footage." } },
+    { name: "eyebrow", type: "text" },
+    { name: "heading", type: "text" },
+    { name: "body", type: "textarea" },
+    ctaArray("ctas"),
+    tone,
+  ],
+};
+
 export const allBlocks: Block[] = [
   HeroBlock,
   RichTextBlock,
   ThreePhasesBlock,
   SituationsBlock,
   PhotoBandBlock,
+  MediaFeatureBlock,
   WaysGridBlock,
+  GalleryBlock,
   TestimonialsBlock,
   SplitImageTextBlock,
   SignatureBandBlock,

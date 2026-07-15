@@ -350,6 +350,57 @@ export interface Page {
             blockType: 'photoBand';
           }
         | {
+            /**
+             * Large background image. Used as the poster if a video is set.
+             */
+            image: number | Media;
+            /**
+             * Optional video (Vimeo/YouTube link, or a direct .mp4). Shows instead of the image — space for drone footage.
+             */
+            videoUrl?: string | null;
+            eyebrow?: string | null;
+            heading?: string | null;
+            body?: string | null;
+            ctas?:
+              | {
+                  label?: string | null;
+                  variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+                  action: 'whatsapp' | 'internal' | 'email' | 'external';
+                  whatsappContext?:
+                    | (
+                        | 'general'
+                        | 'foundation'
+                        | 'immersive'
+                        | 'oneDayPrivate'
+                        | 'couples'
+                        | 'personalizedRetreat'
+                        | 'curated'
+                        | 'corporate'
+                        | 'signature'
+                        | 'discoveryCall'
+                        | 'contact'
+                      )
+                    | null;
+                  /**
+                   * e.g. /the-method/ or #immersive (internal) or full https URL.
+                   */
+                  href?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
+             */
+            tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'mediaFeature';
+          }
+        | {
             heading: string;
             cards?:
               | {
@@ -372,6 +423,38 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'waysGrid';
+          }
+        | {
+            heading?: string | null;
+            intro?: string | null;
+            /**
+             * Add photos. Drag to reorder. They lay out in a responsive grid.
+             */
+            images?:
+              | {
+                  image: number | Media;
+                  /**
+                   * Optional caption.
+                   */
+                  caption?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
+             */
+            tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * How wide the text appears. Narrow = easier to read.
+             */
+            width?: ('narrow' | 'default' | 'wide') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'gallery';
           }
         | {
             heading?: string | null;
@@ -1162,6 +1245,29 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        mediaFeature?:
+          | T
+          | {
+              image?: T;
+              videoUrl?: T;
+              eyebrow?: T;
+              heading?: T;
+              body?: T;
+              ctas?:
+                | T
+                | {
+                    label?: T;
+                    variant?: T;
+                    action?: T;
+                    whatsappContext?: T;
+                    href?: T;
+                    id?: T;
+                  };
+              tone?: T;
+              anchor?: T;
+              id?: T;
+              blockName?: T;
+            };
         waysGrid?:
           | T
           | {
@@ -1177,6 +1283,24 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               tone?: T;
+              anchor?: T;
+              id?: T;
+              blockName?: T;
+            };
+        gallery?:
+          | T
+          | {
+              heading?: T;
+              intro?: T;
+              images?:
+                | T
+                | {
+                    image?: T;
+                    caption?: T;
+                    id?: T;
+                  };
+              tone?: T;
+              width?: T;
               anchor?: T;
               id?: T;
               blockName?: T;
@@ -1630,6 +1754,17 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  couples?:
+    | {
+        label: string;
+        href: string;
+        /**
+         * Optional micro-copy shown under the link in the submenu.
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Standalone top-bar links (e.g. The Method, Blog, About, Contact).
    */
@@ -1761,6 +1896,14 @@ export interface HeaderSelect<T extends boolean = true> {
         id?: T;
       };
   retreats?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        description?: T;
+        id?: T;
+      };
+  couples?:
     | T
     | {
         label?: T;
