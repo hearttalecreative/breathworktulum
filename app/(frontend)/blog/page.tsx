@@ -38,7 +38,9 @@ type PostCard = {
 };
 
 function postDate(p: PostCard): string {
-  const d = p.publishedAt || p.createdAt;
+  // Only show a real, author-set date — the scraped import left createdAt equal
+  // for every post, so fall back to nothing rather than a wrong shared date.
+  const d = p.publishedAt;
   if (!d) return "";
   try {
     return new Date(d).toLocaleDateString("en-US", { month: "long", year: "numeric" });
