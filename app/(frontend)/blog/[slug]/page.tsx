@@ -107,8 +107,8 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           <Link href="/blog/" className="eyebrow inline-flex items-center gap-1.5 text-gold-ink/80 transition-colors hover:text-gold-ink">
             <span aria-hidden>&larr;</span> Blog
           </Link>
-          {formatDate(published) ? (
-            <p className="mt-6 text-sm text-ink-soft/70">{formatDate(published)}</p>
+          {post.publishedAt && formatDate(post.publishedAt) ? (
+            <p className="mt-6 text-sm text-ink-soft/70">{formatDate(post.publishedAt)}</p>
           ) : null}
           <h1 className="mt-2 font-serif text-[clamp(2rem,5vw,3.25rem)] leading-[1.08] text-ink">{post.title}</h1>
           {post.excerpt ? <p className="measure mt-5 text-[1.15rem] leading-relaxed text-ink-soft">{post.excerpt}</p> : null}

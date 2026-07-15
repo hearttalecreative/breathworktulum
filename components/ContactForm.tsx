@@ -15,8 +15,8 @@ export default function ContactForm() {
 
     // Honeypot
     if (data.company) return;
-    if (!data.name || !data.email || !data.message) {
-      setError("Please fill in your name, email, and message.");
+    if (!data.name || !data.email || !data.phone || !data.message) {
+      setError("Please fill in your name, email, phone, and message.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email))) {
@@ -65,7 +65,7 @@ export default function ContactForm() {
 
       <Field label="Your name" name="name" required />
       <Field label="Email" name="email" type="email" required />
-      <Field label="Phone or WhatsApp (optional)" name="phone" />
+      <Field label="Phone or WhatsApp" name="phone" type="tel" required />
 
       <div>
         <label htmlFor="subject" className="mb-1.5 block text-sm font-medium text-ink">
