@@ -109,15 +109,13 @@ async function run() {
         { label: "Private Sessions", href: "/work-with-me/private-sessions/", description: "Find the right starting point for where you are right now." },
         { label: "Personalized Retreats", href: "/work-with-me/personalized-retreats/", description: "A multi-day process, designed around you." },
         { label: "Curated Group Experiences", href: "/work-with-me/curated-group-experiences/", description: "Private groups, families, and events." },
+        { label: "Couples Sessions", href: "/work-with-me/couples/", description: "A shared space for two." },
         { label: "Corporate", href: "/work-with-me/corporate/", description: "For teams carrying real pressure." },
       ],
       retreats: [
         { label: "Personalized Retreats", href: "/work-with-me/personalized-retreats/", description: "Built around you, in person or online." },
         { label: "1 Day Group Retreat", href: "/work-with-me/group-practice/", description: "A day in a national park, small group." },
         { label: "Signature Retreat", href: "/retreat-riviera-maya-2026/", description: "Five days in community, Riviera Maya." },
-      ],
-      couples: [
-        { label: "Couples Sessions", href: "/work-with-me/couples/", description: "A shared space for two." },
       ],
       primary: [
         { label: "The Method", href: "/the-method/" },

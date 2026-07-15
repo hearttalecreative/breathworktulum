@@ -9,7 +9,6 @@ export default function Header({
   brandName = "Breathwork Tulum",
   workWithMe = [],
   retreats = [],
-  couples = [],
   primary = [],
   whatsappHref = "#",
   email = "",
@@ -17,7 +16,6 @@ export default function Header({
   brandName?: string;
   workWithMe?: NavLink[];
   retreats?: NavLink[];
-  couples?: NavLink[];
   primary?: NavLink[];
   whatsappHref?: string;
   email?: string;
@@ -123,12 +121,9 @@ export default function Header({
         <nav className="hidden items-center gap-10 lg:flex" aria-label="Primary">
           <NavDropdown label="Work With Me" eyebrow="Ways to work together" items={workWithMe} linkColor={linkColor} />
           <NavDropdown label="Retreats" eyebrow="Retreat offerings" items={retreats} linkColor={linkColor} />
-          {couples.length > 0 && (
-            <NavDropdown label="Couples" eyebrow="For two" items={couples} linkColor={linkColor} />
-          )}
 
           {primary.map((item) => (
-            <Link key={item.href} href={item.href} className={`link-underline py-2 text-[0.98rem] transition-colors ${linkColor}`}>
+            <Link key={item.href} href={item.href} className={`link-underline whitespace-nowrap py-2 text-[0.98rem] transition-colors ${linkColor}`}>
               {item.label}
             </Link>
           ))}
@@ -232,23 +227,6 @@ export default function Header({
             </>
           )}
 
-          {couples.length > 0 && (
-            <>
-              <span className="eyebrow mb-2 text-gold-soft">Couples</span>
-              {couples.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="py-0.5 font-sans text-[0.95rem] text-cream-dim/80 transition-colors hover:text-pure"
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <span aria-hidden className="my-4 h-px w-10 bg-gold-soft/50" />
-            </>
-          )}
-
           {primary.map((item) => (
             <Link
               key={item.href}
@@ -292,7 +270,7 @@ function NavDropdown({
   if (!items.length) return null;
   return (
     <div className="group relative">
-      <button className={`flex items-center gap-1.5 py-2 text-[0.98rem] transition-colors ${linkColor}`}>
+      <button className={`flex items-center gap-1.5 whitespace-nowrap py-2 text-[0.98rem] transition-colors ${linkColor}`}>
         {label}
         <span aria-hidden className="text-[0.55rem] transition-transform duration-300 group-hover:rotate-180">
           ▾

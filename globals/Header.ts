@@ -39,14 +39,6 @@ export const Header: GlobalConfig = {
       fields: linkFields,
     },
     {
-      name: "couples",
-      type: "array",
-      label: "\"Couples\" submenu",
-      labels: { singular: "Link", plural: "Links" },
-      admin: { description: "Links inside the \"Couples\" dropdown. Leave empty to hide it." },
-      fields: linkFields,
-    },
-    {
       name: "primary",
       type: "array",
       label: "Primary links",

@@ -1631,20 +1631,6 @@ export interface Header {
       }[]
     | null;
   /**
-   * Links inside the "Couples" dropdown. Leave empty to hide it.
-   */
-  couples?:
-    | {
-        label: string;
-        href: string;
-        /**
-         * Optional micro-copy shown under the link in the submenu.
-         */
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
    * Standalone top-bar links (e.g. The Method, Blog, About, Contact).
    */
   primary?:
@@ -1775,14 +1761,6 @@ export interface HeaderSelect<T extends boolean = true> {
         id?: T;
       };
   retreats?:
-    | T
-    | {
-        label?: T;
-        href?: T;
-        description?: T;
-        id?: T;
-      };
-  couples?:
     | T
     | {
         label?: T;

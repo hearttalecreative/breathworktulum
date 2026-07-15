@@ -110,7 +110,6 @@ export default async function RootLayout({
           brandName={(s.brandName as string) || "Breathwork Tulum"}
           workWithMe={header.workWithMe || []}
           retreats={header.retreats || []}
-          couples={header.couples || []}
           primary={header.primary || []}
           whatsappHref={waHref}
           email={(s.email as string) || ""}
