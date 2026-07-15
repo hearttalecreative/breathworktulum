@@ -116,6 +116,9 @@ async function run() {
         { label: "1 Day Group Retreat", href: "/work-with-me/group-practice/", description: "A day in a national park, small group." },
         { label: "Signature Retreat", href: "/retreat-riviera-maya-2026/", description: "Five days in community, Riviera Maya." },
       ],
+      couples: [
+        { label: "Couples Sessions", href: "/work-with-me/couples/", description: "A shared space for two." },
+      ],
       primary: [
         { label: "The Method", href: "/the-method/" },
         { label: "Blog", href: "/blog/" },

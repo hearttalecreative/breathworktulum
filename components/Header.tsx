@@ -9,6 +9,7 @@ export default function Header({
   brandName = "Breathwork Tulum",
   workWithMe = [],
   retreats = [],
+  couples = [],
   primary = [],
   whatsappHref = "#",
   email = "",
@@ -16,6 +17,7 @@ export default function Header({
   brandName?: string;
   workWithMe?: NavLink[];
   retreats?: NavLink[];
+  couples?: NavLink[];
   primary?: NavLink[];
   whatsappHref?: string;
   email?: string;
@@ -121,6 +123,9 @@ export default function Header({
         <nav className="hidden items-center gap-10 lg:flex" aria-label="Primary">
           <NavDropdown label="Work With Me" eyebrow="Ways to work together" items={workWithMe} linkColor={linkColor} />
           <NavDropdown label="Retreats" eyebrow="Retreat offerings" items={retreats} linkColor={linkColor} />
+          {couples.length > 0 && (
+            <NavDropdown label="Couples" eyebrow="For two" items={couples} linkColor={linkColor} />
+          )}
 
           {primary.map((item) => (
             <Link key={item.href} href={item.href} className={`link-underline py-2 text-[0.98rem] transition-colors ${linkColor}`}>
@@ -214,6 +219,23 @@ export default function Header({
             <>
               <span className="eyebrow mb-2 text-gold-soft">Retreats</span>
               {retreats.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="py-0.5 font-sans text-[0.95rem] text-cream-dim/80 transition-colors hover:text-pure"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <span aria-hidden className="my-4 h-px w-10 bg-gold-soft/50" />
+            </>
+          )}
+
+          {couples.length > 0 && (
+            <>
+              <span className="eyebrow mb-2 text-gold-soft">Couples</span>
+              {couples.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
