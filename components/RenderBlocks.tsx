@@ -6,6 +6,7 @@ import ContactForm from "./ContactForm";
 import NewsletterSignup from "./NewsletterSignup";
 import PayloadImage from "./PayloadImage";
 import HeroVideo from "./HeroVideo";
+import ExpandableSection from "./ExpandableSection";
 import WaveMark from "./WaveMark";
 import Reveal from "./Reveal";
 import { resolveCta, resolveCtas, type RawCta } from "@/lib/cta";
@@ -54,6 +55,19 @@ function toVideoEmbed(url: string): string {
   const yt = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]+)/i);
   if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1&mute=1&loop=1&playlist=${yt[1]}&controls=0&modestbranding=1&rel=0`;
   return "";
+}
+
+// One chapter of an expandable story block (About). Module scope so it isn't
+// redefined on every render.
+function StoryChapter({ c, first }: { c: { title?: string; body?: unknown }; first: boolean }) {
+  return (
+    <div className={first ? "" : "mt-10"}>
+      {c.title ? <h3 className="font-serif text-[1.35rem] leading-snug text-ink">{c.title}</h3> : null}
+      <div className="prose-body measure mt-4 space-y-4 text-ink-soft">
+        {c.body ? <RichText data={c.body as never} /> : null}
+      </div>
+    </div>
+  );
 }
 
 // Delicate divider: a gold filet flanking the brand wave mark.
@@ -224,6 +238,28 @@ function BlockSwitch({
             <CtaRow ctas={ctas} onDark />
           </div>
         </section>
+      );
+    }
+
+    case "expandableStory": {
+      const chapters = (b.chapters as { title?: string; body?: unknown; collapsed?: boolean }[]) || [];
+      const open = chapters.filter((c) => !c.collapsed);
+      const folded = chapters.filter((c) => c.collapsed);
+      return (
+        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined}>
+          <Ornament start />
+          <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
+          <div className="mt-8">
+            {open.map((c, i) => <StoryChapter key={`o${i}`} c={c} first={i === 0} />)}
+          </div>
+          {folded.length ? (
+            <ExpandableSection label={(b.moreLabel as string) || "Read more"}>
+              <div className="mt-10">
+                {folded.map((c, i) => <StoryChapter key={`f${i}`} c={c} first={i === 0} />)}
+              </div>
+            </ExpandableSection>
+          ) : null}
+        </Section>
       );
     }
 

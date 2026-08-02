@@ -315,6 +315,41 @@ export const NewsletterBlock: Block = {
   ],
 };
 
+export const ExpandableStoryBlock: Block = {
+  slug: "expandableStory",
+  labels: { singular: "Story with Read more", plural: "Stories" },
+  fields: [
+    { name: "heading", type: "text", required: true },
+    {
+      name: "chapters",
+      type: "array",
+      labels: { singular: "Chapter", plural: "Chapters" },
+      admin: {
+        description:
+          'Chapters show in order. Tick "Hidden behind Read more" to fold one into the expandable part. Leave every box unticked to show them all as plain sections.',
+      },
+      fields: [
+        { name: "title", type: "text" },
+        { name: "body", type: "richText" },
+        {
+          name: "collapsed",
+          type: "checkbox",
+          label: "Hidden behind Read more",
+          defaultValue: false,
+        },
+      ],
+    },
+    {
+      name: "moreLabel",
+      type: "text",
+      defaultValue: "Read more",
+      admin: { description: 'Text of the expand link, e.g. "Read more".' },
+    },
+    tone,
+    width,
+  ],
+};
+
 export const GalleryBlock: Block = {
   slug: "gallery",
   labels: { singular: "Photo gallery", plural: "Photo galleries" },
@@ -359,6 +394,7 @@ export const allBlocks: Block[] = [
   MediaFeatureBlock,
   WaysGridBlock,
   GalleryBlock,
+  ExpandableStoryBlock,
   TestimonialsBlock,
   SplitImageTextBlock,
   SignatureBandBlock,

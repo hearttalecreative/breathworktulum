@@ -457,6 +457,53 @@ export interface Page {
             blockType: 'gallery';
           }
         | {
+            heading: string;
+            /**
+             * Chapters show in order. Tick "Hidden behind Read more" to fold one into the expandable part. Leave every box unticked to show them all as plain sections.
+             */
+            chapters?:
+              | {
+                  title?: string | null;
+                  body?: {
+                    root: {
+                      type: string;
+                      children: {
+                        type: any;
+                        version: number;
+                        [k: string]: unknown;
+                      }[];
+                      direction: ('ltr' | 'rtl') | null;
+                      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                      indent: number;
+                      version: number;
+                    };
+                    [k: string]: unknown;
+                  } | null;
+                  collapsed?: boolean | null;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Text of the expand link, e.g. "Read more".
+             */
+            moreLabel?: string | null;
+            /**
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
+             */
+            tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * How wide the text appears. Narrow = easier to read.
+             */
+            width?: ('narrow' | 'default' | 'wide') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'expandableStory';
+          }
+        | {
             heading?: string | null;
             items?: (number | Testimonial)[] | null;
             reviewsLabel?: string | null;
@@ -1299,6 +1346,25 @@ export interface PagesSelect<T extends boolean = true> {
                     caption?: T;
                     id?: T;
                   };
+              tone?: T;
+              width?: T;
+              anchor?: T;
+              id?: T;
+              blockName?: T;
+            };
+        expandableStory?:
+          | T
+          | {
+              heading?: T;
+              chapters?:
+                | T
+                | {
+                    title?: T;
+                    body?: T;
+                    collapsed?: T;
+                    id?: T;
+                  };
+              moreLabel?: T;
               tone?: T;
               width?: T;
               anchor?: T;
