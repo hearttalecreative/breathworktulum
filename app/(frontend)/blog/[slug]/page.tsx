@@ -6,6 +6,7 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import Section from "@/components/Section";
 import PayloadImage from "@/components/PayloadImage";
 import JsonLd from "@/components/JsonLd";
+import ShareButtons from "@/components/ShareButtons";
 import LivePreviewListener from "@/components/LivePreviewListener";
 import { getPost, getAuthUser } from "@/lib/payload";
 import { postConverters } from "@/lib/richtextConverters";
@@ -123,9 +124,12 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
         ) : null}
 
         <Section tone="cream" width="narrow">
-          <div className="prose-body measure space-y-5 text-[1.05rem] leading-relaxed text-ink-soft [&_h2]:mt-10 [&_h2]:font-serif [&_h2]:text-[1.6rem] [&_h2]:text-ink [&_h3]:mt-8 [&_h3]:font-serif [&_h3]:text-[1.3rem] [&_h3]:text-ink [&_h4]:mt-6 [&_h4]:font-semibold [&_h4]:text-ink [&_a]:text-gold-ink [&_a]:underline [&_strong]:text-ink [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5">
+          {/* Paragraph rhythm is set here (22px) so the CMS body never needs
+              manual spacing per post — space-y only reached direct children. */}
+          <div className="prose-body measure text-[1.05rem] leading-relaxed text-ink-soft [&_p]:mb-[22px] [&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:font-serif [&_h2]:text-[1.6rem] [&_h2]:text-ink [&_h3]:mt-8 [&_h3]:mb-2 [&_h3]:font-serif [&_h3]:text-[1.3rem] [&_h3]:text-ink [&_h4]:mt-6 [&_h4]:mb-2 [&_h4]:font-semibold [&_h4]:text-ink [&_a]:text-gold-ink [&_a]:underline [&_strong]:text-ink [&_ul]:mb-[22px] [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-[22px] [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-2">
             {post.body ? <RichText data={post.body as never} converters={postConverters} /> : null}
           </div>
+          <ShareButtons url={url} title={post.title} />
         </Section>
 
         <Section tone="sand" width="narrow">

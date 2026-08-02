@@ -147,11 +147,23 @@ export const getPublishedPosts = unstable_cache(
         excerpt: true,
         heroImage: true,
         publishedAt: true,
+        createdAt: true,
         updatedAt: true,
         noindex: true,
       },
     });
-    return res.docs;
+    // Postgres sorts NULLs first on DESC, which pushed the newest (dated) posts
+    // to the bottom — every migrated post has an empty publishedAt. Re-sort so
+    // posts with a real date lead, newest first, and undated ones follow.
+    const time = (v: unknown) => (v ? new Date(v as string).getTime() : 0);
+    return [...res.docs].sort((a, b) => {
+      const ap = time((a as { publishedAt?: string }).publishedAt);
+      const bp = time((b as { publishedAt?: string }).publishedAt);
+      if (ap && bp) return bp - ap;
+      if (ap) return -1;
+      if (bp) return 1;
+      return time((b as { createdAt?: string }).createdAt) - time((a as { createdAt?: string }).createdAt);
+    });
   },
   ["published-posts"],
   { revalidate: TTL, tags: ["posts"] }
