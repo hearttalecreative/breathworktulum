@@ -387,46 +387,50 @@ function BlockSwitch({
         { n: "Heal", line: "The emotional layer surfaces. What was stored has room to move." },
         { n: "Transform", line: "Integration. What shifted gets language, so the change holds." },
       ];
-      // Dark "breath" anchor: forest bg, photo, big editorial phases (no icon).
+      // The section now follows the block's own Background colour instead of
+      // being hard-coded to forest green, and the photo sits in a plain rounded
+      // frame — the arch and the framed card were the three things she named.
+      // Extra top padding gives the transition from the photo band above room
+      // to breathe.
+      const dark = b.tone === "night" || b.tone === "forest";
+      const surface = dark ? "on-dark bg-forest text-cream-dim" : b.tone === "sand" ? "bg-sand text-ink" : "bg-shell text-ink";
       return (
         <section
-          className="on-dark bg-forest px-[clamp(20px,5vw,80px)] py-section text-cream-dim"
+          className={`${surface} px-[clamp(20px,5vw,80px)] py-section pt-[calc(var(--spacing-section)+clamp(1rem,4vh,3rem))]`}
           id={(b.anchor as string) || undefined}
         >
           <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
             {b.image ? (
-              <div className="card relative order-last aspect-[4/5] arch bg-night lg:order-first">
-                <div className="card-media absolute inset-0">
-                  <PayloadImage media={b.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
-                </div>
+              <div className={`relative order-last aspect-[4/5] overflow-hidden rounded-2xl ${dark ? "bg-night" : "bg-sand"} lg:order-first`}>
+                <PayloadImage media={b.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
               </div>
             ) : null}
             <div>
               {b.eyebrow ? (
                 <span className="inline-flex items-center gap-3">
                   <span className="breath-dot" aria-hidden />
-                  <span className="eyebrow text-champagne">{b.eyebrow as string}</span>
+                  <span className={`eyebrow ${dark ? "text-champagne" : "text-gold-ink"}`}>{b.eyebrow as string}</span>
                 </span>
               ) : null}
-              {b.heading ? <h2 className="t-h2 mt-4 text-pure">{emph(b.heading as string)}</h2> : null}
-              {b.lede ? <p className="prose-lede mt-5 text-cream-dim">{b.lede as string}</p> : null}
+              {b.heading ? <h2 className={`t-h2 mt-4 ${dark ? "text-pure" : "text-ink"}`}>{emph(b.heading as string)}</h2> : null}
+              {b.lede ? <p className={`prose-lede mt-5 ${dark ? "text-cream-dim" : "text-ink-soft"}`}>{b.lede as string}</p> : null}
               <ol className="stagger mt-10 space-y-7">
                 {phases.map((p, i) => (
-                  <li key={p.n} className="flex gap-5 border-t border-cream-dim/15 pt-7 first:border-0 first:pt-0">
+                  <li key={p.n} className={`flex gap-5 border-t pt-7 first:border-0 first:pt-0 ${dark ? "border-cream-dim/15" : "border-line"}`}>
                     <span className="font-serif text-3xl text-gold-soft tabular-nums">0{i + 1}</span>
                     <div>
-                      <h3 className="text-2xl text-pure">{p.n}</h3>
-                      <p className="mt-1 text-cream-dim">{p.line}</p>
+                      <h3 className={`text-2xl ${dark ? "text-pure" : "text-ink"}`}>{p.n}</h3>
+                      <p className={`mt-1 ${dark ? "text-cream-dim" : "text-ink-soft"}`}>{p.line}</p>
                     </div>
                   </li>
                 ))}
               </ol>
               {b.body ? (
-                <div className="prose-body mt-8 max-w-xl space-y-4 leading-relaxed text-cream-dim [&_strong]:text-pure">
+                <div className={`prose-body mt-8 max-w-xl space-y-4 leading-relaxed ${dark ? "text-cream-dim [&_strong]:text-pure" : "text-ink-soft [&_strong]:text-ink"}`}>
                   <RichText data={b.body as never} converters={bodyConverters} />
                 </div>
               ) : null}
-              {cta ? <div className="mt-9"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark>{cta.label}</CTAButton></div> : null}
+              {cta ? <div className="mt-9"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark={dark}>{cta.label}</CTAButton></div> : null}
             </div>
           </div>
         </section>
@@ -557,9 +561,11 @@ function BlockSwitch({
       return (
         <section className="on-dark relative flex min-h-[66svh] items-end overflow-hidden bg-night px-[clamp(20px,5vw,80px)] py-section text-cream-dim" id={(b.anchor as string) || undefined}>
           <PayloadImage media={b.image as never} fill sizes="100vw" className="object-cover" />
-          {/* Directional scrim: the lower-left, where the type sits, stays dark for AA. */}
-          <div className="absolute inset-0 bg-gradient-to-t from-night via-night/70 to-night/25" aria-hidden />
-          <div className="absolute inset-0 bg-gradient-to-r from-night/90 via-night/35 to-transparent" aria-hidden />
+          {/* Directional scrim: only the lower-left, where the type sits, needs to
+              stay dark for contrast. The previous values covered the whole frame,
+              which is why the photograph read as murky. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-night/90 via-night/35 to-transparent" aria-hidden />
+          <div className="absolute inset-0 bg-gradient-to-r from-night/70 via-night/10 to-transparent" aria-hidden />
           <div className="relative mx-auto w-full max-w-6xl">
             <div className="max-w-xl">
               {b.eyebrow ? <span className="eyebrow eyebrow--filet text-gold-soft">{b.eyebrow as string}</span> : null}

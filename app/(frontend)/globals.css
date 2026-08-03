@@ -218,9 +218,13 @@
 /* === Motion primitives (slow, soft, purposeful) === */
 
 /* Reveal on scroll: fade + 20px rise. Toggled by the Reveal client wrapper. */
-.reveal {
+/* Same fail-safe as .stagger: hide only while the wrapper says it is pending,
+   so a section can never be left permanently invisible. */
+.reveal[data-shown="false"] {
   opacity: 0;
   transform: translateY(20px);
+}
+.reveal {
   transition:
     opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
@@ -490,9 +494,13 @@
 .float-slow { animation: floatslow 9s ease-in-out infinite; }
 
 /* Staggered reveal — children fade+rise in sequence. Paired with .reveal. */
-.stagger > * {
+/* Scoped to data-shown="false" on purpose: if the observer never fires, or JS
+   fails, the content stays visible instead of being stuck at opacity 0. */
+[data-shown="false"] .stagger > * {
   opacity: 0;
   transform: translateY(18px);
+}
+.stagger > * {
   transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 [data-shown="true"] .stagger > * { opacity: 1; transform: none; }
