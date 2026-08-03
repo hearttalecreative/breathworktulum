@@ -200,6 +200,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero';
@@ -266,6 +270,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'richText';
@@ -327,6 +335,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'threePhases';
@@ -349,6 +361,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'situations';
@@ -365,6 +381,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'photoBand';
@@ -420,6 +440,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'mediaFeature';
@@ -444,6 +468,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'waysGrid';
@@ -476,6 +504,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'gallery';
@@ -530,6 +562,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'detailsGrid';
@@ -577,6 +613,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'expandableStory';
@@ -594,6 +634,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'testimonialsBlock';
@@ -650,6 +694,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'splitImageText';
@@ -688,6 +736,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'signatureBand';
@@ -735,6 +787,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'ctaSection';
@@ -809,6 +865,10 @@ export interface Page {
              * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'formatDetail';
@@ -830,6 +890,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'faq';
@@ -881,6 +945,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'list';
@@ -910,6 +978,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'twoColumnLists';
@@ -952,6 +1024,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'contactTiles';
@@ -967,6 +1043,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'contactForm';
@@ -982,6 +1062,10 @@ export interface Page {
              * Optional anchor id for #links (e.g. inquiry).
              */
             anchor?: string | null;
+            /**
+             * Keeps the section saved but removes it from the live site.
+             */
+            hidden?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'newsletter';
@@ -1305,6 +1389,7 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1328,6 +1413,7 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               width?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1352,6 +1438,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1369,6 +1456,7 @@ export interface PagesSelect<T extends boolean = true> {
               closing?: T;
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1380,6 +1468,7 @@ export interface PagesSelect<T extends boolean = true> {
               caption?: T;
               height?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1404,6 +1493,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1423,6 +1513,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1441,6 +1532,7 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               width?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1469,6 +1561,7 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               width?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1488,6 +1581,7 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               width?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1500,6 +1594,7 @@ export interface PagesSelect<T extends boolean = true> {
               reviewsUrl?: T;
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1522,6 +1617,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1543,6 +1639,7 @@ export interface PagesSelect<T extends boolean = true> {
                     href?: T;
                   };
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1565,6 +1662,7 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               width?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1596,6 +1694,7 @@ export interface PagesSelect<T extends boolean = true> {
                     id?: T;
                   };
               tone?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1612,6 +1711,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1640,6 +1740,7 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               width?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1664,6 +1765,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1684,6 +1786,7 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1694,6 +1797,7 @@ export interface PagesSelect<T extends boolean = true> {
               intro?: T;
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };
@@ -1704,6 +1808,7 @@ export interface PagesSelect<T extends boolean = true> {
               intro?: T;
               tone?: T;
               anchor?: T;
+              hidden?: T;
               id?: T;
               blockName?: T;
             };

@@ -506,8 +506,22 @@ const anchorField = {
   type: "text" as const,
   admin: { position: "sidebar" as const, description: "Optional anchor id for #links (e.g. inquiry)." },
 };
+
+// Every block can be parked without deleting it. A section whose copy has not
+// been written yet stays in the page, invisible to visitors, and comes back by
+// unticking one box.
+const hiddenField = {
+  name: "hidden",
+  type: "checkbox" as const,
+  label: "Hide this section",
+  defaultValue: false,
+  admin: {
+    position: "sidebar" as const,
+    description: "Keeps the section saved but removes it from the live site.",
+  },
+};
+
 for (const b of allBlocks) {
-  if (!b.fields.some((f) => "name" in f && f.name === "anchor")) {
-    b.fields.push(anchorField);
-  }
+  if (!b.fields.some((f) => "name" in f && f.name === "anchor")) b.fields.push(anchorField);
+  if (!b.fields.some((f) => "name" in f && f.name === "hidden")) b.fields.push(hiddenField);
 }

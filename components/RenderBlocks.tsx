@@ -124,9 +124,12 @@ export default function RenderBlocks({
   settings: Settings;
 }) {
   if (!blocks?.length) return null;
+  // Sections parked from the panel stay in the document but never render.
+  const visible = blocks.filter((b) => !b.hidden);
+  if (!visible.length) return null;
   return (
     <>
-      {blocks.map((b, i) =>
+      {visible.map((b, i) =>
         i === 0 ? (
           // Hero / first block renders immediately (LCP — no reveal delay).
           <BlockSwitch key={b.id || i} block={b} settings={settings} first />
