@@ -270,21 +270,24 @@
 .card:hover .card-media::after { opacity: 0.35; }
 
 /* Hero scrim — darker at top (nav legibility) and bottom (content legibility). */
+/* Kept only as heavy as the type needs. The previous values darkened the whole
+   frame, which is why the hero footage read as murky; the scrim now clears the
+   middle of the image and only deepens behind the headline at the bottom. */
 .hero-scrim {
   background:
     linear-gradient(
       90deg,
-      rgba(25, 27, 23, 0.5) 0%,
-      rgba(25, 27, 23, 0.12) 48%,
-      rgba(25, 27, 23, 0) 78%
+      rgba(25, 27, 23, 0.34) 0%,
+      rgba(25, 27, 23, 0.06) 45%,
+      rgba(25, 27, 23, 0) 72%
     ),
     linear-gradient(
       180deg,
-      rgba(25, 27, 23, 0.55) 0%,
-      rgba(25, 27, 23, 0.05) 20%,
-      rgba(25, 27, 23, 0.58) 48%,
-      rgba(25, 27, 23, 0.84) 70%,
-      rgba(25, 27, 23, 0.95) 100%
+      rgba(25, 27, 23, 0.34) 0%,
+      rgba(25, 27, 23, 0) 22%,
+      rgba(25, 27, 23, 0.16) 52%,
+      rgba(25, 27, 23, 0.62) 78%,
+      rgba(25, 27, 23, 0.82) 100%
     );
 }
 
@@ -301,7 +304,9 @@
 .t-display {
   font-family: var(--font-serif);
   font-weight: 300;
-  font-size: clamp(2.15rem, 5vw, 4.25rem);
+  /* Dialled back from 5vw / 4.25rem — the hero headline was overpowering the
+     footage on desktop. Phones keep roughly the size they had. */
+  font-size: clamp(2rem, 3.9vw, 3.35rem);
   line-height: 1.08;
   letter-spacing: -0.012em;
   text-wrap: balance;
