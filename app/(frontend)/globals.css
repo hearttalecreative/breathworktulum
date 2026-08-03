@@ -49,8 +49,10 @@
   --font-serif: var(--font-canela), "Canela", Georgia, "Times New Roman", serif;
   --font-sans: var(--font-sohne), "Söhne", system-ui, -apple-system, sans-serif;
 
-  /* Vertical rhythm — generous, "breathing" */
-  --spacing-section: clamp(4.5rem, 12vh, 10rem);
+  /* Vertical rhythm. Each section pads top and bottom, so consecutive blocks
+     doubled it — up to 20rem of dead space between two paragraphs, which is
+     what read as disconnected. Still generous, just not a canyon. */
+  --spacing-section: clamp(3.25rem, 7.5vh, 6.5rem);
 }
 
 :root {
@@ -310,7 +312,7 @@
   font-weight: 300;
   /* Dialled back from 5vw / 4.25rem — the hero headline was overpowering the
      footage on desktop. Phones keep roughly the size they had. */
-  font-size: clamp(2rem, 3.9vw, 3.35rem);
+  font-size: clamp(1.85rem, 3.9vw, 3.35rem);
   line-height: 1.08;
   letter-spacing: -0.012em;
   text-wrap: balance;
@@ -322,7 +324,7 @@
 .t-h2 {
   font-family: var(--font-serif);
   font-weight: 300;
-  font-size: clamp(1.85rem, 3.2vw + 0.4rem, 3rem);
+  font-size: clamp(1.6rem, 3.2vw + 0.4rem, 3rem);
   line-height: 1.13;
   letter-spacing: -0.008em;
   text-wrap: balance;

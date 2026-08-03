@@ -170,7 +170,7 @@ function BlockSwitch({
                 <div className="mx-auto max-w-6xl">
                   {b.eyebrow ? <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span> : null}
                   <h1 className="t-display mt-4 max-w-[20ch]">{emph(b.heading as string)}</h1>
-                  {b.lede ? <p className="prose-lede measure mt-6">{b.lede as string}</p> : null}
+                  {b.lede ? <p className="prose-lede measure mt-6 whitespace-pre-line">{b.lede as string}</p> : null}
                   <CtaRow ctas={ctas} />
                 </div>
               </section>
@@ -194,7 +194,10 @@ function BlockSwitch({
               ) : null}
               <h1 className="t-display mt-5 max-w-[16ch] text-pure">{emph(b.heading as string)}</h1>
               {b.lede ? (
-                <p className="prose-lede mt-6 max-w-xl text-pure/90">{b.lede as string}</p>
+                <p className="prose-lede mt-6 max-w-xl text-pure/90 whitespace-pre-line">{b.lede as string}</p>
+              ) : null}
+              {b.metaLine ? (
+                <p className="mt-4 text-[0.9rem] tracking-wide text-champagne/90">{b.metaLine as string}</p>
               ) : null}
               <CtaRow ctas={ctas} onDark />
             </div>
@@ -216,7 +219,8 @@ function BlockSwitch({
                 <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span>
               ) : null}
               <h1 className="t-display mt-4">{emph(b.heading as string)}</h1>
-              {b.lede ? <p className="prose-lede mt-7 measure">{b.lede as string}</p> : null}
+              {b.lede ? <p className="prose-lede mt-7 measure whitespace-pre-line">{b.lede as string}</p> : null}
+              {b.metaLine ? <p className="mt-4 text-[0.9rem] tracking-wide text-gold-ink">{b.metaLine as string}</p> : null}
               <CtaRow ctas={ctas} />
             </div>
             <div className="card relative aspect-[4/5] arch float-slow bg-sand lg:aspect-[5/6]">
@@ -290,7 +294,7 @@ function BlockSwitch({
               <div>
                 {b.eyebrow ? <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span> : null}
                 {b.heading ? <h2 className="t-h2 mt-4 max-w-[20ch]">{emph(b.heading as string)}</h2> : null}
-                {b.body ? <p className="measure mt-5 text-[1.05rem] leading-relaxed text-ink-soft">{b.body as string}</p> : null}
+                {b.body ? <p className="measure mt-5 text-[1.05rem] leading-relaxed text-ink-soft whitespace-pre-line">{b.body as string}</p> : null}
                 <CtaRow ctas={ctas} />
               </div>
             </div>
@@ -308,7 +312,7 @@ function BlockSwitch({
           <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2.5rem,7vh,5rem)]">
             {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
             {b.heading ? <h2 className="mt-3 max-w-3xl font-serif text-[clamp(1.9rem,4vw,3rem)] leading-[1.1] text-pure">{b.heading as string}</h2> : null}
-            {b.body ? <p className="mt-4 max-w-2xl text-[1.05rem] leading-relaxed text-cream-dim/90">{b.body as string}</p> : null}
+            {b.body ? <p className="mt-4 max-w-2xl text-[1.05rem] leading-relaxed text-cream-dim/90 whitespace-pre-line">{b.body as string}</p> : null}
             <CtaRow ctas={ctas} onDark />
           </div>
         </section>
@@ -337,12 +341,32 @@ function BlockSwitch({
       );
     }
 
+    case "detailsGrid": {
+      const rows = (b.rows as { label: string; value: string }[]) || [];
+      const cta = resolveCta(b.cta as RawCta, settings);
+      return (
+        <Section tone={(b.tone as never) || "sand"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
+          {b.heading ? <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
+          <dl className="mt-8 grid gap-x-10 gap-y-0 sm:grid-cols-2">
+            {rows.map((r, i) => (
+              <div key={i} className="flex flex-wrap items-baseline gap-x-3 border-b border-line py-3.5">
+                <dt className="eyebrow shrink-0 text-gold-ink/85">{r.label}</dt>
+                <dd className="text-[0.98rem] text-ink-soft">{r.value}</dd>
+              </div>
+            ))}
+          </dl>
+          {b.note ? <p className="mt-6 text-sm italic text-faint">{b.note as string}</p> : null}
+          {cta ? <CtaRow ctas={[cta]} /> : null}
+        </Section>
+      );
+    }
+
     case "gallery": {
       const imgs = (b.images as { image: unknown; caption?: string }[]) || [];
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "wide"} id={(b.anchor as string) || undefined}>
           {b.heading ? <h2 className="t-h2 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
-          {b.intro ? <p className="mt-5 max-w-2xl text-muted">{b.intro as string}</p> : null}
+          {b.intro ? <p className="mt-5 max-w-2xl text-muted whitespace-pre-line">{b.intro as string}</p> : null}
           <div className="mt-9 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
             {imgs.map((it, i) => (
               <figure key={i} className="group relative aspect-[4/5] overflow-hidden rounded-xl bg-sand ring-1 ring-line">
@@ -372,7 +396,7 @@ function BlockSwitch({
               <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent" aria-hidden />
               <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2rem,6vh,4rem)]">
                 {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
-                {b.caption ? <p className="mt-3 max-w-2xl font-serif text-2xl text-pure sm:text-3xl">{b.caption as string}</p> : null}
+                {b.caption ? <p className="mt-3 max-w-2xl font-serif text-2xl text-pure sm:text-3xl whitespace-pre-line">{b.caption as string}</p> : null}
               </div>
             </>
           ) : null}
@@ -413,7 +437,7 @@ function BlockSwitch({
                 </span>
               ) : null}
               {b.heading ? <h2 className={`t-h2 mt-4 ${dark ? "text-pure" : "text-ink"}`}>{emph(b.heading as string)}</h2> : null}
-              {b.lede ? <p className={`prose-lede mt-5 ${dark ? "text-cream-dim" : "text-ink-soft"}`}>{b.lede as string}</p> : null}
+              {b.lede ? <p className={`prose-lede mt-5 ${dark ? "text-cream-dim" : "text-ink-soft"} whitespace-pre-line`}>{b.lede as string}</p> : null}
               <ol className="stagger mt-10 space-y-7">
                 {phases.map((p, i) => (
                   <li key={p.n} className={`flex gap-5 border-t pt-7 first:border-0 first:pt-0 ${dark ? "border-cream-dim/15" : "border-line"}`}>
@@ -571,7 +595,7 @@ function BlockSwitch({
               {b.eyebrow ? <span className="eyebrow eyebrow--filet text-gold-soft">{b.eyebrow as string}</span> : null}
               <h2 className="t-h2 mt-4 text-cream">{emph(b.heading as string)}</h2>
               <div className="mt-6"><Ornament start tone="champagne" /></div>
-              {b.body ? <p className="mt-6 max-w-lg text-cream-dim/90">{b.body as string}</p> : null}
+              {b.body ? <p className="mt-6 max-w-lg text-cream-dim/90 whitespace-pre-line">{b.body as string}</p> : null}
               {cta ? <div className="mt-9"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark>{cta.label}</CTAButton></div> : null}
             </div>
           </div>
@@ -586,7 +610,7 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
           <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={b.tone === "night" ? "champagne" : "gold"} /></div>
           <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
-          {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"}`}>{b.body as string}</p> : null}
+          {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"} whitespace-pre-line`}>{b.body as string}</p> : null}
           <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} />
         </Section>
       );
@@ -612,7 +636,7 @@ function BlockSwitch({
                     <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/70 to-transparent" />
                     {included.length ? (
                       <>
-                        <p className="eyebrow text-gold-ink/80">What&apos;s included</p>
+                        <p className="eyebrow text-gold-ink/80">{(b.includedLabel as string) || "What's included"}</p>
                         <ul className="stagger mt-5 space-y-3 text-sm text-ink-soft">
                           {included.map((it, i) => (
                             <li key={i} className="border-l border-gold-soft/55 pl-3.5">{it.text}</li>
@@ -620,6 +644,7 @@ function BlockSwitch({
                         </ul>
                       </>
                     ) : null}
+                    {b.includedNote ? <p className="mt-4 text-[0.82rem] leading-relaxed text-faint">{b.includedNote as string}</p> : null}
                     {b.investment ? <p className="mt-6 border-t border-line pt-5 text-sm text-ink-soft"><span className="font-medium text-ink">Investment</span> · {b.investment as string}</p> : null}
                   </div>
                 ) : null}
@@ -649,7 +674,7 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
           <Ornament start />
           <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
-          {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
+          {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
           <ul className="stagger mt-8 space-y-4 measure">
             {items.map((it, i) => (
               <li key={i} className="border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
@@ -668,7 +693,7 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
           <Ornament start />
           <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
-          {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
+          {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             <div className="relative overflow-hidden bg-ivory/70 p-8 sm:p-9">
               <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
@@ -720,7 +745,7 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
           <Ornament start />
           {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
-          {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
+          {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
           <div className="mt-9"><ContactForm /></div>
         </Section>
       );
@@ -730,7 +755,7 @@ function BlockSwitch({
         <Section tone={(b.tone as never) || "cream"} width="narrow" id={(b.anchor as string) || undefined}>
           <Ornament start />
           {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
-          {b.intro ? <p className="mt-5 text-muted">{b.intro as string}</p> : null}
+          {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
           <div className="mt-9 max-w-md"><NewsletterSignup /></div>
         </Section>
       );

@@ -43,6 +43,12 @@ export const HeroBlock: Block = {
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "textarea", required: true },
     { name: "lede", type: "textarea" },
+    {
+      name: "metaLine",
+      type: "text",
+      label: "Detail line",
+      admin: { description: 'Short scannable line under the description, e.g. "Small-group retreat · Tulum · November to April".' },
+    },
     { name: "image", type: "upload", relationTo: "media" },
     {
       name: "imageSide",
@@ -88,6 +94,7 @@ export const RichTextBlock: Block = {
   slug: "richText",
   labels: { singular: "Text", plural: "Text blocks" },
   fields: [
+    { name: "eyebrow", type: "text", admin: { description: 'Small label above the heading, e.g. "YOUR INVITATION".' } },
     { name: "heading", type: "text" },
     { name: "body", type: "richText" },
     ctaGroup("cta"),
@@ -104,6 +111,12 @@ export const ThreePhasesBlock: Block = {
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "text" },
     { name: "lede", type: "textarea" },
+    {
+      name: "metaLine",
+      type: "text",
+      label: "Detail line",
+      admin: { description: 'Short scannable line under the description, e.g. "Small-group retreat · Tulum · November to April".' },
+    },
     { name: "image", type: "upload", relationTo: "media" },
     { name: "body", type: "richText" },
     ctaGroup("cta"),
@@ -243,10 +256,23 @@ export const FormatDetailBlock: Block = {
     { name: "tagline", type: "text" },
     { name: "body", type: "richText" },
     {
+      name: "includedLabel",
+      type: "text",
+      defaultValue: "What's included",
+      label: "Heading above the list",
+      admin: { description: 'e.g. "YOUR RETREAT EXPERIENCE".' },
+    },
+    {
       name: "included",
       type: "array",
       labels: { singular: "Item", plural: "Included items" },
       fields: [{ name: "text", type: "text", required: true }],
+    },
+    {
+      name: "includedNote",
+      type: "textarea",
+      label: "Note under the list",
+      admin: { description: "Small print below the list, e.g. the lunch condition." },
     },
     { name: "investment", type: "text" },
     { name: "cta", type: "group", fields: ctaFields },
@@ -377,6 +403,28 @@ export const ExpandableStoryBlock: Block = {
   ],
 };
 
+export const DetailsGridBlock: Block = {
+  slug: "detailsGrid",
+  labels: { singular: "Details grid", plural: "Details grids" },
+  fields: [
+    { name: "heading", type: "text" },
+    {
+      name: "rows",
+      type: "array",
+      labels: { singular: "Detail", plural: "Details" },
+      admin: { description: "Compact, scannable facts. Label on the left, value on the right." },
+      fields: [
+        { name: "label", type: "text", required: true },
+        { name: "value", type: "text", required: true },
+      ],
+    },
+    { name: "note", type: "textarea" },
+    ctaGroup("cta"),
+    tone,
+    width,
+  ],
+};
+
 export const GalleryBlock: Block = {
   slug: "gallery",
   labels: { singular: "Photo gallery", plural: "Photo galleries" },
@@ -436,6 +484,7 @@ export const allBlocks: Block[] = [
   MediaFeatureBlock,
   WaysGridBlock,
   GalleryBlock,
+  DetailsGridBlock,
   ExpandableStoryBlock,
   TestimonialsBlock,
   SplitImageTextBlock,
