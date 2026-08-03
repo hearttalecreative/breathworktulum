@@ -355,6 +355,10 @@ export interface Page {
              */
             image: number | Media;
             /**
+             * Full screen fills the whole screen on desktop with the text over the photo. Portrait shows the photo upright and complete, with the text beside it. Both keep the current height on phones.
+             */
+            format?: ('fullScreen' | 'portrait' | 'band') | null;
+            /**
              * Optional video (Vimeo/YouTube link, or a direct .mp4). Shows instead of the image — space for drone footage.
              */
             videoUrl?: string | null;
@@ -1296,6 +1300,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               image?: T;
+              format?: T;
               videoUrl?: T;
               eyebrow?: T;
               heading?: T;

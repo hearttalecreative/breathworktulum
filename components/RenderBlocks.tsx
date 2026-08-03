@@ -57,6 +57,39 @@ function toVideoEmbed(url: string): string {
   return "";
 }
 
+// The media layer of a feature band: a self-hosted mp4, an embedded
+// Vimeo/YouTube background, or the still image. Module scope so the portrait
+// and full-screen formats share exactly one implementation.
+function FeatureMedia({
+  block: b,
+  video,
+  sizes,
+  fill = false,
+}: {
+  block: AnyBlock;
+  video: string;
+  sizes: string;
+  fill?: boolean;
+}) {
+  const cover = "absolute inset-0 h-full w-full object-cover";
+  if (/\.mp4($|\?)/i.test(video)) {
+    return <video className={cover} src={video} autoPlay muted loop playsInline />;
+  }
+  const embed = video ? toVideoEmbed(video) : "";
+  if (embed) {
+    return (
+      <iframe
+        className="absolute inset-0 h-full w-full"
+        src={embed}
+        title={(b.heading as string) || "Video"}
+        allow="autoplay; fullscreen; picture-in-picture"
+        loading="lazy"
+      />
+    );
+  }
+  return <PayloadImage media={b.image as never} fill sizes={sizes} className={fill ? "kenburns object-cover" : "object-cover"} />;
+}
+
 // One chapter of an expandable story block (About). Module scope so it isn't
 // redefined on every render.
 function StoryChapter({ c, first }: { c: { title?: string; body?: unknown }; first: boolean }) {
@@ -219,17 +252,36 @@ function BlockSwitch({
     case "mediaFeature": {
       const ctas = resolveCtas(b.ctas as RawCta[], settings);
       const video = ((b.videoUrl as string) || "").trim();
-      const mp4 = /\.mp4($|\?)/i.test(video);
-      const embed = video && !mp4 ? toVideoEmbed(video) : "";
+      const format = (b.format as string) || "fullScreen";
+
+      // Portrait: the photo stays upright and uncropped, with the copy beside it
+      // on desktop and stacked underneath on phones (brief F-1).
+      if (format === "portrait") {
+        return (
+          <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
+            <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+              <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl bg-sand ring-1 ring-line lg:max-w-none">
+                <div className="relative aspect-[4/5]">
+                  <FeatureMedia block={b} video={video} sizes="(max-width: 1024px) 100vw, 45vw" />
+                </div>
+              </div>
+              <div>
+                {b.eyebrow ? <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span> : null}
+                {b.heading ? <h2 className="t-h2 mt-4 max-w-[20ch]">{emph(b.heading as string)}</h2> : null}
+                {b.body ? <p className="measure mt-5 text-[1.05rem] leading-relaxed text-ink-soft">{b.body as string}</p> : null}
+                <CtaRow ctas={ctas} />
+              </div>
+            </div>
+          </Section>
+        );
+      }
+
+      // Full screen fills the viewport on desktop; phones keep the height she
+      // already likes. "band" is the old short format, kept for existing pages.
+      const height = format === "band" ? "min-h-[48svh] lg:min-h-[56svh]" : "min-h-[70svh] lg:min-h-[100svh]";
       return (
-        <section className="on-dark relative flex min-h-[84svh] items-end overflow-clip bg-night" id={(b.anchor as string) || undefined}>
-          {mp4 ? (
-            <video className="absolute inset-0 h-full w-full object-cover" src={video} autoPlay muted loop playsInline />
-          ) : embed ? (
-            <iframe className="absolute inset-0 h-full w-full" src={embed} title={(b.heading as string) || "Video"} allow="autoplay; fullscreen; picture-in-picture" loading="lazy" />
-          ) : (
-            <PayloadImage media={b.image as never} fill sizes="100vw" className="kenburns object-cover" />
-          )}
+        <section className={`on-dark relative flex ${height} items-end overflow-clip bg-night`} id={(b.anchor as string) || undefined}>
+          <FeatureMedia block={b} video={video} sizes="100vw" fill />
           <div className="absolute inset-0 bg-gradient-to-t from-night/85 via-night/25 to-transparent" aria-hidden />
           <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2.5rem,7vh,5rem)]">
             {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}

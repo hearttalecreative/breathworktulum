@@ -376,6 +376,21 @@ export const MediaFeatureBlock: Block = {
   labels: { singular: "Feature band (big media)", plural: "Feature bands" },
   fields: [
     { name: "image", type: "upload", relationTo: "media", required: true, admin: { description: "Large background image. Used as the poster if a video is set." } },
+    {
+      name: "format",
+      type: "select",
+      defaultValue: "fullScreen",
+      label: "Format",
+      admin: {
+        description:
+          "Full screen fills the whole screen on desktop with the text over the photo. Portrait shows the photo upright and complete, with the text beside it. Both keep the current height on phones.",
+      },
+      options: [
+        { label: "Full screen (text over the photo)", value: "fullScreen" },
+        { label: "Portrait (photo upright, text beside)", value: "portrait" },
+        { label: "Band (short, the old style)", value: "band" },
+      ],
+    },
     { name: "videoUrl", type: "text", admin: { description: "Optional video (Vimeo/YouTube link, or a direct .mp4). Shows instead of the image — space for drone footage." } },
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "text" },
