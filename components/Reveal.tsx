@@ -20,6 +20,9 @@ export default function Reveal({
       setShown(true);
       return;
     }
+    // threshold 0: any sliver counts. A ratio-based threshold never fired for
+    // sections taller than the viewport on phones, so those blocks stayed at
+    // opacity 0 and simply never appeared.
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -27,7 +30,7 @@ export default function Reveal({
           io.disconnect();
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px -5% 0px", threshold: 0 }
     );
     io.observe(el);
     return () => io.disconnect();
