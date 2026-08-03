@@ -6,13 +6,21 @@ import config from "../payload.config";
 // ---------- L-2: editing notes accidentally published ----------
 const NOTE_PATTERNS: [string, RegExp][] = [
   ["TO BE REVISED", /TO BE REVISED/i],
-  ["NEEDS TO BE (nota)", /NEEDS TO BE (REVISED|REPLACED|CHANGED|ADDED|DONE|FIXED)/i],
+  ["NEEDS TO BE …", /NEEDS? TO BE (REVISED|REPLACED|CHANGED|ADDED|DONE|FIXED|MOVED)/i],
+  // La versión imperativa se escapó del barrido anterior: "NEED SPACE | FOR THIS
+  // NEXT SENTENCE", "NEED HERE: ...". Cubrir NEED en mayúsculas, sea cual sea
+  // lo que siga.
+  ["NEED … (imperativo)", /\bNEED\b[^a-z]{0,3}[A-Z]/],
   ["NOT CORRECT", /NOT CORRECT/i],
   ["TBC / TBD", /\bTB[CD]\b/],
-  ["CHANGE ITEMS / CHANGE THIS", /\bCHANGE (ITEMS|THIS|TEXT|COPY)\b/i],
+  ["CHANGE …", /\bCHANGE (ITEMS|THIS|TEXT|COPY|FONT|COLOU?R)\b/i],
   ["REPLACE …", /\bREPLACE (THIS|IMAGE|BANNER|TEXT|WITH)\b/i],
+  ["INSERT / ADD …", /\b(INSERT|ADD) (HERE|THIS|IMAGE|TEXT|A )\b/i],
+  ["FIX …", /\bFIX (THIS|HERE|IT)\b/i],
+  ["nota con pipe", /[A-Z]{3,}[^|]{0,40}\|\s*[A-Z]{3,}/],
   ["flecha >>> o >>", />{2,}/],
   ["placeholder XX+", /\bX{3,}\b/],
+  ["MAYÚSCULAS sostenidas", /(?:^|[.!?]\s)[A-Z][A-Z ,'’-]{18,}[.:!?]/],
   ["nota entre paréntesis", /\((?:sabine|sergio|pending|tbd|note|nota)[^)]{0,60}\)/i],
   ["placeholder corchetes", /\[(?:price|precio|tbd|pending|link|url|texto|text)[^\]]{0,30}\]/i],
 ];
