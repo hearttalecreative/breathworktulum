@@ -54,7 +54,33 @@ export const HeroBlock: Block = {
         { label: "Left", value: "left" },
       ],
     },
+    {
+      name: "textPlacement",
+      type: "select",
+      defaultValue: "over",
+      label: "Headline placement",
+      admin: {
+        condition: (_, s) => s?.variant === "fullBleed",
+        description: "Over the photo, or underneath it so the footage stays clean.",
+      },
+      options: [
+        { label: "Over the photo", value: "over" },
+        { label: "Below the photo", value: "below" },
+      ],
+    },
     ctaArray("ctas", 2),
+  ],
+};
+
+const alignField = {
+  name: "align",
+  type: "select" as const,
+  defaultValue: "left",
+  label: "Text alignment",
+  admin: { description: "Centres the heading and the body together." },
+  options: [
+    { label: "Left", value: "left" },
+    { label: "Centered", value: "center" },
   ],
 };
 
@@ -65,6 +91,7 @@ export const RichTextBlock: Block = {
     { name: "heading", type: "text" },
     { name: "body", type: "richText" },
     ctaGroup("cta"),
+    alignField,
     tone,
     width,
   ],

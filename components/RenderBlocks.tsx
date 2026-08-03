@@ -10,6 +10,7 @@ import ExpandableSection from "./ExpandableSection";
 import WaveMark from "./WaveMark";
 import Reveal from "./Reveal";
 import { resolveCta, resolveCtas, type RawCta } from "@/lib/cta";
+import { bodyConverters } from "@/lib/richtextConverters";
 
 type Settings = Parameters<typeof resolveCtas>[1];
 type AnyBlock = Record<string, unknown> & { blockType: string; id?: string };
@@ -97,7 +98,7 @@ function StoryChapter({ c, first }: { c: { title?: string; body?: unknown }; fir
     <div className={first ? "" : "mt-10"}>
       {c.title ? <h3 className="font-serif text-[1.35rem] leading-snug text-ink">{c.title}</h3> : null}
       <div className="prose-body measure mt-4 space-y-4 text-ink-soft">
-        {c.body ? <RichText data={c.body as never} /> : null}
+        {c.body ? <RichText data={c.body as never} converters={bodyConverters} /> : null}
       </div>
     </div>
   );
@@ -155,6 +156,27 @@ function BlockSwitch({
       // Full-bleed immersive hero (Habitas-style): photo fills the viewport,
       // scrim keeps the display type legible, content sits low-left.
       if (b.variant === "fullBleed" && b.image) {
+        // Variant she can pick from the panel: the headline sits under the
+        // footage instead of over it, so the video stays completely clean.
+        if (b.textPlacement === "below") {
+          return (
+            <>
+              <section data-fullbleed-hero className="relative min-h-[72svh] overflow-clip bg-night lg:min-h-[86svh]">
+                <div className="absolute inset-0">
+                  <HeroVideo url="https://vimeo.com/773408641/7c81c6bfcc" poster="/hero/hero-poster.jpg" loopEnd={25.8} />
+                </div>
+              </section>
+              <section className="bg-shell px-[clamp(20px,5vw,80px)] pt-14 pb-12 sm:pt-16">
+                <div className="mx-auto max-w-6xl">
+                  {b.eyebrow ? <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span> : null}
+                  <h1 className="t-display mt-4 max-w-[20ch]">{emph(b.heading as string)}</h1>
+                  {b.lede ? <p className="prose-lede measure mt-6">{b.lede as string}</p> : null}
+                  <CtaRow ctas={ctas} />
+                </div>
+              </section>
+            </>
+          );
+        }
         return (
           <section
             data-fullbleed-hero
@@ -401,7 +423,7 @@ function BlockSwitch({
               </ol>
               {b.body ? (
                 <div className="prose-body mt-8 max-w-xl space-y-4 leading-relaxed text-cream-dim [&_strong]:text-pure">
-                  <RichText data={b.body as never} />
+                  <RichText data={b.body as never} converters={bodyConverters} />
                 </div>
               ) : null}
               {cta ? <div className="mt-9"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark>{cta.label}</CTAButton></div> : null}
@@ -520,7 +542,7 @@ function BlockSwitch({
               <h2 className="t-h2 mt-7 max-w-[20ch] text-ink">{emph(b.heading as string)}</h2>
               {b.body ? (
                 <div className="prose-body measure mt-6 space-y-4 text-ink-soft">
-                  <RichText data={b.body as never} />
+                  <RichText data={b.body as never} converters={bodyConverters} />
                 </div>
               ) : null}
               {cta ? <CtaRow ctas={[cta]} /> : null}
@@ -577,7 +599,7 @@ function BlockSwitch({
             return (
               <div className={`mt-6 grid gap-10 ${hasAside ? "lg:grid-cols-[1.4fr_1fr]" : ""}`}>
                 <div className="prose-body space-y-4 text-muted">
-                  {b.body ? <RichText data={b.body as never} /> : null}
+                  {b.body ? <RichText data={b.body as never} converters={bodyConverters} /> : null}
                 </div>
                 {hasAside ? (
                   <div className="relative h-fit overflow-hidden border border-line bg-ivory p-7 shadow-[0_1px_30px_-18px_rgba(34,36,32,0.5)] sm:p-8 lg:sticky lg:top-28">
@@ -709,16 +731,32 @@ function BlockSwitch({
 
     case "richText": {
       const cta = resolveCta(b.cta as RawCta, settings);
+      // "Centered" has to move the heading and the body together — centring only
+      // the body (or only via the editor) was the mismatch reported from the panel.
+      const centered = b.align === "center";
       return (
-        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
-          {b.eyebrow ? <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span> : <Ornament start />}
-          {b.heading ? <h2 className={`t-h2 max-w-[24ch] text-ink ${b.eyebrow ? "mt-4" : "mt-7"}`}>{emph(b.heading as string)}</h2> : null}
+        <Section
+          tone={(b.tone as never) || "cream"}
+          width={(b.width as never) || "default"}
+          id={(b.anchor as string) || undefined}
+          className={centered ? "text-center" : ""}
+        >
+          {b.eyebrow ? (
+            <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span>
+          ) : (
+            <div className={centered ? "flex justify-center" : ""}><Ornament start={!centered} /></div>
+          )}
+          {b.heading ? (
+            <h2 className={`t-h2 max-w-[24ch] text-ink ${centered ? "mx-auto" : ""} ${b.eyebrow ? "mt-4" : "mt-7"}`}>
+              {emph(b.heading as string)}
+            </h2>
+          ) : null}
           {/* Body kept to a comfortable reading measure even when the section runs
               wide — long-form internal copy never sprawls past ~66ch. */}
-          <div className="prose-body measure mt-6 space-y-4 text-muted [&>p:first-of-type]:text-[1.1875rem] [&>p:first-of-type]:text-ink-soft">
-            {b.body ? <RichText data={b.body as never} /> : null}
+          <div className={`prose-body measure mt-6 space-y-4 text-muted [&>p:first-of-type]:text-[1.1875rem] [&>p:first-of-type]:text-ink-soft ${centered ? "mx-auto" : ""}`}>
+            {b.body ? <RichText data={b.body as never} converters={bodyConverters} /> : null}
           </div>
-          {cta ? <CtaRow ctas={[cta]} /> : null}
+          {cta ? <CtaRow ctas={[cta]} align={centered ? "center" : "left"} /> : null}
         </Section>
       );
     }
