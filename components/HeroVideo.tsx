@@ -18,7 +18,26 @@ export default function HeroVideo({
   loopEnd?: number;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<PlayerType | null>(null);
   const [ready, setReady] = useState(false);
+  // Browsers block autoplay with sound, and Vimeo background mode is muted by
+  // design, so audio can only ever start from a user gesture. The video plays
+  // muted and this toggle hands the choice to the visitor.
+  const [muted, setMuted] = useState(true);
+  const [canControlSound, setCanControlSound] = useState(false);
+
+  async function toggleSound() {
+    const player = playerRef.current;
+    if (!player) return;
+    const next = !muted;
+    try {
+      await player.setMuted(next);
+      if (!next) await player.setVolume(1);
+      setMuted(next);
+    } catch {
+      /* player not ready yet */
+    }
+  }
 
   useEffect(() => {
     const el = wrap.current;
@@ -51,11 +70,19 @@ export default function HeroVideo({
       };
       player.on("timeupdate", onTime);
       player.on("play", () => setReady(true));
-      player.ready().then(() => setReady(true)).catch(() => {});
+      playerRef.current = player;
+      player
+        .ready()
+        .then(() => {
+          setReady(true);
+          setCanControlSound(true);
+        })
+        .catch(() => {});
     });
 
     return () => {
       cancelled = true;
+      playerRef.current = null;
       player?.destroy().catch(() => {});
     };
   }, [url, loopEnd]);
@@ -77,6 +104,27 @@ export default function HeroVideo({
           ready ? "opacity-0" : "opacity-100"
         }`}
       />
+      {canControlSound ? (
+        <button
+          type="button"
+          onClick={toggleSound}
+          aria-pressed={!muted}
+          aria-label={muted ? "Turn sound on" : "Turn sound off"}
+          className="absolute bottom-5 right-5 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-pure/40 bg-night/35 text-pure backdrop-blur-sm transition-colors hover:bg-night/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+        >
+          {muted ? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+              <path d="m22 9-6 6M16 9l6 6" />
+            </svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+              <path d="M16 8.5a5 5 0 0 1 0 7M19 6a9 9 0 0 1 0 12" />
+            </svg>
+          )}
+        </button>
+      ) : null}
     </div>
   );
 }
