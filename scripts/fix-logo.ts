@@ -1,6 +1,11 @@
 import sharp from "sharp";
 import { readFileSync, writeFileSync } from "fs";
 
+// HISTÓRICO. Corría contra el export anterior del logo (viewBox 612.18x128.25).
+// La clienta mandó un export nuevo el 3 de agosto de 2026 que ya trae el ® y el
+// filete redibujados, así que este script quedó inerte: ninguno de sus patrones
+// coincide con los SVG actuales. Se conserva como registro de qué se corrigió.
+//
 // Brief D-1/D-2/D-3 — logo corrections applied to the exported SVGs.
 //   D-1  slogan too light  → deepen the gold on light backgrounds (AA-safe
 //        #8a6a18 from the palette); lift it on dark backgrounds.
