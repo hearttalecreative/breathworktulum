@@ -697,19 +697,23 @@ function BlockSwitch({
           <Ornament start />
           <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
           {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <div className="relative overflow-hidden bg-ivory/70 p-8 sm:p-9">
+          {/* Dos tarjetas idénticas lado a lado leen como formulario de admisión:
+              la mitad de la sección es el panel de rechazo. La columna afirmativa
+              lleva el peso y la otra queda como nota al margen. Se deemphasiza
+              por estructura, no bajando el color: el gris más claro que hay
+              (--color-faint) no llega a AA para texto de cuerpo. */}
+          <div className="mt-10 grid items-start gap-8 md:grid-cols-5 md:gap-10">
+            <div className="relative overflow-hidden bg-ivory/70 p-8 sm:p-9 md:col-span-3">
               <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
               {b.leftTitle ? <h3 className="text-xl text-ink">{b.leftTitle as string}</h3> : null}
               <ul className="stagger mt-6 space-y-3.5 text-sm leading-relaxed text-ink-soft">
                 {left.map((it, i) => <li key={i} className="border-l border-gold-soft/45 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
-            <div className="relative overflow-hidden bg-ivory/70 p-8 sm:p-9">
-              <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
-              {b.rightTitle ? <h3 className="text-xl text-ink">{b.rightTitle as string}</h3> : null}
-              <ul className="stagger mt-6 space-y-3.5 text-sm leading-relaxed text-ink-soft">
-                {right.map((it, i) => <li key={i} className="border-l border-gold-soft/45 pl-3.5">{it.text}</li>)}
+            <div className="md:col-span-2 md:pt-3">
+              {b.rightTitle ? <h3 className="text-xs uppercase tracking-[0.16em] text-ink-soft">{b.rightTitle as string}</h3> : null}
+              <ul className="stagger mt-5 space-y-3 text-sm leading-relaxed text-ink-soft">
+                {right.map((it, i) => <li key={i}>{it.text}</li>)}
               </ul>
             </div>
           </div>
