@@ -159,8 +159,16 @@ export interface Page {
             eyebrow?: string | null;
             heading: string;
             lede?: string | null;
+            /**
+             * Short scannable line under the description, e.g. "Small-group retreat · Tulum · November to April".
+             */
+            metaLine?: string | null;
             image?: (number | null) | Media;
             imageSide?: ('right' | 'left') | null;
+            /**
+             * Over the photo, or underneath it so the footage stays clean.
+             */
+            textPlacement?: ('over' | 'below') | null;
             ctas?:
               | {
                   label?: string | null;
@@ -197,6 +205,10 @@ export interface Page {
             blockType: 'hero';
           }
         | {
+            /**
+             * Small label above the heading, e.g. "YOUR INVITATION".
+             */
+            eyebrow?: string | null;
             heading?: string | null;
             body?: {
               root: {
@@ -239,6 +251,10 @@ export interface Page {
               href?: string | null;
             };
             /**
+             * Centres the heading and the body together.
+             */
+            align?: ('left' | 'center') | null;
+            /**
              * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
             tone?: ('cream' | 'sand' | 'night') | null;
@@ -258,6 +274,10 @@ export interface Page {
             eyebrow?: string | null;
             heading?: string | null;
             lede?: string | null;
+            /**
+             * Short scannable line under the description, e.g. "Small-group retreat · Tulum · November to April".
+             */
+            metaLine?: string | null;
             image?: (number | null) | Media;
             body?: {
               root: {
@@ -459,6 +479,60 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'gallery';
+          }
+        | {
+            heading?: string | null;
+            /**
+             * Compact, scannable facts. Label on the left, value on the right.
+             */
+            rows?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            note?: string | null;
+            cta: {
+              enabled?: boolean | null;
+              label?: string | null;
+              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              action: 'whatsapp' | 'internal' | 'email' | 'external';
+              whatsappContext?:
+                | (
+                    | 'general'
+                    | 'foundation'
+                    | 'immersive'
+                    | 'oneDayPrivate'
+                    | 'couples'
+                    | 'personalizedRetreat'
+                    | 'curated'
+                    | 'corporate'
+                    | 'signature'
+                    | 'discoveryCall'
+                    | 'contact'
+                  )
+                | null;
+              /**
+               * e.g. /the-method/ or #immersive (internal) or full https URL.
+               */
+              href?: string | null;
+            };
+            /**
+             * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
+             */
+            tone?: ('cream' | 'sand' | 'night') | null;
+            /**
+             * How wide the text appears. Narrow = easier to read.
+             */
+            width?: ('narrow' | 'default' | 'wide') | null;
+            /**
+             * Optional anchor id for #links (e.g. inquiry).
+             */
+            anchor?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'detailsGrid';
           }
         | {
             heading: string;
@@ -691,12 +765,20 @@ export interface Page {
               };
               [k: string]: unknown;
             } | null;
+            /**
+             * e.g. "YOUR RETREAT EXPERIENCE".
+             */
+            includedLabel?: string | null;
             included?:
               | {
                   text: string;
                   id?: string | null;
                 }[]
               | null;
+            /**
+             * Small print below the list, e.g. the lunch condition.
+             */
+            includedNote?: string | null;
             investment?: string | null;
             cta: {
               label?: string | null;
@@ -1208,8 +1290,10 @@ export interface PagesSelect<T extends boolean = true> {
               eyebrow?: T;
               heading?: T;
               lede?: T;
+              metaLine?: T;
               image?: T;
               imageSide?: T;
+              textPlacement?: T;
               ctas?:
                 | T
                 | {
@@ -1227,6 +1311,7 @@ export interface PagesSelect<T extends boolean = true> {
         richText?:
           | T
           | {
+              eyebrow?: T;
               heading?: T;
               body?: T;
               cta?:
@@ -1239,6 +1324,7 @@ export interface PagesSelect<T extends boolean = true> {
                     whatsappContext?: T;
                     href?: T;
                   };
+              align?: T;
               tone?: T;
               width?: T;
               anchor?: T;
@@ -1251,6 +1337,7 @@ export interface PagesSelect<T extends boolean = true> {
               eyebrow?: T;
               heading?: T;
               lede?: T;
+              metaLine?: T;
               image?: T;
               body?: T;
               cta?:
@@ -1350,6 +1437,34 @@ export interface PagesSelect<T extends boolean = true> {
                     image?: T;
                     caption?: T;
                     id?: T;
+                  };
+              tone?: T;
+              width?: T;
+              anchor?: T;
+              id?: T;
+              blockName?: T;
+            };
+        detailsGrid?:
+          | T
+          | {
+              heading?: T;
+              rows?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              note?: T;
+              cta?:
+                | T
+                | {
+                    enabled?: T;
+                    label?: T;
+                    variant?: T;
+                    action?: T;
+                    whatsappContext?: T;
+                    href?: T;
                   };
               tone?: T;
               width?: T;
@@ -1461,12 +1576,14 @@ export interface PagesSelect<T extends boolean = true> {
               tag?: T;
               tagline?: T;
               body?: T;
+              includedLabel?: T;
               included?:
                 | T
                 | {
                     text?: T;
                     id?: T;
                   };
+              includedNote?: T;
               investment?: T;
               cta?:
                 | T
