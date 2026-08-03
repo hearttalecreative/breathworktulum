@@ -1093,7 +1093,7 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * All the site's photos. Upload an image and use it on any page.
+ * All the site's photos. Upload an image and use it on any page. Best results: at least 2400px wide and under 3 MB. If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
