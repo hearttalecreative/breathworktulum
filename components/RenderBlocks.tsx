@@ -18,12 +18,19 @@ type AnyBlock = Record<string, unknown> & { blockType: string; id?: string };
 const paras = (s?: string | null) =>
   (s || "").split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
 
-// Emphasis: *word* renders as a Canela italic "breath word" inside a headline.
+// Énfasis dentro de un titular, escrito en el propio campo de texto:
+//   *palabra*   cursiva Canela, la "palabra que respira"
+//   **palabra** peso 500
+// La negrita no va a 700 a propósito: el titular es Canela 300, y un 700 al
+// lado rompe el trazo fino de la tipografía. 500 marca sin gritar.
+// El orden importa: ** se prueba antes que *, si no el split parte de a uno.
 function emph(s?: string | null) {
   if (!s) return null;
-  return s.split(/(\*[^*]+\*)/g).map((part, i) =>
-    /^\*[^*]+\*$/.test(part) ? <em key={i}>{part.slice(1, -1)}</em> : <span key={i}>{part}</span>
-  );
+  return s.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(part)) return <strong key={i} className="font-medium">{part.slice(2, -2)}</strong>;
+    if (/^\*[^*]+\*$/.test(part)) return <em key={i}>{part.slice(1, -1)}</em>;
+    return <span key={i}>{part}</span>;
+  });
 }
 
 function CtaRow({

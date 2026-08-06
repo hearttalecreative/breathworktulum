@@ -84,6 +84,8 @@ export const metadata: Metadata = {
 
 export const viewport = { themeColor: "#191b17" };
 
+const HEADING_SCALE: Record<string, number> = { compact: 0.88, normal: 1, generous: 1.14 };
+
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -97,6 +99,10 @@ export default async function RootLayout({
     <html
       lang="en"
       className={`${canela.variable} ${sohne.variable} h-full`}
+      // Escala de titulares elegida desde el panel. Multiplica el clamp que ya
+      // tienen, así que la proporción entre páginas y el comportamiento en
+      // móvil no cambian: sube o baja toda la escala junta.
+      style={{ "--heading-scale": HEADING_SCALE[s.headingScale as string] ?? 1 } as React.CSSProperties}
     >
       <body className="flex min-h-full flex-col">
         <JsonLd data={[organizationLd(), websiteLd(), localBusinessLd()]} />
