@@ -51,6 +51,24 @@ export const HeroBlock: Block = {
     },
     { name: "image", type: "upload", relationTo: "media" },
     {
+      name: "videoUrl",
+      type: "text",
+      label: "Background video (optional)",
+      admin: {
+        condition: (_, s) => s?.variant === "fullBleed",
+        description: "Vimeo or YouTube link. Plays silently on a loop behind the headline. Leave it empty and the photo above is used instead.",
+      },
+    },
+    {
+      name: "videoTrim",
+      type: "number",
+      label: "Stop the loop at (seconds)",
+      admin: {
+        condition: (_, s) => s?.variant === "fullBleed",
+        description: "Optional. Cuts the loop short so it never runs past a good moment.",
+      },
+    },
+    {
       name: "imageSide",
       type: "select",
       defaultValue: "right",
@@ -304,9 +322,31 @@ export const ListBlock: Block = {
     { name: "heading", type: "text", required: true },
     { name: "intro", type: "textarea" },
     {
+      name: "layout",
+      type: "select",
+      defaultValue: "list",
+      label: "Layout",
+      admin: {
+        description:
+          "Simple list is one line per item. Numbered stages gives each item its own card with a big gold number, a headline and a paragraph — for steps that happen in order.",
+      },
+      options: [
+        { label: "Simple list", value: "list" },
+        { label: "Numbered stages", value: "stages" },
+      ],
+    },
+    {
       name: "items",
       type: "array",
-      fields: [{ name: "text", type: "textarea", required: true }],
+      fields: [
+        {
+          name: "title",
+          type: "text",
+          label: "Headline",
+          admin: { description: "Only used by the Numbered stages layout. Leave empty for a simple list." },
+        },
+        { name: "text", type: "textarea", required: true },
+      ],
     },
     { name: "note", type: "textarea" },
     ctaGroup("cta"),

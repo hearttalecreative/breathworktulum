@@ -199,10 +199,14 @@
   background: var(--color-gold-soft);
 }
 
+/* El párrafo bajo el titular iba en serif, y contra un titular en peso 300 leía
+   más pesado que el titular mismo. Va en sans, que es la combinación que ella
+   quiere: serif para el titular, sans para el texto. El sans pesa más a la
+   misma medida, así que el cuerpo baja un punto. */
 .prose-lede {
-  font-family: var(--font-serif);
-  font-size: clamp(1.15rem, 1.5vw + 0.6rem, 1.5rem);
-  line-height: 1.45;
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 1.15vw + 0.6rem, 1.3rem);
+  line-height: 1.55;
   color: var(--color-ink-soft);
   font-weight: 400;
   text-wrap: pretty;
