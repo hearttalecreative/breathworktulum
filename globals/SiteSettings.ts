@@ -22,6 +22,27 @@ export const SiteSettings: GlobalConfig = {
     },
     {
       type: "collapsible",
+      label: "Headings",
+      fields: [
+        {
+          name: "headingScale",
+          type: "select",
+          defaultValue: "normal",
+          label: "Heading size",
+          admin: {
+            description:
+              "Changes every headline on the site at once, keeping the proportion between pages. Headlines already shrink on their own on phones; this shifts the whole scale up or down.",
+          },
+          options: [
+            { label: "Compact", value: "compact" },
+            { label: "Normal", value: "normal" },
+            { label: "Generous", value: "generous" },
+          ],
+        },
+      ],
+    },
+    {
+      type: "collapsible",
       label: "Contact",
       fields: [
         { name: "email", type: "text", defaultValue: "breathe@breathworktulum.com" },

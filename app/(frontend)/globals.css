@@ -316,7 +316,9 @@
   font-weight: 300;
   /* Dialled back from 5vw / 4.25rem — the hero headline was overpowering the
      footage on desktop. Phones keep roughly the size they had. */
-  font-size: clamp(1.85rem, 3.9vw, 3.35rem);
+  /* --heading-scale lo fija el panel (Site Settings > Headings). Multiplica el
+     clamp en vez de reemplazarlo, así el comportamiento en móvil se conserva. */
+  font-size: calc(clamp(1.85rem, 3.9vw, 3.35rem) * var(--heading-scale, 1));
   line-height: 1.08;
   letter-spacing: -0.012em;
   text-wrap: balance;
@@ -328,7 +330,7 @@
 .t-h2 {
   font-family: var(--font-serif);
   font-weight: 300;
-  font-size: clamp(1.6rem, 3.2vw + 0.4rem, 3rem);
+  font-size: calc(clamp(1.6rem, 3.2vw + 0.4rem, 3rem) * var(--heading-scale, 1));
   line-height: 1.13;
   letter-spacing: -0.008em;
   text-wrap: balance;

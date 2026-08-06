@@ -2008,6 +2008,10 @@ export interface SiteSetting {
   brandName?: string | null;
   slogan?: string | null;
   description?: string | null;
+  /**
+   * Changes every headline on the site at once, keeping the proportion between pages. Headlines already shrink on their own on phones; this shifts the whole scale up or down.
+   */
+  headingScale?: ('compact' | 'normal' | 'generous') | null;
   email?: string | null;
   phoneDisplay?: string | null;
   /**
@@ -2177,6 +2181,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   brandName?: T;
   slogan?: T;
   description?: T;
+  headingScale?: T;
   email?: T;
   phoneDisplay?: T;
   whatsappNumber?: T;
