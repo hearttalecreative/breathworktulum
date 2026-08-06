@@ -164,6 +164,14 @@ export interface Page {
              */
             metaLine?: string | null;
             image?: (number | null) | Media;
+            /**
+             * Vimeo or YouTube link. Plays silently on a loop behind the headline. Leave it empty and the photo above is used instead.
+             */
+            videoUrl?: string | null;
+            /**
+             * Optional. Cuts the loop short so it never runs past a good moment.
+             */
+            videoTrim?: number | null;
             imageSide?: ('right' | 'left') | null;
             /**
              * Over the photo, or underneath it so the footage stays clean.
@@ -901,8 +909,16 @@ export interface Page {
         | {
             heading: string;
             intro?: string | null;
+            /**
+             * Simple list is one line per item. Numbered stages gives each item its own card with a big gold number, a headline and a paragraph — for steps that happen in order.
+             */
+            layout?: ('list' | 'stages') | null;
             items?:
               | {
+                  /**
+                   * Only used by the Numbered stages layout. Leave empty for a simple list.
+                   */
+                  title?: string | null;
                   text: string;
                   id?: string | null;
                 }[]
@@ -1376,6 +1392,8 @@ export interface PagesSelect<T extends boolean = true> {
               lede?: T;
               metaLine?: T;
               image?: T;
+              videoUrl?: T;
+              videoTrim?: T;
               imageSide?: T;
               textPlacement?: T;
               ctas?:
@@ -1720,9 +1738,11 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               intro?: T;
+              layout?: T;
               items?:
                 | T
                 | {
+                    title?: T;
                     text?: T;
                     id?: T;
                   };

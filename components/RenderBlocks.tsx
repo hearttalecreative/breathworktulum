@@ -58,6 +58,14 @@ function toVideoEmbed(url: string): string {
   return "";
 }
 
+// URL de una foto de la biblioteca, normalizada igual que en PayloadImage: las
+// que guarda Payload vienen absolutizadas con serverURL, que en dev es
+// localhost. Se usa para el póster del video del hero.
+function mediaUrl(m: unknown): string {
+  const u = (m as { url?: string } | null)?.url;
+  return typeof u === "string" ? u.replace(/^https?:\/\/[^/]+(\/api\/media\/)/, "$1") : "";
+}
+
 // The media layer of a feature band: a self-hosted mp4, an embedded
 // Vimeo/YouTube background, or the still image. Module scope so the portrait
 // and full-screen formats share exactly one implementation.
@@ -158,6 +166,21 @@ function BlockSwitch({
 
       // Full-bleed immersive hero (Habitas-style): photo fills the viewport,
       // scrim keeps the display type legible, content sits low-left.
+      //
+      // El video venía fijo al de la home, así que cualquier otra página que
+      // eligiera este formato mostraba la home. Ahora sale del bloque: si hay
+      // Video URL se reproduce en silencio y en loop, y si no, se ve la foto.
+      const heroVideo = ((b.videoUrl as string) || "").trim();
+      const heroMedia = heroVideo ? (
+        <HeroVideo
+          url={heroVideo}
+          poster={mediaUrl(b.image) || "/hero/hero-poster.jpg"}
+          loopEnd={typeof b.videoTrim === "number" ? b.videoTrim : undefined}
+        />
+      ) : (
+        <PayloadImage media={b.image as never} fill priority sizes="100vw" className="object-cover" />
+      );
+
       if (b.variant === "fullBleed" && b.image) {
         // Variant she can pick from the panel: the headline sits under the
         // footage instead of over it, so the video stays completely clean.
@@ -165,9 +188,7 @@ function BlockSwitch({
           return (
             <>
               <section data-fullbleed-hero className="relative min-h-[72svh] overflow-clip bg-night lg:min-h-[86svh]">
-                <div className="absolute inset-0">
-                  <HeroVideo url="https://vimeo.com/773408641/7c81c6bfcc" poster="/hero/hero-poster.jpg" loopEnd={25.8} />
-                </div>
+                <div className="absolute inset-0">{heroMedia}</div>
               </section>
               <section className="bg-shell px-[clamp(20px,5vw,80px)] pt-14 pb-12 sm:pt-16">
                 <div className="mx-auto max-w-6xl">
@@ -186,8 +207,18 @@ function BlockSwitch({
             className="relative flex min-h-[100svh] items-end overflow-clip bg-night"
           >
             <div className="absolute inset-0">
-              <HeroVideo url="https://vimeo.com/773408641/7c81c6bfcc" poster="/hero/hero-poster.jpg" loopEnd={25.8} />
+              {heroMedia}
               <div className="hero-scrim absolute inset-0" aria-hidden />
+              {/* El velo lateral está calibrado para el video de la home, que ya
+                  viene oscuro. Una foto fija puede ser clara, y ahí el titular
+                  blanco se pierde. El texto va a la izquierda, así que oscurece
+                  ese lado y deja el otro limpio: se lee sin tapar la foto. */}
+              {heroVideo ? null : (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-r from-night/92 via-night/55 to-night/10" aria-hidden />
+                  <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-night/25" aria-hidden />
+                </>
+              )}
             </div>
             <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(3rem,9vh,7rem)] pt-[clamp(7rem,18vh,11rem)]">
               {b.eyebrow ? (
@@ -671,18 +702,36 @@ function BlockSwitch({
     }
 
     case "list": {
-      const items = (b.items as { text: string }[]) || [];
+      const items = (b.items as { title?: string; text: string }[]) || [];
       const cta = resolveCta(b.cta as RawCta, settings);
+      const stages = b.layout === "stages";
       return (
-        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "default"} id={(b.anchor as string) || undefined}>
+        <Section tone={(b.tone as never) || "cream"} width={stages ? "wide" : ((b.width as never) || "default")} id={(b.anchor as string) || undefined}>
           <Ornament start />
           <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
-          {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
-          <ul className="stagger mt-8 space-y-4 measure">
-            {items.map((it, i) => (
-              <li key={i} className="border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
-            ))}
-          </ul>
+          {b.intro ? <p className={`mt-5 text-muted whitespace-pre-line${stages ? " measure" : ""}`}>{b.intro as string}</p> : null}
+          {stages ? (
+            /* Recorrido en etapas: número grande en dorado y serif, titular
+               separado del párrafo. Sin iconos, como pidió. */
+            <ol className="stagger mt-12 grid gap-8 md:grid-cols-3 md:gap-7">
+              {items.map((it, i) => (
+                <li key={i} className="relative flex flex-col bg-ivory/70 p-8 sm:p-9">
+                  <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
+                  <span className="font-serif text-[2.6rem] font-light leading-none text-gold-ink">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {it.title ? <h3 className="mt-6 text-[1.15rem] leading-snug text-ink">{it.title}</h3> : null}
+                  <p className="mt-4 text-[0.98rem] leading-relaxed text-ink-soft whitespace-pre-line">{it.text}</p>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <ul className="stagger mt-8 space-y-4 measure">
+              {items.map((it, i) => (
+                <li key={i} className="border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
+              ))}
+            </ul>
+          )}
           {b.note ? <p className="mt-6 text-sm italic text-faint">{b.note as string}</p> : null}
           {cta ? <CtaRow ctas={[cta]} /> : null}
         </Section>

@@ -11,10 +11,11 @@ import type PlayerType from "@vimeo/player";
 export default function HeroVideo({
   url,
   poster,
-  loopEnd = 25.8,
+  loopEnd,
 }: {
   url: string;
   poster: string;
+  /** Corta el loop en este segundo. Sin valor, el video corre entero. */
   loopEnd?: number;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
@@ -61,7 +62,7 @@ export default function HeroVideo({
         quality: "auto",
       });
       const onTime = (data: { seconds: number }) => {
-        if (data.seconds >= loopEnd && !seeking && player) {
+        if (loopEnd != null && data.seconds >= loopEnd && !seeking && player) {
           seeking = true;
           player.setCurrentTime(0).finally(() => {
             seeking = false;
