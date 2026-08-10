@@ -69,6 +69,36 @@ export const HeroBlock: Block = {
       },
     },
     {
+      name: "imageShape",
+      type: "select",
+      defaultValue: "arch",
+      label: "Image shape",
+      admin: {
+        condition: (_, s) => s?.variant !== "fullBleed",
+        description: "The shape the photo is cut into. Leave the section without a photo and the text simply runs full width, with no empty shape.",
+      },
+      options: [
+        { label: "Arch", value: "arch" },
+        { label: "Softly rounded", value: "rounded" },
+        { label: "Square", value: "square" },
+      ],
+    },
+    {
+      name: "spacing",
+      type: "select",
+      defaultValue: "normal",
+      label: "Space above",
+      admin: {
+        condition: (_, s) => s?.variant !== "fullBleed",
+        description: "How much air sits between the menu and the start of this section.",
+      },
+      options: [
+        { label: "Compact", value: "compact" },
+        { label: "Normal", value: "normal" },
+        { label: "Generous", value: "generous" },
+      ],
+    },
+    {
       name: "imageSide",
       type: "select",
       defaultValue: "right",
@@ -192,6 +222,34 @@ export const WaysGridBlock: Block = {
         { name: "body", type: "textarea", required: true },
         { name: "ctaLabel", type: "text" },
         { name: "href", type: "text" },
+        {
+          name: "width",
+          type: "select",
+          defaultValue: "auto",
+          label: "Card width",
+          admin: {
+            description: "Auto shares the row evenly with the other cards. Use Full width for a card that should stand on its own, like a newsletter sign-up.",
+          },
+          options: [
+            { label: "Auto", value: "auto" },
+            { label: "Half width", value: "half" },
+            { label: "Full width", value: "full" },
+          ],
+        },
+        {
+          name: "overlay",
+          type: "select",
+          defaultValue: "medium",
+          label: "Photo darkening",
+          admin: {
+            description: "The dark wash over the photo that keeps the white text readable. Lighter shows more of the photo; check the text still reads.",
+          },
+          options: [
+            { label: "Light", value: "light" },
+            { label: "Medium", value: "medium" },
+            { label: "Strong", value: "strong" },
+          ],
+        },
       ],
     },
     tone,

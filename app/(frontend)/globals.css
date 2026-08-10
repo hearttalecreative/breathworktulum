@@ -262,6 +262,17 @@
   overflow: clip;
 }
 
+/* Las otras dos formas que puede elegir desde el panel, para las páginas donde
+   el arco no le cierra. Mismo contenedor, solo cambia el recorte. */
+.shape-rounded {
+  border-radius: 14px;
+  overflow: clip;
+}
+.shape-square {
+  border-radius: 2px;
+  overflow: clip;
+}
+
 /* Card with media that zooms + a champagne wash on hover. */
 .card-media { overflow: clip; }
 .card-media img {

@@ -172,6 +172,14 @@ export interface Page {
              * Optional. Cuts the loop short so it never runs past a good moment.
              */
             videoTrim?: number | null;
+            /**
+             * The shape the photo is cut into. Leave the section without a photo and the text simply runs full width, with no empty shape.
+             */
+            imageShape?: ('arch' | 'rounded' | 'square') | null;
+            /**
+             * How much air sits between the menu and the start of this section.
+             */
+            spacing?: ('compact' | 'normal' | 'generous') | null;
             imageSide?: ('right' | 'left') | null;
             /**
              * Over the photo, or underneath it so the footage stays clean.
@@ -465,6 +473,14 @@ export interface Page {
                   body: string;
                   ctaLabel?: string | null;
                   href?: string | null;
+                  /**
+                   * Auto shares the row evenly with the other cards. Use Full width for a card that should stand on its own, like a newsletter sign-up.
+                   */
+                  width?: ('auto' | 'half' | 'full') | null;
+                  /**
+                   * The dark wash over the photo that keeps the white text readable. Lighter shows more of the photo; check the text still reads.
+                   */
+                  overlay?: ('light' | 'medium' | 'strong') | null;
                   id?: string | null;
                 }[]
               | null;
@@ -1394,6 +1410,8 @@ export interface PagesSelect<T extends boolean = true> {
               image?: T;
               videoUrl?: T;
               videoTrim?: T;
+              imageShape?: T;
+              spacing?: T;
               imageSide?: T;
               textPlacement?: T;
               ctas?:
@@ -1527,6 +1545,8 @@ export interface PagesSelect<T extends boolean = true> {
                     body?: T;
                     ctaLabel?: T;
                     href?: T;
+                    width?: T;
+                    overlay?: T;
                     id?: T;
                   };
               tone?: T;
