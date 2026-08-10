@@ -104,7 +104,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
       <JsonLd data={schemas} />
 
       <article>
-        <Section tone="cream" width="narrow">
+        <Section tone="cream" width="narrow" first>
           <Link href="/blog/" className="eyebrow inline-flex items-center gap-1.5 text-gold-ink/80 transition-colors hover:text-gold-ink">
             <span aria-hidden>&larr;</span> Blog
           </Link>
@@ -130,6 +130,16 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
             {post.body ? <RichText data={post.body as never} converters={postConverters} /> : null}
           </div>
           <ShareButtons url={url} title={post.title} />
+          {/* Volver al blog al terminar de leer. El enlace de arriba sirve a
+              quien todavía no bajó; acá abajo es donde de verdad hace falta. */}
+          <div className="mt-10 border-t border-line pt-6">
+            <Link
+              href="/blog/"
+              className="inline-flex min-h-[3rem] items-center border border-line px-6 text-sm font-medium text-ink transition-colors hover:border-gold-soft hover:bg-sand/50"
+            >
+              <span aria-hidden className="mr-2">&larr;</span> Back to all articles
+            </Link>
+          </div>
         </Section>
 
         <Section tone="sand" width="narrow">
