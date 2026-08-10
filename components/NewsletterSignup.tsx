@@ -10,11 +10,15 @@ export default function NewsletterSignup({
   buttonLabel = "Receive the Letters",
   finedPrint = "By signing up, you agree to receive occasional emails from Breathwork Tulum. Unsubscribe anytime.",
   source = "",
+  stacked = false,
 }: {
   tone?: "light" | "dark";
   buttonLabel?: string;
   finedPrint?: string;
   source?: string;
+  /** Para columnas angostas, como la del pie. Tres elementos en fila ahí dejaban
+   *  los campos reducidos a dos cuadraditos. Apilado ocupan todo el ancho. */
+  stacked?: boolean;
 }) {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -64,7 +68,7 @@ export default function NewsletterSignup({
 
   return (
     <form onSubmit={onSubmit} noValidate className="w-full">
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className={stacked ? "flex flex-col gap-2" : "flex flex-col gap-2 sm:flex-row"}>
         <div className="flex-1">
           <label htmlFor={`nl-name-${tone}`} className="sr-only">
             First name
@@ -97,9 +101,9 @@ export default function NewsletterSignup({
         <button
           type="submit"
           disabled={state === "sending"}
-          className={`min-h-[44px] shrink-0 rounded-none px-6 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 ${
-            dark ? "bg-cream text-ink hover:bg-cream-dim" : "bg-ink text-cream hover:bg-night-soft"
-          }`}
+          className={`min-h-[44px] rounded-none px-6 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 ${
+            stacked ? "w-full" : "shrink-0"
+          } ${dark ? "bg-cream text-ink hover:bg-cream-dim" : "bg-ink text-cream hover:bg-night-soft"}`}
         >
           {state === "sending" ? "One moment…" : buttonLabel}
         </button>
