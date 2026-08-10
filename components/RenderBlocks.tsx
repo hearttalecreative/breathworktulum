@@ -488,13 +488,22 @@ function BlockSwitch({
       const dark = b.tone === "night" || b.tone === "forest";
       const surface = dark ? "on-dark bg-forest text-cream-dim" : b.tone === "sand" ? "bg-sand text-ink" : "bg-shell text-ink";
       return (
+        // Arriba: el respiro extra sobre la banda de foto era más del necesario.
+        // Abajo: esta sección y la que sigue son las dos del mismo color y cada
+        // una ponía su padding entero, así que el corte entre ambas se leía como
+        // un bloque vacío. El de abajo se reduce a un tercio y el hueco combinado
+        // baja del orden de 122px a 81px en teléfono.
         <section
-          className={`${surface} px-[clamp(20px,5vw,80px)] py-section pt-[calc(var(--spacing-section)+clamp(1rem,4vh,3rem))]`}
+          className={`${surface} px-[clamp(20px,5vw,80px)] pt-[calc(var(--spacing-section)+clamp(0.5rem,2vh,2rem))] pb-[calc(var(--spacing-section)*0.33)]`}
           id={(b.anchor as string) || undefined}
         >
-          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* En escritorio la imagen quedaba centrada contra una columna de texto
+              mucho más alta, y sobraba aire arriba y abajo. Estirada, su borde
+              superior arranca a la altura del eyebrow y las dos columnas cierran
+              parejas. En teléfono sigue con su proporción 4:5. */}
+          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:items-stretch lg:gap-16">
             {b.image ? (
-              <div className={`relative order-last aspect-[4/5] overflow-hidden rounded-2xl ${dark ? "bg-night" : "bg-sand"} lg:order-first`}>
+              <div className={`relative order-last aspect-[4/5] overflow-hidden rounded-2xl lg:aspect-auto lg:min-h-[32rem] ${dark ? "bg-night" : "bg-sand"} lg:order-first`}>
                 <PayloadImage media={b.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
               </div>
             ) : null}
