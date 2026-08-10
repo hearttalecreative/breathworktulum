@@ -67,10 +67,14 @@ function toVideoEmbed(url: string): string {
 
 // Opciones que ella elige desde el panel.
 const SHAPE: Record<string, string> = { arch: "arch", rounded: "shape-rounded", square: "shape-square" };
+// El header es fixed y mide 89px en escritorio, así que el padding no es el
+// hueco que se ve: hay que descontarlo. Con lg:pt-28 quedaban 23px entre el
+// header y el titular, que es lo que se veía apretado. Normal deja ~63px, el
+// mismo respiro que .section-first le da al blog.
 const HERO_PAD: Record<string, string> = {
-  compact: "pt-10 sm:pt-12 lg:pt-14",
-  normal: "pt-20 sm:pt-24 lg:pt-28",
-  generous: "pt-28 sm:pt-32 lg:pt-40",
+  compact: "pt-24 sm:pt-28 lg:pt-32",
+  normal: "pt-28 sm:pt-32 lg:pt-[9.5rem]",
+  generous: "pt-32 sm:pt-40 lg:pt-48",
 };
 // El velo sobre la foto de cada tarjeta. Light deja ver más foto; el texto
 // blanco sigue leyéndose porque el degradado se mantiene fuerte abajo, que es

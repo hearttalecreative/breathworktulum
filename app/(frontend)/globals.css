@@ -46,6 +46,9 @@
   --color-clay: var(--color-error);
   --color-sage: var(--color-whatsapp);
 
+  /* La onda de la marca, la misma que WaveMark, como máscara reutilizable. */
+  --wave-mark: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128.55 26.07'%3E%3Cpath d='M128.55,6.58c-9.72,14.44-26.22,22.33-43.51,18.53-6.85-1.51-13.04-4.32-19.52-7.01l-16.88-7C29.9,4.97,15.66,8.79,0,20.26,6.99,11.89,17.05,6.72,27.64,5.04c8.31-1.32,16.4,0,24.24,2.69,6.47,2.22,12.23,5.46,18.58,7.88l13.16,5.03c10.55,3.18,21.42,2.02,31.03-3.35,5.2-2.91,9.24-6.7,13.91-10.7Z'/%3E%3Cpath d='M85.11,13.47c14.14.84,26.45-4.19,37.87-13.47-7.94,12.7-23.86,18.3-37.87,13.47Z'/%3E%3C/svg%3E");
+
   --font-serif: var(--font-canela), "Canela", Georgia, "Times New Roman", serif;
   --font-sans: var(--font-sohne), "Söhne", system-ui, -apple-system, sans-serif;
 
@@ -190,13 +193,18 @@
   font-weight: 600;
   color: var(--color-gold-ink);
 }
-/* The signature 1px gold filet beside/under an eyebrow. */
+/* Al lado del eyebrow iba un filete de 1px. Ahora va la onda de la marca, que
+   dice de quién es la página en vez de solo separar. Se pinta como máscara, así
+   que sigue tomando el dorado del sistema y funciona igual sobre claro y sobre
+   foto. Son 10 lugares en el sitio y todos salen de esta regla. */
 .eyebrow--filet { display: inline-flex; align-items: center; gap: 0.85rem; }
 .eyebrow--filet::after {
   content: "";
-  width: 2.5rem;
-  height: 1px;
+  width: 3.25rem;
+  height: 0.66rem;
   background: var(--color-gold-soft);
+  -webkit-mask: var(--wave-mark) no-repeat center / contain;
+  mask: var(--wave-mark) no-repeat center / contain;
 }
 
 /* El párrafo bajo el titular iba en serif, y contra un titular en peso 300 leía
