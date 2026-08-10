@@ -65,6 +65,22 @@ function toVideoEmbed(url: string): string {
   return "";
 }
 
+// Opciones que ella elige desde el panel.
+const SHAPE: Record<string, string> = { arch: "arch", rounded: "shape-rounded", square: "shape-square" };
+const HERO_PAD: Record<string, string> = {
+  compact: "pt-10 sm:pt-12 lg:pt-14",
+  normal: "pt-20 sm:pt-24 lg:pt-28",
+  generous: "pt-28 sm:pt-32 lg:pt-40",
+};
+// El velo sobre la foto de cada tarjeta. Light deja ver más foto; el texto
+// blanco sigue leyéndose porque el degradado se mantiene fuerte abajo, que es
+// donde está el texto.
+const CARD_OVERLAY: Record<string, string> = {
+  light: "bg-gradient-to-t from-night/72 via-night/20 to-transparent",
+  medium: "bg-gradient-to-t from-night/90 via-night/40 to-transparent",
+  strong: "bg-gradient-to-t from-night/95 via-night/65 to-night/20",
+};
+
 // URL de una foto de la biblioteca, normalizada igual que en PayloadImage: las
 // que guarda Payload vienen absolutizadas con serverURL, que en dev es
 // localhost. Se usa para el póster del video del hero.
@@ -252,10 +268,16 @@ function BlockSwitch({
 
       // Split editorial hero — image arched beside large display type.
       const left = b.imageSide === "left";
+      // Sin foto, el contenedor de la imagen se dibujaba igual: un arco vacío
+      // ocupando media pantalla, y el texto centrado verticalmente contra él,
+      // que es de dónde salía el hueco enorme bajo el menú. Sin foto no hay
+      // columna: el texto va a todo el ancho.
+      const heroImg = !!b.image;
+      const heroPad = HERO_PAD[(b.spacing as string) || "normal"] ?? HERO_PAD.normal;
       return (
-        <section className="bg-shell px-[clamp(20px,5vw,80px)] pt-20 pb-12 sm:pt-24 lg:pt-28">
-          <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-            <div className={left ? "lg:order-last" : ""}>
+        <section className={`bg-shell px-[clamp(20px,5vw,80px)] pb-12 ${heroPad}`}>
+          <div className={`mx-auto grid max-w-6xl items-center gap-12 lg:gap-16 ${heroImg ? "lg:grid-cols-[1.05fr_0.95fr]" : ""}`}>
+            <div className={left && heroImg ? "lg:order-last" : ""}>
               {b.eyebrow ? (
                 <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span>
               ) : null}
@@ -264,17 +286,19 @@ function BlockSwitch({
               {b.metaLine ? <p className="mt-4 text-[0.9rem] tracking-wide text-gold-ink">{b.metaLine as string}</p> : null}
               <CtaRow ctas={ctas} />
             </div>
-            <div className="card relative aspect-[4/5] arch float-slow bg-sand lg:aspect-[5/6]">
-              <div className="card-media absolute inset-0">
-                <PayloadImage
-                  media={b.image as never}
-                  fill
-                  priority={first}
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
+            {heroImg ? (
+              <div className={`card relative aspect-[4/5] float-slow bg-sand lg:aspect-[5/6] ${SHAPE[(b.imageShape as string) || "arch"] ?? "arch"}`}>
+                <div className="card-media absolute inset-0">
+                  <PayloadImage
+                    media={b.image as never}
+                    fill
+                    priority={first}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </section>
       );
@@ -504,10 +528,24 @@ function BlockSwitch({
 
     case "waysGrid": {
       const cards =
-        (b.cards as { image?: unknown; title: string; body: string; ctaLabel?: string; href?: string }[]) || [];
+        (b.cards as { image?: unknown; title: string; body: string; ctaLabel?: string; href?: string; width?: string; overlay?: string }[]) || [];
       // Editorial, photo-forward, asymmetric: the first two span wide, the rest
       // narrow — no uniform box grid, no hairline borders.
-      const spans = ["lg:col-span-3", "lg:col-span-3", "lg:col-span-2", "lg:col-span-2", "lg:col-span-2"];
+      //
+      // El reparto por defecto era fijo, así que con tres tarjetas la tercera
+      // quedaba sola ocupando un tercio de la fila. Ahora sale de cuántas hay, y
+      // cada tarjeta puede forzar su ancho desde el panel.
+      const AUTO: Record<number, string[]> = {
+        1: ["lg:col-span-6"],
+        2: ["lg:col-span-3", "lg:col-span-3"],
+        3: ["lg:col-span-2", "lg:col-span-2", "lg:col-span-2"],
+        4: ["lg:col-span-3", "lg:col-span-3", "lg:col-span-3", "lg:col-span-3"],
+      };
+      const auto = AUTO[cards.length] ?? ["lg:col-span-3", "lg:col-span-3", "lg:col-span-2", "lg:col-span-2", "lg:col-span-2"];
+      const spanOf = (c: { width?: string }, i: number) =>
+        c.width === "full" ? "sm:col-span-2 lg:col-span-6"
+        : c.width === "half" ? "lg:col-span-3"
+        : auto[i % auto.length];
       // Tall 4/5 on phones (room for title + body + CTA); wide 16/10 only from sm+.
       const ratios = [
         "aspect-[4/5] sm:aspect-[16/10]",
@@ -527,13 +565,13 @@ function BlockSwitch({
                 <Wrapper
                   key={i}
                   {...(c.href ? { href: c.href } : {})}
-                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 focus-within:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spans[i % spans.length]}`}
+                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 focus-within:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spanOf(c, i)}`}
                 >
-                  <div className={`card-media relative ${ratios[i % ratios.length]} w-full`}>
+                  <div className={`card-media relative ${c.width === "full" ? "aspect-[4/5] sm:aspect-[16/7]" : ratios[i % ratios.length]} w-full`}>
                     {c.image ? (
                       <PayloadImage media={c.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
                     ) : null}
-                    <div className="absolute inset-0 bg-gradient-to-t from-night/90 via-night/40 to-transparent" aria-hidden />
+                    <div className={`absolute inset-0 ${CARD_OVERLAY[c.overlay || "medium"] ?? CARD_OVERLAY.medium}`} aria-hidden />
                   </div>
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <h3 className="text-2xl text-pure">{c.title}</h3>
