@@ -30,6 +30,14 @@ const nextConfig: NextConfig = {
       // Old blog index → new blog.
       { source: "/blog/f", destination: "/blog/", permanent: true },
       ...blogRedirects,
+      // Páginas del sitio viejo que Google tiene indexadas y que en el sitio
+      // nuevo viven en otra ruta. Sin esto, el día del cambio de dominio caen
+      // en la pantalla de 404 y se pierde lo que esas URLs acumularon.
+      // Salen del sitemap de breathworktulum.com, comparado contra el sitio
+      // nuevo una por una.
+      { source: "/1-day-immersive-1", destination: "/work-with-me/group-practice/", permanent: true },
+      { source: "/why-clarity-bw", destination: "/the-method/", permanent: true },
+      { source: "/personalized-retreats", destination: "/work-with-me/personalized-retreats/", permanent: true },
     ];
   },
   async headers() {
