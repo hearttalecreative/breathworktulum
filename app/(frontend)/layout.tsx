@@ -60,10 +60,14 @@ export const metadata: Metadata = {
   ],
   category: "Health & Wellness",
   alternates: { canonical: "/" },
+  // Sin index/follow explícitos a propósito. Una página sin etiqueta robots ya
+  // es indexable, así que declararlo no agregaba nada, y en cambio la pantalla
+  // de 404 terminaba con dos etiquetas contradictorias: el "index, follow" de
+  // acá y el "noindex" que inyecta notFound(). Google toma la más restrictiva,
+  // así que funcionaba, pero la señal quedaba sucia. Los directivos de preview
+  // sí se conservan porque mejoran cómo se ve el resultado en el buscador.
   robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+    googleBot: { "max-image-preview": "large", "max-snippet": -1 },
   },
   openGraph: {
     type: "website",
