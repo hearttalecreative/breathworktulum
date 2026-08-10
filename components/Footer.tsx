@@ -74,7 +74,7 @@ export default function Footer({
           <div>
             <p className="text-xs uppercase tracking-widest text-cream-dim/50">Stay in touch</p>
             {newsletterBlurb ? <p className="mt-4 text-sm leading-relaxed text-cream-dim/80">{newsletterBlurb}</p> : null}
-            <div className="mt-4"><NewsletterSignup tone="dark" source="footer" /></div>
+            <div className="mt-4"><NewsletterSignup tone="dark" stacked source="footer" /></div>
             <p className="mt-7 text-xs uppercase tracking-widest text-cream-dim/50">Follow along</p>
             <SocialLinks tone="dark" className="mt-3" />
             {googleReviews ? (
