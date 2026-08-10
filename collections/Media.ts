@@ -34,6 +34,12 @@ export const Media: CollectionConfig = {
     ],
   },
   upload: {
+    // Explícitos y no por default: son las dos herramientas con las que ella
+    // decide qué parte de una foto sobrevive al recorte de cada bloque. El punto
+    // focal fija el centro; el recorte es el zoom que pedía. PayloadImage lee
+    // focalX/focalY y los aplica como object-position.
+    focalPoint: true,
+    crop: true,
     // Variants are generated once, at upload, and served through srcset by
     // components/PayloadImage — no image CDN and no per-request work.
     // Height stays undefined so every variant keeps the original aspect ratio:
