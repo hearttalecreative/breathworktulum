@@ -2,31 +2,52 @@
 
 import { useState } from "react";
 
-// Reusable newsletter form. Backend (Brevo/FluentCRM) is a phase-2 wire-up;
-// for now this validates and shows the confirmation copy from 13_GLOBAL_ELEMENTS.md.
+// Formulario del newsletter. Es nuestro, con el diseño del sitio, y manda a
+// /api/newsletter, que guarda el contacto y después lo pasa a la plataforma de
+// email. Por eso cambiar de plataforma no obliga a rehacer nada acá.
 export default function NewsletterSignup({
   tone = "light",
+  buttonLabel = "Receive the Letters",
+  finedPrint = "By signing up, you agree to receive occasional emails from Breathwork Tulum. Unsubscribe anytime.",
+  source = "",
 }: {
   tone?: "light" | "dark";
+  buttonLabel?: string;
+  finedPrint?: string;
+  source?: string;
 }) {
+  const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
-  const [done, setDone] = useState(false);
+  const [company, setCompany] = useState(""); // honeypot
+  const [state, setState] = useState<"idle" | "sending" | "done">("idle");
   const [error, setError] = useState("");
 
   const dark = tone === "dark";
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError("That doesn't look like a valid email. Want to check?");
       return;
     }
     setError("");
-    // TODO: POST to /api/newsletter once Brevo is connected.
-    setDone(true);
+    setState("sending");
+    try {
+      const res = await fetch("/api/newsletter/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, email, company, source }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "Something went wrong.");
+      setState("done");
+    } catch (err) {
+      setState("idle");
+      setError((err as Error).message || "Something went wrong. Please try again.");
+    }
   }
 
-  if (done) {
+  if (state === "done") {
     return (
       <p className={dark ? "text-cream-dim" : "text-muted"}>
         You&apos;re in. Check your inbox for a quick confirmation.{" "}
@@ -35,42 +56,77 @@ export default function NewsletterSignup({
     );
   }
 
+  const field = `min-h-[44px] w-full rounded-none border px-5 py-2.5 text-sm outline-none ${
+    dark
+      ? "border-cream-dim/30 bg-transparent text-cream placeholder:text-cream-dim/50"
+      : "border-sand-deep bg-cream text-ink placeholder:text-faint"
+  }`;
+
   return (
     <form onSubmit={onSubmit} noValidate className="w-full">
-      <label htmlFor="nl-email" className="sr-only">
-        Email address
-      </label>
       <div className="flex flex-col gap-2 sm:flex-row">
-        <input
-          id="nl-email"
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@email.com"
-          className={`min-h-[44px] flex-1 rounded-none border px-5 py-2.5 text-sm outline-none ${
-            dark
-              ? "border-cream-dim/30 bg-transparent text-cream placeholder:text-cream-dim/50"
-              : "border-sand-deep bg-cream text-ink placeholder:text-faint"
-          }`}
-        />
+        <div className="flex-1">
+          <label htmlFor={`nl-name-${tone}`} className="sr-only">
+            First name
+          </label>
+          <input
+            id={`nl-name-${tone}`}
+            type="text"
+            autoComplete="given-name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First name"
+            className={field}
+          />
+        </div>
+        <div className="flex-1">
+          <label htmlFor={`nl-email-${tone}`} className="sr-only">
+            Email address
+          </label>
+          <input
+            id={`nl-email-${tone}`}
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@email.com"
+            className={field}
+          />
+        </div>
         <button
           type="submit"
-          className={`min-h-[44px] rounded-none px-6 py-2.5 text-sm font-medium transition-colors ${
-            dark
-              ? "bg-cream text-ink hover:bg-cream-dim"
-              : "bg-ink text-cream hover:bg-night-soft"
+          disabled={state === "sending"}
+          className={`min-h-[44px] shrink-0 rounded-none px-6 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 ${
+            dark ? "bg-cream text-ink hover:bg-cream-dim" : "bg-ink text-cream hover:bg-night-soft"
           }`}
         >
-          Sign up
+          {state === "sending" ? "One moment…" : buttonLabel}
         </button>
       </div>
-      {error && (
-        <p className="mt-2 text-sm text-clay">{error}</p>
-      )}
-      <p className={`mt-2 text-xs ${dark ? "text-cream-dim/70" : "text-faint"}`}>
-        Unsubscribe in one click.
-      </p>
+
+      {/* Trampa para bots: fuera de pantalla y nunca enfocable con el teclado. */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        value={company}
+        onChange={(e) => setCompany(e.target.value)}
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+      />
+
+      {error ? <p className="mt-2 text-sm text-clay">{error}</p> : null}
+      {finedPrint ? (
+        <p className={`mt-3 text-xs leading-relaxed ${dark ? "text-cream-dim/70" : "text-faint"}`}>
+          {finedPrint}{" "}
+          <a href="/privacy/" className="underline underline-offset-2 hover:opacity-80">
+            Privacy policy
+          </a>
+          .
+        </p>
+      ) : null}
     </form>
   );
 }
