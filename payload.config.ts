@@ -11,6 +11,8 @@ import sharp from "sharp";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Testimonials } from "./collections/Testimonials";
+import { Subscribers } from "./collections/Subscribers";
+import { Inquiries } from "./collections/Inquiries";
 import { Pages } from "./collections/Pages";
 import { Posts } from "./collections/Posts";
 import { SiteSettings } from "./globals/SiteSettings";
@@ -93,7 +95,7 @@ export default buildConfig({
     supportedLanguages: { en },
     fallbackLanguage: "en",
   },
-  collections: [Pages, Posts, Testimonials, Media, Users],
+  collections: [Pages, Posts, Testimonials, Subscribers, Inquiries, Media, Users],
   globals: [SiteSettings, Header, Footer, ChatSettings],
   // A persistent (fixed) formatting toolbar on every rich-text field, so the
   // blog body reads as an obvious, easy WYSIWYG editor instead of relying on the

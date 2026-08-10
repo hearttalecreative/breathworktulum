@@ -855,15 +855,34 @@ function BlockSwitch({
         </Section>
       );
 
-    case "newsletter":
+    case "newsletter": {
+      const nlCentered = b.align === "center";
       return (
-        <Section tone={(b.tone as never) || "cream"} width="narrow" id={(b.anchor as string) || undefined}>
-          <Ornament start />
-          {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
-          {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
-          <div className="mt-9 max-w-md"><NewsletterSignup /></div>
+        <Section
+          tone={(b.tone as never) || "cream"}
+          width="narrow"
+          id={(b.anchor as string) || undefined}
+          className={nlCentered ? "text-center" : ""}
+        >
+          {/* Centrado también mueve el adorno, que era lo que quedaba a la
+              izquierda mientras el texto iba al medio. */}
+          <div className={nlCentered ? "flex justify-center" : ""}><Ornament start={!nlCentered} /></div>
+          {b.heading ? (
+            <h2 className={`t-h2 mt-7 max-w-[24ch] ${nlCentered ? "mx-auto" : ""}`}>{emph(b.heading as string)}</h2>
+          ) : null}
+          {b.intro ? (
+            <p className={`mt-5 text-muted whitespace-pre-line ${nlCentered ? "mx-auto measure" : ""}`}>{b.intro as string}</p>
+          ) : null}
+          <div className={`mt-9 max-w-md ${nlCentered ? "mx-auto text-left" : ""}`}>
+            <NewsletterSignup
+              buttonLabel={(b.buttonLabel as string) || undefined}
+              finedPrint={(b.finePrint as string) ?? undefined}
+              source={(b.anchor as string) || "newsletter block"}
+            />
+          </div>
         </Section>
       );
+    }
 
     case "richText": {
       const cta = resolveCta(b.cta as RawCta, settings);

@@ -462,6 +462,30 @@ export const NewsletterBlock: Block = {
   fields: [
     { name: "heading", type: "text" },
     { name: "intro", type: "textarea" },
+    {
+      name: "buttonLabel",
+      type: "text",
+      label: "Button",
+      defaultValue: "Receive the Letters",
+    },
+    {
+      name: "finePrint",
+      type: "textarea",
+      label: "Small print under the form",
+      defaultValue:
+        "By signing up, you agree to receive occasional emails from Breathwork Tulum. Unsubscribe anytime.",
+      admin: { description: "A link to the privacy policy is added automatically at the end." },
+    },
+    {
+      name: "align",
+      type: "select",
+      defaultValue: "left",
+      label: "Alignment",
+      options: [
+        { label: "Left", value: "left" },
+        { label: "Centered", value: "center" },
+      ],
+    },
     tone,
   ],
 };

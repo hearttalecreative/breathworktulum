@@ -70,6 +70,8 @@ export interface Config {
     pages: Page;
     posts: Post;
     testimonials: Testimonial;
+    subscribers: Subscriber;
+    inquiries: Inquiry;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -82,6 +84,8 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
+    inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -1086,6 +1090,12 @@ export interface Page {
         | {
             heading?: string | null;
             intro?: string | null;
+            buttonLabel?: string | null;
+            /**
+             * A link to the privacy policy is added automatically at the end.
+             */
+            finePrint?: string | null;
+            align?: ('left' | 'center') | null;
             /**
              * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
@@ -1276,6 +1286,58 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Everyone who signed up through the site. Newest first.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: number;
+  email: string;
+  firstName?: string | null;
+  /**
+   * Which page they signed up from.
+   */
+  source?: string | null;
+  /**
+   * Empty means it is stored here but not yet in the email platform.
+   */
+  syncedAt?: string | null;
+  /**
+   * Why the last sync failed, if it did.
+   */
+  syncError?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Everything sent through a form on the site. Newest first.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries".
+ */
+export interface Inquiry {
+  id: number;
+  name: string;
+  email: string;
+  subject?: string | null;
+  message?: string | null;
+  /**
+   * Tick it once you have answered.
+   */
+  handled?: boolean | null;
+  /**
+   * Which page the form was on.
+   */
+  source?: string | null;
+  /**
+   * When the alert email went out. Empty means email is not configured yet.
+   */
+  notifiedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Who can log in to manage the site.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1338,6 +1400,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'testimonials';
         value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'subscribers';
+        value: number | Subscriber;
+      } | null)
+    | ({
+        relationTo: 'inquiries';
+        value: number | Inquiry;
       } | null)
     | ({
         relationTo: 'media';
@@ -1846,6 +1916,9 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               intro?: T;
+              buttonLabel?: T;
+              finePrint?: T;
+              align?: T;
               tone?: T;
               anchor?: T;
               hidden?: T;
@@ -1889,6 +1962,34 @@ export interface TestimonialsSelect<T extends boolean = true> {
   quote?: T;
   source?: T;
   name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers_select".
+ */
+export interface SubscribersSelect<T extends boolean = true> {
+  email?: T;
+  firstName?: T;
+  source?: T;
+  syncedAt?: T;
+  syncError?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries_select".
+ */
+export interface InquiriesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  subject?: T;
+  message?: T;
+  handled?: T;
+  source?: T;
+  notifiedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
