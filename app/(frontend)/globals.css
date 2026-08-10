@@ -262,6 +262,14 @@
   overflow: clip;
 }
 
+/* El header es fixed, así que la primera sección de una página que no arranca
+   con un hero quedaba por debajo: se veía al hacer scroll pero no se podía
+   clickear. Le pasó con el enlace de volver al blog. Esto le da el alto del
+   header más el respiro normal. */
+.section-first {
+  padding-top: calc(clamp(3.25rem, 7.5vh, 6.5rem) + 5.5rem);
+}
+
 /* Las otras dos formas que puede elegir desde el panel, para las páginas donde
    el arco no le cierra. Mismo contenedor, solo cambia el recorte. */
 .shape-rounded {

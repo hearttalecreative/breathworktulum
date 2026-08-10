@@ -53,7 +53,7 @@ export default async function BlogIndex() {
   const posts = (await getPublishedPosts()) as unknown as PostCard[];
 
   return (
-    <Section tone="cream" width="wide">
+    <Section tone="cream" width="wide" first>
       <span className="eyebrow eyebrow--filet">Journal</span>
       <h1 className="mt-4 max-w-[20ch] font-serif text-[clamp(2rem,5vw,3.25rem)] leading-[1.05] text-ink">
         Breathwork, healing, and living through change.

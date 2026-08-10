@@ -15,12 +15,16 @@ export default function Section({
   id,
   className = "",
   width = "default",
+  first = false,
 }: {
   children: ReactNode;
   tone?: Tone;
   id?: string;
   className?: string;
   width?: "default" | "narrow" | "wide";
+  /** Primera sección de una página que no arranca con un hero: suma el alto del
+   *  header fixed, si no su contenido queda debajo y no se puede clickear. */
+  first?: boolean;
 }) {
   const measure =
     width === "narrow"
@@ -31,7 +35,7 @@ export default function Section({
   return (
     <section
       id={id}
-      className={`${tones[tone]} ${tone === "night" ? "on-dark" : ""} px-[clamp(20px,5vw,80px)] py-section ${className}`}
+      className={`${tones[tone]} ${tone === "night" ? "on-dark" : ""} px-[clamp(20px,5vw,80px)] py-section ${first ? "section-first" : ""} ${className}`}
     >
       <div className={`mx-auto ${measure}`}>{children}</div>
     </section>
