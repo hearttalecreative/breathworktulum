@@ -652,20 +652,30 @@ function BlockSwitch({
       return (
         <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
           <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-            <div className={`card relative aspect-[4/5] arch bg-sand ${left ? "lg:order-first" : "lg:order-last"}`}>
+            {/* En teléfono la onda y el titular suben arriba del retrato y el
+                texto queda debajo: se presenta y después se la ve, que es el
+                orden en que se lee. El envoltorio usa `contents`, así que en
+                teléfono sus dos partes son celdas sueltas de la grilla y se
+                pueden ordenar; desde lg vuelve a ser un bloque y la columna
+                queda igual que siempre. */}
+            <div className="contents lg:block">
+              <div className="order-1 lg:order-none">
+                <Ornament start />
+                <h2 className="t-h2 mt-7 max-w-[20ch] text-ink">{emph(b.heading as string)}</h2>
+              </div>
+              <div className="order-3 lg:order-none">
+                {b.body ? (
+                  <div className="prose-body measure space-y-4 text-ink-soft lg:mt-6">
+                    <RichText data={b.body as never} converters={bodyConverters} />
+                  </div>
+                ) : null}
+                {cta ? <CtaRow ctas={[cta]} /> : null}
+              </div>
+            </div>
+            <div className={`card relative order-2 aspect-[4/5] arch bg-sand lg:order-none ${left ? "lg:order-first" : "lg:order-last"}`}>
               <div className="card-media absolute inset-0">
                 <PayloadImage media={b.image as never} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
-            </div>
-            <div>
-              <Ornament start />
-              <h2 className="t-h2 mt-7 max-w-[20ch] text-ink">{emph(b.heading as string)}</h2>
-              {b.body ? (
-                <div className="prose-body measure mt-6 space-y-4 text-ink-soft">
-                  <RichText data={b.body as never} converters={bodyConverters} />
-                </div>
-              ) : null}
-              {cta ? <CtaRow ctas={[cta]} /> : null}
             </div>
           </div>
         </Section>
