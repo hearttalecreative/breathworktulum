@@ -1071,6 +1071,16 @@ export interface Page {
         | {
             heading?: string | null;
             intro?: string | null;
+            subjectLabel?: string | null;
+            /**
+             * The options someone can pick. Drag to reorder. Leave empty to use the standard list.
+             */
+            subjects?:
+              | {
+                  label: string;
+                  id?: string | null;
+                }[]
+              | null;
             /**
              * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
              */
@@ -1905,6 +1915,13 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               intro?: T;
+              subjectLabel?: T;
+              subjects?:
+                | T
+                | {
+                    label?: T;
+                    id?: T;
+                  };
               tone?: T;
               anchor?: T;
               hidden?: T;

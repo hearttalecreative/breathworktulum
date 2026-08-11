@@ -452,6 +452,19 @@ export const ContactFormBlock: Block = {
   fields: [
     { name: "heading", type: "text" },
     { name: "intro", type: "textarea" },
+    {
+      name: "subjectLabel",
+      type: "text",
+      label: "Label above the dropdown",
+      defaultValue: "I'm interested in",
+    },
+    {
+      name: "subjects",
+      type: "array",
+      label: "Dropdown choices",
+      admin: { description: "The options someone can pick. Drag to reorder. Leave empty to use the standard list." },
+      fields: [{ name: "label", type: "text", required: true }],
+    },
     tone,
   ],
 };

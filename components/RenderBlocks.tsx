@@ -709,7 +709,11 @@ function BlockSwitch({
       const ctas = resolveCtas(b.ctas as RawCta[], settings);
       const center = b.align !== "left";
       return (
-        <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
+        // Siete páginas abren con este bloque, entre ellas Contact y las legales.
+        // Sin hero delante, el titular quedaba contra el header fijo, que mide
+        // 89px y flota sobre el contenido. `first` le da el alto del header más
+        // el respiro normal.
+        <Section first={first} tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
           <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={b.tone === "night" ? "champagne" : "gold"} /></div>
           <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
           {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"} whitespace-pre-line`}>{b.body as string}</p> : null}
@@ -840,6 +844,10 @@ function BlockSwitch({
 
     case "contactTiles": {
       const tiles = (b.tiles as { title: string; line?: string; value?: string; ctaLabel?: string; action?: string; whatsappContext?: string; href?: string }[]) || [];
+      // Vaciar las tarjetas desde el panel dejaba la sección igual, con todo su
+      // espacio arriba y abajo, así que quedaba un hueco entre las dos secciones
+      // vecinas sin nada que lo explicara.
+      if (!tiles.length) return null;
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
           <div className="stagger grid gap-6 md:grid-cols-3">
@@ -866,11 +874,23 @@ function BlockSwitch({
 
     case "contactForm":
       return (
-        <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
+        <Section first={first} tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
           <Ornament start />
-          {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
+          {/* El titular iba al mismo tamaño que los de las secciones que cuentan
+              algo, y acá domina lo que es una sección de apoyo. Un escalón menos. */}
+          {b.heading ? (
+            <h2 className="mt-7 max-w-[24ch] font-serif text-[clamp(1.4rem,2.2vw+0.6rem,2.1rem)] font-light leading-tight text-ink">
+              {emph(b.heading as string)}
+            </h2>
+          ) : null}
           {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
-          <div className="mt-9"><ContactForm /></div>
+          <div className="mt-9">
+            <ContactForm
+              subjectLabel={(b.subjectLabel as string) || undefined}
+              subjects={((b.subjects as { label: string }[]) || []).map((s) => s.label).filter(Boolean)}
+              source={(b.anchor as string) || "contact form"}
+            />
+          </div>
         </Section>
       );
 
