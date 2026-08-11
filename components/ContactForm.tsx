@@ -2,11 +2,31 @@
 
 import { useState } from "react";
 
-// General inquiry form. Submits to /api/contact (validates + responds for now;
-// real email backend — Brevo/Resend — is a phase-2 wire-up).
-export default function ContactForm() {
+// Formulario de consulta. Manda a /api/contact, que guarda la consulta en el
+// panel y después avisa por correo.
+//
+// Las opciones del desplegable salen del bloque, así que ella las edita desde el
+// panel. Esta lista es el respaldo si el bloque no trae ninguna.
+const SUBJECTS_FALLBACK = [
+  "Private session",
+  "Couples / Shared session",
+  "Private retreat",
+  "Corporate or group breathwork",
+  "General question",
+];
+
+export default function ContactForm({
+  subjectLabel = "I'm interested in",
+  subjects,
+  source = "",
+}: {
+  subjectLabel?: string;
+  subjects?: string[];
+  source?: string;
+}) {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState("");
+  const options = subjects?.length ? subjects : SUBJECTS_FALLBACK;
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,7 +50,7 @@ export default function ContactForm() {
       const res = await fetch("/api/contact/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, source }),
       });
       if (!res.ok) throw new Error();
       setStatus("done");
@@ -42,11 +62,11 @@ export default function ContactForm() {
 
   if (status === "done") {
     return (
-      <div className="rounded-none border border-line bg-pure p-8">
-        <p className="text-[1.05rem] text-ink">
-          Got it. I&apos;ll get back to you within 48 hours.
-        </p>
-        <p className="mt-2 font-serif italic text-gold-ink">With Love, Sabine.</p>
+      <div className="relative overflow-hidden bg-ivory/70 p-8">
+        <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
+        <p className="text-[1.05rem] text-ink">Your message has been received.</p>
+        <p className="mt-2 text-ink-soft">I normally reply within 24 to 48 hours.</p>
+        <p className="mt-4 font-serif italic text-gold-ink">With Love, Sabine.</p>
       </div>
     );
   }
@@ -63,26 +83,29 @@ export default function ContactForm() {
         className="absolute left-[-9999px] h-0 w-0 opacity-0"
       />
 
+      {/* Al sacar los asteriscos rojos no quedó forma de saber qué era
+          obligatorio, y ella dio por hecho que nada lo era. Vuelve la marca,
+          en dorado en vez de rojo, con la aclaración arriba. */}
+      <p className="text-xs text-faint">
+        Fields marked with <span className="text-gold-ink">*</span> are required.
+      </p>
+
       {/* Nombre y teléfono comparten fila: acorta el formulario sin apretar nada. */}
       <div className="grid gap-7 sm:grid-cols-2">
         <Field label="Your name" name="name" autoComplete="name" required />
-        <Field label="Phone or WhatsApp" name="phone" type="tel" autoComplete="tel" required />
+        <Field label="Phone or WhatsApp, including country code" name="phone" type="tel" autoComplete="tel" required />
       </div>
       <Field label="Email" name="email" type="email" autoComplete="email" required />
 
       <div>
         <label htmlFor="subject" className={LABEL}>
-          Subject <span className="normal-case tracking-normal text-faint">(optional)</span>
+          {subjectLabel}
         </label>
         <div className="relative">
           <select id="subject" name="subject" className={`${FIELD} appearance-none pr-8`}>
-            <option>Question</option>
-            <option>Private session booking</option>
-            <option>Personalized retreat</option>
-            <option>Group or corporate</option>
-            <option>Collaboration</option>
-            <option>Press</option>
-            <option>Other</option>
+            {options.map((o) => (
+              <option key={o}>{o}</option>
+            ))}
           </select>
           <span aria-hidden className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-gold-ink">
             ⌄
@@ -92,7 +115,7 @@ export default function ContactForm() {
 
       <div>
         <label htmlFor="message" className={LABEL}>
-          Message
+          Message <span className="text-gold-ink">*</span>
         </label>
         <textarea id="message" name="message" rows={5} required className={`${FIELD} resize-y leading-relaxed`} />
       </div>
@@ -105,13 +128,21 @@ export default function ContactForm() {
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        className="inline-flex min-h-[3rem] items-center bg-ink px-8 text-sm font-medium text-cream transition-transform hover:bg-night-soft active:scale-95 disabled:opacity-60"
-      >
-        {status === "sending" ? "Sending…" : "Send message"}
-      </button>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="inline-flex min-h-[3rem] items-center bg-ink px-8 text-sm font-medium text-cream transition-transform hover:bg-night-soft active:scale-95 disabled:opacity-60"
+        >
+          {status === "sending" ? "Sending…" : "Send message"}
+        </button>
+        <p className="text-xs text-faint">
+          Your details stay between us.{" "}
+          <a href="/privacy/" className="underline underline-offset-2 hover:text-ink-soft">
+            Privacy policy
+          </a>
+        </p>
+      </div>
     </form>
   );
 }
