@@ -206,6 +206,16 @@
   -webkit-mask: var(--wave-mark) no-repeat center / contain;
   mask: var(--wave-mark) no-repeat center / contain;
 }
+/* En pantalla chica la onda pesaba de más al lado de etiquetas cortas como
+   FOUNDATION: el eyebrow mide poco y el adorno competía con él. Un 17% menos,
+   solo en teléfono. En escritorio se queda como está, donde ata la tipografía
+   dorada con la onda del logo sin sobrecargar la página. */
+@media (max-width: 639px) {
+  .eyebrow--filet::after {
+    width: 2.7rem;
+    height: 0.55rem;
+  }
+}
 
 /* El párrafo bajo el titular iba en serif, y contra un titular en peso 300 leía
    más pesado que el titular mismo. Va en sans, que es la combinación que ella
