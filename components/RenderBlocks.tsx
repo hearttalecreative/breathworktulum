@@ -337,7 +337,7 @@ function BlockSwitch({
                 {items.map((it, i) => (
                   <li key={i} className="timeline-item flex gap-6">
                     <span className="timeline-num font-serif text-2xl leading-none text-gold-soft tabular-nums">0{i + 1}</span>
-                    <p className="measure text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</p>
+                    <p className="measure whitespace-pre-line text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</p>
                   </li>
                 ))}
               </ol>
@@ -430,7 +430,7 @@ function BlockSwitch({
               </div>
             ))}
           </dl>
-          {b.note ? <p className="mt-6 text-sm italic text-faint">{b.note as string}</p> : null}
+          {b.note ? <p className="mt-6 whitespace-pre-line text-sm italic text-faint">{b.note as string}</p> : null}
           {cta ? <CtaRow ctas={[cta]} /> : null}
         </Section>
       );
@@ -528,7 +528,7 @@ function BlockSwitch({
                     <span className="font-serif text-3xl text-gold-soft tabular-nums">0{i + 1}</span>
                     <div>
                       <h3 className={`text-2xl ${dark ? "text-pure" : "text-ink"}`}>{p.n}</h3>
-                      <p className={`mt-1 ${dark ? "text-cream-dim" : "text-ink-soft"}`}>{p.line}</p>
+                      <p className={`mt-1 whitespace-pre-line ${dark ? "text-cream-dim" : "text-ink-soft"}`}>{p.line}</p>
                     </div>
                   </li>
                 ))}
@@ -600,7 +600,7 @@ function BlockSwitch({
                   </div>
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <h3 className="text-2xl text-pure">{c.title}</h3>
-                    <p className="mt-2 max-w-sm text-sm leading-relaxed text-cream-dim">{c.body}</p>
+                    <p className="mt-2 max-w-sm whitespace-pre-line text-sm leading-relaxed text-cream-dim">{c.body}</p>
                     {c.ctaLabel ? (
                       <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-cream-dim transition-colors group-hover:text-pure">
                         <span className="relative">
@@ -630,7 +630,7 @@ function BlockSwitch({
             {lead ? (
               <figure className="relative">
                 <span aria-hidden className="font-serif text-7xl leading-none text-gold-soft">&ldquo;</span>
-                <blockquote className="-mt-6 font-serif text-2xl leading-snug text-ink sm:text-[1.75rem]">
+                <blockquote className="-mt-6 whitespace-pre-line font-serif text-2xl leading-snug text-ink sm:text-[1.75rem]">
                   {lead.quote}
                 </blockquote>
                 <figcaption className="mt-5 text-xs uppercase tracking-[0.16em] text-gold-ink">
@@ -641,7 +641,7 @@ function BlockSwitch({
             <div className="stagger flex flex-col justify-center gap-10 border-t border-line pt-10 lg:border-l lg:border-t-0 lg:pl-16 lg:pt-0">
               {rest.map((t, i) => (
                 <figure key={i}>
-                  <blockquote className="font-serif text-lg leading-relaxed text-ink">{t.quote}</blockquote>
+                  <blockquote className="whitespace-pre-line font-serif text-lg leading-relaxed text-ink">{t.quote}</blockquote>
                   <figcaption className="mt-3 text-xs uppercase tracking-[0.16em] text-gold-ink">
                     {t.source || "Google Review"}
                   </figcaption>
@@ -772,7 +772,7 @@ function BlockSwitch({
                         <p className="eyebrow text-gold-ink/80">{(b.includedLabel as string) || "What's included"}</p>
                         <ul className="stagger mt-5 space-y-3 text-sm text-ink-soft">
                           {included.map((it, i) => (
-                            <li key={i} className="border-l border-gold-soft/55 pl-3.5">{it.text}</li>
+                            <li key={i} className="whitespace-pre-line border-l border-gold-soft/55 pl-3.5">{it.text}</li>
                           ))}
                         </ul>
                       </>
@@ -826,11 +826,11 @@ function BlockSwitch({
           ) : (
             <ul className="stagger mt-8 space-y-4 measure">
               {items.map((it, i) => (
-                <li key={i} className="border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
+                <li key={i} className="whitespace-pre-line border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
               ))}
             </ul>
           )}
-          {b.note ? <p className="mt-6 text-sm italic text-faint">{b.note as string}</p> : null}
+          {b.note ? <p className="mt-6 whitespace-pre-line text-sm italic text-faint">{b.note as string}</p> : null}
           {cta ? <CtaRow ctas={[cta]} /> : null}
         </Section>
       );
@@ -854,13 +854,13 @@ function BlockSwitch({
               <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
               {b.leftTitle ? <h3 className="text-xl text-ink">{b.leftTitle as string}</h3> : null}
               <ul className="stagger mt-6 space-y-3.5 text-sm leading-relaxed text-ink-soft">
-                {left.map((it, i) => <li key={i} className="border-l border-gold-soft/45 pl-3.5">{it.text}</li>)}
+                {left.map((it, i) => <li key={i} className="whitespace-pre-line border-l border-gold-soft/45 pl-3.5">{it.text}</li>)}
               </ul>
             </div>
             <div className="md:col-span-2 md:pt-3">
               {b.rightTitle ? <h3 className="text-xs uppercase tracking-[0.16em] text-ink-soft">{b.rightTitle as string}</h3> : null}
               <ul className="stagger mt-5 space-y-3 text-sm leading-relaxed text-ink-soft">
-                {right.map((it, i) => <li key={i}>{it.text}</li>)}
+                {right.map((it, i) => <li key={i} className="whitespace-pre-line">{it.text}</li>)}
               </ul>
             </div>
           </div>
@@ -883,7 +883,7 @@ function BlockSwitch({
                 <div key={i} className="group relative flex flex-col overflow-hidden border border-line bg-ivory/70 p-8 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1">
                   <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
                   <h3 className="text-2xl text-ink">{t.title}</h3>
-                  {t.line ? <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft">{t.line}</p> : <div className="flex-1" />}
+                  {t.line ? <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-relaxed text-ink-soft">{t.line}</p> : <div className="flex-1" />}
                   {t.value ? <p className="mt-5 text-sm font-medium text-ink">{t.value}</p> : null}
                   {cta ? (
                     <a href={cta.href} target={cta.external ? "_blank" : undefined} rel={cta.external ? "noopener noreferrer" : undefined} className="link-underline mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gold-ink">

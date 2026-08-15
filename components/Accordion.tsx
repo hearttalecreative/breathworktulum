@@ -49,7 +49,7 @@ function Item({ q, a, first }: QA & { first?: boolean }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="measure pb-6 pr-6 text-muted">{a}</p>
+          <p className="measure whitespace-pre-line pb-6 pr-6 text-muted">{a}</p>
         </div>
       </div>
     </div>
