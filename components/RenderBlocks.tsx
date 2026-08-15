@@ -280,7 +280,13 @@ function BlockSwitch({
       const heroPad = HERO_PAD[(b.spacing as string) || "normal"] ?? HERO_PAD.normal;
       return (
         <section className={`bg-shell px-[clamp(20px,5vw,80px)] pb-12 ${heroPad}`}>
-          <div className={`mx-auto grid max-w-6xl items-center gap-12 lg:gap-16 ${heroImg ? "lg:grid-cols-[1.05fr_0.95fr]" : ""}`}>
+          {/* La foto es más alta que el texto, y con items-center el texto se
+              centraba contra ella: quedaban unos 110px de aire muerto arriba a
+              la izquierda, que es lo que la clienta marcó. Alineado arriba, el
+              titular arranca a la altura de la foto.
+              En teléfono no cambia nada: hay una sola columna, así que la
+              alineación vertical nunca tuvo efecto ahí. */}
+          <div className={`mx-auto grid max-w-6xl items-center gap-12 lg:items-start lg:gap-16 ${heroImg ? "lg:grid-cols-[1.05fr_0.95fr]" : ""}`}>
             <div className={left && heroImg ? "lg:order-last" : ""}>
               {b.eyebrow ? (
                 <span className="eyebrow eyebrow--filet">{b.eyebrow as string}</span>
