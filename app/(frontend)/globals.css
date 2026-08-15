@@ -304,7 +304,6 @@
 .card-media img {
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.card:hover .card-media img { transform: scale(1.04); will-change: transform; }
 .card-media::after {
   content: "";
   position: absolute;
@@ -314,7 +313,27 @@
   transition: opacity 0.4s ease;
   mix-blend-mode: multiply;
 }
-.card:hover .card-media::after { opacity: 0.35; }
+
+/* El zoom y el velo solo donde hay puntero de verdad.
+   En un teléfono, tocar la foto activaba :hover y le aplicaba un transform a la
+   imagen. Safari en iOS saca de la capa recortada a un hijo transformado, así
+   que el arco perdía sus curvas y se veía cuadrado hasta tocar en otro lado.
+   Con esto el efecto ni siquiera existe en pantallas táctiles, que es como
+   debería haber sido: un hover que se queda pegado tras un toque no es un
+   efecto, es un error. */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .card-media img { transform: scale(1.04); }
+  .card:hover .card-media::after { opacity: 0.35; }
+}
+
+/* Refuerzo para el recorte redondeado en Safari: darle capa propia al elemento
+   que recorta evita que un hijo compuesto se escape de la curva. */
+.arch,
+.shape-rounded {
+  isolation: isolate;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
 
 /* Hero scrim — darker at top (nav legibility) and bottom (content legibility). */
 /* Kept only as heavy as the type needs. The previous values darkened the whole
