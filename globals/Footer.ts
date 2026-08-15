@@ -34,6 +34,20 @@ export const Footer: GlobalConfig = {
       label: "Newsletter + legal",
       fields: [
         { name: "newsletterBlurb", type: "textarea", label: "Newsletter text" },
+        {
+          name: "newsletterSuccess",
+          type: "text",
+          label: "Message after signing up",
+          defaultValue: "You're in. Thank you for signing up.",
+          admin: { description: "What someone sees once they have signed up, in place of the form." },
+        },
+        {
+          name: "newsletterSignature",
+          type: "text",
+          label: "Signature after signing up",
+          defaultValue: "With Love, Sabine.",
+          admin: { description: "Shown in italics right after the message." },
+        },
         { name: "legal", type: "array", label: "Legal links", labels: { singular: "Link", plural: "Links" }, fields: linkFields },
         { name: "bottomNote", type: "text", label: "Bottom note" },
       ],

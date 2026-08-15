@@ -1105,6 +1105,14 @@ export interface Page {
              * A link to the privacy policy is added automatically at the end.
              */
             finePrint?: string | null;
+            /**
+             * What someone sees once they have signed up, in place of the form.
+             */
+            successMessage?: string | null;
+            /**
+             * Shown in italics right after the message.
+             */
+            successSignature?: string | null;
             align?: ('left' | 'center') | null;
             /**
              * Section background. Alternate light/sand for rhythm; use “night” for darker stretches.
@@ -1935,6 +1943,8 @@ export interface PagesSelect<T extends boolean = true> {
               intro?: T;
               buttonLabel?: T;
               finePrint?: T;
+              successMessage?: T;
+              successSignature?: T;
               align?: T;
               tone?: T;
               anchor?: T;
@@ -2265,6 +2275,14 @@ export interface Footer {
       }[]
     | null;
   newsletterBlurb?: string | null;
+  /**
+   * What someone sees once they have signed up, in place of the form.
+   */
+  newsletterSuccess?: string | null;
+  /**
+   * Shown in italics right after the message.
+   */
+  newsletterSignature?: string | null;
   legal?:
     | {
         label: string;
@@ -2404,6 +2422,8 @@ export interface FooterSelect<T extends boolean = true> {
         id?: T;
       };
   newsletterBlurb?: T;
+  newsletterSuccess?: T;
+  newsletterSignature?: T;
   legal?:
     | T
     | {

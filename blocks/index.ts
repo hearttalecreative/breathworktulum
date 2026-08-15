@@ -490,6 +490,20 @@ export const NewsletterBlock: Block = {
       admin: { description: "A link to the privacy policy is added automatically at the end." },
     },
     {
+      name: "successMessage",
+      type: "text",
+      label: "Message after signing up",
+      defaultValue: "You're in. Thank you for signing up.",
+      admin: { description: "What someone sees once they have signed up, in place of the form." },
+    },
+    {
+      name: "successSignature",
+      type: "text",
+      label: "Signature after signing up",
+      defaultValue: "With Love, Sabine.",
+      admin: { description: "Shown in italics right after the message." },
+    },
+    {
       name: "align",
       type: "select",
       defaultValue: "left",

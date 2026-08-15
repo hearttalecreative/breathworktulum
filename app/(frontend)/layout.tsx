@@ -138,6 +138,8 @@ export default async function RootLayout({
           workWithMe={footer.workWithMe || []}
           explore={footer.explore || []}
           newsletterBlurb={footer.newsletterBlurb || ""}
+          newsletterSuccess={footer.newsletterSuccess || undefined}
+          newsletterSignature={footer.newsletterSignature || undefined}
           legal={footer.legal || []}
           bottomNote={footer.bottomNote || ""}
           instagram={(s.instagram as string) || ""}
