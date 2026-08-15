@@ -2241,6 +2241,10 @@ export interface Header {
          * Optional micro-copy shown under the link in the submenu.
          */
         description?: string | null;
+        /**
+         * Keeps the link out of the top bar on a computer, where space is tight, and shows it in the phone menu, where there is room.
+         */
+        mobileOnly?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2391,6 +2395,7 @@ export interface HeaderSelect<T extends boolean = true> {
         label?: T;
         href?: T;
         description?: T;
+        mobileOnly?: T;
         id?: T;
       };
   updatedAt?: T;

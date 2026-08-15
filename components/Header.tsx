@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-type NavLink = { label: string; href: string; description?: string };
+type NavLink = { label: string; href: string; description?: string; mobileOnly?: boolean };
 
 export default function Header({
   brandName = "Breathwork Tulum",
@@ -122,7 +122,7 @@ export default function Header({
           <NavDropdown label="Work With Me" eyebrow="Ways to work together" items={workWithMe} linkColor={linkColor} />
           <NavDropdown label="Retreats" eyebrow="Retreat offerings" items={retreats} linkColor={linkColor} />
 
-          {primary.map((item) => (
+          {primary.filter((item) => !item.mobileOnly).map((item) => (
             <Link key={item.href} href={item.href} className={`link-underline whitespace-nowrap py-2 text-[0.98rem] transition-colors ${linkColor}`}>
               {item.label}
             </Link>
