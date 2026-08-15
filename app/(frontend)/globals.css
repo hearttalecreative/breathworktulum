@@ -4,9 +4,12 @@
   Breathwork Tulum — earthy luxury / boutique retreat.
   Visual system from 02_SITIO_WEB/18_ESTETICA_Y_ESTILO.md.
   Canvas + gold lead; earth neutrals support; text in warm ink (never gold).
-  70/20/10 (canvas/neutrals/gold). WCAG AA. Type Stack A (Fraunces + Hanken
-  Grotesk) standing in for premium Stack B (Canela + Söhne) — swap via
-  --font-serif / --font-sans when the licensed woff2 land in /public/fonts.
+  70/20/10 (canvas/neutrals/gold). WCAG AA.
+
+  Tipografías: Playfair Display (titulares) + Hanken Grotesk (textos), las dos
+  con licencia SIL OFL. Reemplazaron a Canela y Söhne, que eran archivos de
+  prueba con 74 y 68 glifos: sin "&", sin "®", sin acentos, y Söhne sin
+  apóstrofo ni signo de pregunta. Todo eso caía a la fuente del sistema.
 */
 
 @theme {
@@ -49,8 +52,8 @@
   /* La onda de la marca, la misma que WaveMark, como máscara reutilizable. */
   --wave-mark: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128.55 26.07'%3E%3Cpath d='M128.55,6.58c-9.72,14.44-26.22,22.33-43.51,18.53-6.85-1.51-13.04-4.32-19.52-7.01l-16.88-7C29.9,4.97,15.66,8.79,0,20.26,6.99,11.89,17.05,6.72,27.64,5.04c8.31-1.32,16.4,0,24.24,2.69,6.47,2.22,12.23,5.46,18.58,7.88l13.16,5.03c10.55,3.18,21.42,2.02,31.03-3.35,5.2-2.91,9.24-6.7,13.91-10.7Z'/%3E%3Cpath d='M85.11,13.47c14.14.84,26.45-4.19,37.87-13.47-7.94,12.7-23.86,18.3-37.87,13.47Z'/%3E%3C/svg%3E");
 
-  --font-serif: var(--font-canela), "Canela", Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-sohne), "Söhne", system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-hanken), "Hanken Grotesk", system-ui, -apple-system, sans-serif;
 
   /* Vertical rhythm. Each section pads top and bottom, so consecutive blocks
      doubled it — up to 20rem of dead space between two paragraphs, which is
@@ -85,10 +88,11 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Headlines (titulares) — Canela serif. Light weight = delicate, feminine. */
+  /* Titulares en serif. Playfair arranca en 400, así que ese es el peso más
+     delicado disponible; declararlo evita depender del recorte del navegador. */
   h1, h2 {
     font-family: var(--font-serif);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.13;
     letter-spacing: -0.008em;
     color: var(--color-ink);
@@ -96,7 +100,7 @@
     font-feature-settings: "kern", "liga", "lnum" 1;
   }
 
-  /* Secondary titles (títulos secundarios) — Söhne sans, lighter for grace. */
+  /* Títulos secundarios en sans. */
   h3, h4 {
     font-family: var(--font-sans);
     font-weight: 500;
@@ -369,7 +373,7 @@
 /* Display type for full-bleed heroes. */
 .t-display {
   font-family: var(--font-serif);
-  font-weight: 300;
+  font-weight: 400;
   /* Dialled back from 5vw / 4.25rem — the hero headline was overpowering the
      footage on desktop. Phones keep roughly the size they had. */
   /* --heading-scale lo fija el panel (Site Settings > Headings). Multiplica el
@@ -385,7 +389,7 @@
    Keep per-block color utilities (text-ink / text-pure / text-cream). */
 .t-h2 {
   font-family: var(--font-serif);
-  font-weight: 300;
+  font-weight: 400;
   font-size: calc(clamp(1.6rem, 3.2vw + 0.4rem, 3rem) * var(--heading-scale, 1));
   line-height: 1.13;
   letter-spacing: -0.008em;
