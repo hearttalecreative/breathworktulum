@@ -42,7 +42,11 @@ export function resolveCta(cta: RawCta | null | undefined, settings: SettingsLik
       return {
         label: cta.label,
         href: whatsappHref(settings, cta.whatsappContext || "general"),
-        variant: "whatsapp",
+        // La acción de WhatsApp forzaba el botón dorado con ícono, así que
+        // elegir otra apariencia desde el panel no hacía nada: un enlace a
+        // WhatsApp no podía ser un enlace de texto. Ahora la elección manda, y
+        // si no se eligió nada se mantiene el botón de WhatsApp de siempre.
+        variant: cta.variant || "whatsapp",
         external: true,
       };
     case "email":

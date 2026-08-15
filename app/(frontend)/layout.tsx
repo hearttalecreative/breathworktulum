@@ -12,28 +12,31 @@ import { organizationLd, websiteLd, localBusinessLd } from "@/lib/seo";
 import { getGlobals, getChatPublicSettings } from "@/lib/payload";
 import { whatsappHref } from "@/lib/cta";
 
-// Premium licensed faces (trial files in /fonts). Canela = display serif,
-// Söhne = humanist sans. Swap point from the Fraunces + Hanken stand-ins.
-const canela = localFont({
-  variable: "--font-canela",
+// Playfair Display (titulares) + Hanken Grotesk (textos). Las dos con licencia
+// SIL OFL, aptas para producción.
+//
+// Reemplazan a Canela y Söhne, que eran archivos de prueba: 74 y 68 glifos, sin
+// "&", sin "®", sin acentos, y Söhne encima sin apóstrofo ni signo de pregunta.
+// Todo eso caía a la fuente del sistema, que es lo que la clienta notó como un
+// "&" más grueso y redondeado. Estas traen 659 y 550 glifos y cubren el juego
+// completo que usa el sitio.
+//
+// Son variables, así que un archivo por estilo cubre todos los pesos.
+const playfair = localFont({
+  variable: "--font-playfair",
   display: "swap",
   src: [
-    { path: "../../typefaces/Canela-Light.woff2", weight: "300", style: "normal" },
-    { path: "../../typefaces/Canela-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../../typefaces/Canela-Italic.woff2", weight: "400", style: "italic" },
-    { path: "../../typefaces/Canela-Medium.woff2", weight: "500", style: "normal" },
-    { path: "../../typefaces/Canela-MediumItalic.woff2", weight: "500", style: "italic" },
+    { path: "../../typefaces/PlayfairDisplay-Variable.woff2", weight: "400 900", style: "normal" },
+    { path: "../../typefaces/PlayfairDisplay-Italic-Variable.woff2", weight: "400 900", style: "italic" },
   ],
 });
 
-const sohne = localFont({
-  variable: "--font-sohne",
+const hanken = localFont({
+  variable: "--font-hanken",
   display: "swap",
   src: [
-    { path: "../../typefaces/Sohne-Light.woff2", weight: "300", style: "normal" },
-    { path: "../../typefaces/Sohne-Book.woff2", weight: "400", style: "normal" },
-    { path: "../../typefaces/Sohne-Medium.woff2", weight: "500", style: "normal" },
-    { path: "../../typefaces/Sohne-Semibold.woff2", weight: "600", style: "normal" },
+    { path: "../../typefaces/HankenGrotesk-Variable.woff2", weight: "100 900", style: "normal" },
+    { path: "../../typefaces/HankenGrotesk-Italic-Variable.woff2", weight: "100 900", style: "italic" },
   ],
 });
 
@@ -102,7 +105,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${canela.variable} ${sohne.variable} h-full`}
+      className={`${playfair.variable} ${hanken.variable} h-full`}
       // Escala de titulares elegida desde el panel. Multiplica el clamp que ya
       // tienen, así que la proporción entre páginas y el comportamiento en
       // móvil no cambian: sube o baja toda la escala junta.
