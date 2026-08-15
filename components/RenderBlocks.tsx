@@ -565,14 +565,17 @@ function BlockSwitch({
         c.width === "full" ? "sm:col-span-2 lg:col-span-6"
         : c.width === "half" ? "lg:col-span-3"
         : auto[i % auto.length];
-      // Tall 4/5 on phones (room for title + body + CTA); wide 16/10 only from sm+.
-      const ratios = [
-        "aspect-[4/5] sm:aspect-[16/10]",
-        "aspect-[4/5] sm:aspect-[16/10]",
-        "aspect-[4/5]",
-        "aspect-[4/5]",
-        "aspect-[4/5]",
-      ];
+      // La proporción sale del ancho de la tarjeta, no de su posición. Cuando el
+      // reparto pasó a repartir en partes iguales, las dos primeras seguían
+      // pidiendo una imagen apaisada y corta mientras la tercera pedía una
+      // vertical. La fila iguala alturas, así que debajo de las cortas asomaba
+      // el fondo oscuro de la tarjeta como una franja negra.
+      const ratioOf = (c: { width?: string }, i: number) => {
+        const span = c.width === "full" ? 6 : c.width === "half" ? 3 : Number((auto[i % auto.length].match(/\d+$/) || [3])[0]);
+        if (span >= 6) return "aspect-[4/5] sm:aspect-[16/7]";
+        if (span >= 3) return "aspect-[4/5] sm:aspect-[16/10]";
+        return "aspect-[4/5]";
+      };
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
           <Ornament start />
@@ -584,9 +587,12 @@ function BlockSwitch({
                 <Wrapper
                   key={i}
                   {...(c.href ? { href: c.href } : {})}
-                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 focus-within:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spanOf(c, i)}`}
+                  // La proporción va en la tarjeta y la foto la llena entera. Si
+                  // la fila estira una tarjeta para igualar alturas, la foto
+                  // estira con ella y nunca queda fondo a la vista.
+                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 focus-within:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spanOf(c, i)} ${ratioOf(c, i)}`}
                 >
-                  <div className={`card-media relative ${c.width === "full" ? "aspect-[4/5] sm:aspect-[16/7]" : ratios[i % ratios.length]} w-full`}>
+                  <div className="card-media absolute inset-0">
                     {c.image ? (
                       <PayloadImage media={c.image as never} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
                     ) : null}
