@@ -52,7 +52,19 @@ export const Header: GlobalConfig = {
       label: "Primary links",
       labels: { singular: "Link", plural: "Links" },
       admin: { description: "Standalone top-bar links (e.g. The Method, Blog, About, Contact)." },
-      fields: linkFields,
+      fields: [
+        ...linkFields,
+        {
+          name: "mobileOnly",
+          type: "checkbox" as const,
+          label: "Only in the phone menu",
+          defaultValue: false,
+          admin: {
+            description:
+              "Keeps the link out of the top bar on a computer, where space is tight, and shows it in the phone menu, where there is room.",
+          },
+        },
+      ],
     },
   ],
 };
