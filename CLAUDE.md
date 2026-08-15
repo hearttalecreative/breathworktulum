@@ -42,3 +42,56 @@ Variables en `.env.local`:
 - `GITHUB_REPO`
 - `GITHUB_USERNAME`
 - `GITHUB_TOKEN`
+
+## Lecciones aprendidas
+
+### Orden al desplegar cambios que tocan el esquema
+
+Payload empuja el esquema **cuando arranca**, no durante `npm run build`. Un campo
+nuevo sin su columna hace que las páginas respondan 200 con el cuerpo vacío, y el
+sitio entero queda caído (pasó en el PR #33).
+
+Secuencia correcta:
+
+1. `npm run build`
+2. Correr un script que arranque Payload (`node --env-file=.env.local --import tsx scripts/<x>.ts`) para que cree las columnas
+3. Mergear y esperar a que el deploy esté **Ready** en Vercel
+4. **Recién ahí** invalidar el caché: `POST /api/revalidate/` con `x-revalidate-token: $PAYLOAD_SECRET`
+
+El paso 4 va después del 3 a propósito. `getGlobals()` y las páginas usan
+`unstable_cache`; si se invalida antes de que el build nuevo esté sirviendo, el
+caché se vuelve a llenar leyendo con el build viejo, que no conoce el campo nuevo.
+Pasó con `mobileOnly` en el menú: la base y la API de Payload devolvían el valor
+correcto y el sitio seguía mostrando el dato viejo.
+
+Verificar siempre contra el HTML servido, no contra la base, y contar
+encabezados por página: un 200 con cuerpo vacío es el modo de falla que se
+escapa.
+
+### Quitar un campo del esquema
+
+Borrar un campo dispara un DROP destructivo con confirmación interactiva, que
+cuelga en modo headless. Si un campo se retira, dejarlo con `admin: { hidden: true }`
+para que el push siga siendo aditivo.
+
+### Subir archivos al almacenamiento de medios
+
+Los blobs van a la **raíz**, sin prefijo: `put(filename, ...)`. Un `put("media/" + filename, ...)`
+sube bien pero Payload no los encuentra y las imágenes quedan en 404. Pasó al
+recomprimir las variantes a WebP: 190 imágenes rotas en vivo hasta reparar.
+La referencia correcta es `scripts/regen-image-sizes.ts`.
+
+Al verificar imágenes contra el HTML servido, extraer las URLs **solo de las
+etiquetas `<img>`**. Buscar `/api/media/file/...` en todo el documento también
+matchea el payload RSC, donde las comillas van escapadas, y aparecen URLs con una
+barra invertida al final que dan falsos errores.
+
+### Cacheado de páginas (pendiente, decidido para después del lanzamiento)
+
+Hoy todas las páginas son `force-dynamic`: nada se cachea y cada visita espera un
+render nuevo. Se nota en las páginas largas, donde la pantalla de carga queda a la
+vista. La vía correcta en Next 16 es activar `cacheComponents` y marcar el render
+con `use cache` + `cacheTag`; el modo borrador saltea el caché por sí solo, así
+que no hace falta el `force-dynamic` que hoy lo protege. Cambia el comportamiento
+de toda la aplicación y activa PPR, así que se hace con verificación página por
+página y no durante la revisión diaria de la clienta.
