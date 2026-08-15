@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type Variant = "primary" | "secondary" | "whatsapp";
+type Variant = "primary" | "gold" | "secondary" | "whatsapp";
 
 // Editorial buttons — rectangular, not pill. Primary/WhatsApp are sharp filled
 // blocks with a tactile press; secondary is a text link with a gold underline
@@ -11,8 +11,12 @@ const filledBase =
 
 // Light variants pop on dark photography (no dark-on-dark).
 // Each carries a sheen glint (color matched to its fill); the primary also glows.
-function filledVariant(variant: "primary" | "whatsapp", onDark: boolean) {
-  if (variant === "whatsapp") return `${filledBase} btn-sheen-gold bg-gold-soft text-ink hover:bg-[#b7975f]`;
+function filledVariant(variant: "primary" | "gold" | "whatsapp", onDark: boolean) {
+  // El dorado existía solo atado a WhatsApp, así que no había forma de pedir un
+  // botón dorado que llevara a otra parte. "gold" es el mismo relleno sin el
+  // ícono, con la flecha de los enlaces internos.
+  if (variant === "whatsapp" || variant === "gold")
+    return `${filledBase} btn-sheen-gold bg-gold-soft text-ink hover:bg-[#b7975f]`;
   return onDark
     ? `${filledBase} btn-sheen-gold btn-glow bg-shell text-ink hover:bg-champagne`
     : `${filledBase} btn-sheen btn-glow bg-ink text-pure hover:bg-forest`;
@@ -88,8 +92,9 @@ export default function CTAButton({
       className={filledVariant(variant, onDark)}
       content={
         <>
-          {variant === "whatsapp" && <WhatsAppGlyph />}
+          {variant === "whatsapp" ? <WhatsAppGlyph /> : null}
           {children}
+          {variant === "gold" ? <Arrow /> : null}
         </>
       }
     />

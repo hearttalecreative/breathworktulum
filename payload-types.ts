@@ -192,7 +192,7 @@ export interface Page {
             ctas?:
               | {
                   label?: string | null;
-                  variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+                  variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
                   action: 'whatsapp' | 'internal' | 'email' | 'external';
                   whatsappContext?:
                     | (
@@ -252,7 +252,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -325,7 +325,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -428,7 +428,7 @@ export interface Page {
             ctas?:
               | {
                   label?: string | null;
-                  variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+                  variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
                   action: 'whatsapp' | 'internal' | 'email' | 'external';
                   whatsappContext?:
                     | (
@@ -556,7 +556,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -692,7 +692,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -738,7 +738,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -778,7 +778,7 @@ export interface Page {
             ctas?:
               | {
                   label?: string | null;
-                  variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+                  variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
                   action: 'whatsapp' | 'internal' | 'email' | 'external';
                   whatsappContext?:
                     | (
@@ -866,7 +866,7 @@ export interface Page {
             investment?: string | null;
             cta: {
               label?: string | null;
-              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -947,7 +947,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (

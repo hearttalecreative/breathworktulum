@@ -9,9 +9,10 @@ export const ctaFields: Field[] = [
     type: "select",
     defaultValue: "primary",
     options: [
-      { label: "Primary (solid)", value: "primary" },
-      { label: "Secondary (outline)", value: "secondary" },
-      { label: "WhatsApp", value: "whatsapp" },
+      { label: "Primary (dark button)", value: "primary" },
+      { label: "Gold button", value: "gold" },
+      { label: "Text link with arrow", value: "secondary" },
+      { label: "WhatsApp (gold, with icon)", value: "whatsapp" },
     ],
   },
   {

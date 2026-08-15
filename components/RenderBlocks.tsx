@@ -733,12 +733,27 @@ function BlockSwitch({
           {(() => {
             const hasAside = included.length > 0 || !!b.investment;
             return (
+              // El botón iba después de la grilla, así que caía por debajo de la
+              // columna más alta: cuando la tarjeta de la derecha era más larga
+              // que el texto, quedaba un vacío enorme bajo el texto en pantalla
+              // grande. Ahora vive dentro de la columna del texto.
+              //
+              // En teléfono el orden que ella dio por bueno se conserva con
+              // `contents`: texto, tarjeta, botón. Desde lg el envoltorio vuelve
+              // a ser un bloque y el botón queda pegado al texto.
               <div className={`mt-6 grid gap-10 ${hasAside ? "lg:grid-cols-[1.4fr_1fr]" : ""}`}>
-                <div className="prose-body space-y-4 text-muted">
-                  {b.body ? <RichText data={b.body as never} converters={bodyConverters} /> : null}
+                <div className="contents lg:block">
+                  <div className="prose-body order-1 space-y-4 text-muted lg:order-none">
+                    {b.body ? <RichText data={b.body as never} converters={bodyConverters} /> : null}
+                  </div>
+                  {cta ? (
+                    <div className="order-3 lg:order-none">
+                      <CtaRow ctas={[cta]} />
+                    </div>
+                  ) : null}
                 </div>
                 {hasAside ? (
-                  <div className="relative h-fit overflow-hidden border border-line bg-ivory p-7 shadow-[0_1px_30px_-18px_rgba(34,36,32,0.5)] sm:p-8 lg:sticky lg:top-28">
+                  <div className="relative order-2 h-fit overflow-hidden border border-line bg-ivory p-7 shadow-[0_1px_30px_-18px_rgba(34,36,32,0.5)] sm:p-8 lg:order-none lg:sticky lg:top-28">
                     <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/70 to-transparent" />
                     {included.length ? (
                       <>
@@ -757,7 +772,6 @@ function BlockSwitch({
               </div>
             );
           })()}
-          {cta ? <CtaRow ctas={[cta]} /> : null}
         </Section>
       );
     }
