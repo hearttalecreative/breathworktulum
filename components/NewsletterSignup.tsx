@@ -11,11 +11,17 @@ export default function NewsletterSignup({
   finedPrint = "By signing up, you agree to receive occasional emails from Breathwork Tulum. Unsubscribe anytime.",
   source = "",
   stacked = false,
+  successMessage = "You're in. Thank you for signing up.",
+  successSignature = "With Love, Sabine.",
 }: {
   tone?: "light" | "dark";
   buttonLabel?: string;
   finedPrint?: string;
   source?: string;
+  /** Lo que se ve después de anotarse. No promete un correo de confirmación:
+   *  la plataforma de email todavía no está conectada. */
+  successMessage?: string;
+  successSignature?: string;
   /** Para columnas angostas, como la del pie. Tres elementos en fila ahí dejaban
    *  los campos reducidos a dos cuadraditos. Apilado ocupan todo el ancho. */
   stacked?: boolean;
@@ -54,8 +60,8 @@ export default function NewsletterSignup({
   if (state === "done") {
     return (
       <p className={dark ? "text-cream-dim" : "text-muted"}>
-        You&apos;re in. Check your inbox for a quick confirmation.{" "}
-        <span className="font-serif italic">With Love, Sabine.</span>
+        {successMessage}{" "}
+        <span className="font-serif italic">{successSignature}</span>
       </p>
     );
   }

@@ -916,6 +916,8 @@ function BlockSwitch({
             <NewsletterSignup
               buttonLabel={(b.buttonLabel as string) || undefined}
               finedPrint={(b.finePrint as string) ?? undefined}
+              successMessage={(b.successMessage as string) || undefined}
+              successSignature={(b.successSignature as string) || undefined}
               source={(b.anchor as string) || "newsletter block"}
             />
           </div>
