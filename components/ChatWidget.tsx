@@ -14,7 +14,7 @@ const STORAGE_KEY = "bwt-chat";
 const NUDGE_KEY = "bwt-chat-nudge";
 const MARKER = "[[WHATSAPP]]";
 
-const NUDGE_TEXT = "Hi, I'm NUMA, Sabine's assistant. Ask me anything about sessions, retreats, or getting started.";
+const NUDGE_TEXT = "Hi, I'm NUMA, Sabine's assistant. How can I help?";
 
 const ERROR_TEXT =
   "I could not reach the assistant just now, but Sabine is right here for you on WhatsApp.";
@@ -189,7 +189,7 @@ export default function ChatWidget({
       {/* Proactive greeting — draws the eye and says the chat is live. */}
       {nudge && !open && (
         <div
-          className="fixed bottom-[max(5.5rem,calc(env(safe-area-inset-bottom)+5.5rem))] right-4 z-40 w-[15.5rem] max-w-[calc(100vw-2rem)]"
+          className="fixed bottom-[max(5rem,calc(env(safe-area-inset-bottom)+5rem))] right-5 z-40 w-[15.5rem] max-w-[calc(100vw-2rem)]"
           style={{ animation: "bwtNudge 0.4s cubic-bezier(0.22,1,0.36,1)" }}
         >
           <button
@@ -222,29 +222,27 @@ export default function ChatWidget({
         onClick={() => (open ? close() : openChat())}
         aria-expanded={open}
         aria-label={open ? "Close chat" : "Chat with us"}
-        className="group fixed bottom-[max(1.1rem,env(safe-area-inset-bottom))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_14px_34px_-10px_rgba(43,55,48,0.5)] ring-1 ring-inset ring-pure/30 transition-transform duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+        // 44px y a 20px del borde: mismo tamaño y mismo eje que el botón de
+        // sonido del video (h-11 w-11, bottom-5 right-5), así los dos círculos
+        // quedan alineados en vertical en vez de cada uno por su lado.
+        className="group fixed bottom-[max(1.1rem,env(safe-area-inset-bottom))] right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_4px_12px_-4px_rgba(43,55,48,0.35)] ring-1 ring-inset ring-pure/30 transition-transform duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
       >
-        {/* Attention ring + gentle breathing halo, before the first open. */}
+        {/* Un solo borde fino que late despacio, antes de la primera apertura.
+            Antes eran dos capas que se expandían hasta 1.8x: el halo grande
+            que ella pidió sacar. */}
         {!open && (
-          <>
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-whatsapp/50"
-              style={{ animation: "bwtPing 2.6s cubic-bezier(0,0,0.2,1) infinite" }}
-            />
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-full bg-whatsapp/25"
-              style={{ animation: "bwtBreathe 4.5s ease-in-out infinite" }}
-            />
-          </>
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-pure/70"
+            style={{ animation: "bwtPulse 3.2s ease-in-out infinite" }}
+          />
         )}
         {open ? (
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" />
           </svg>
         ) : (
-          <WaveMark className="w-7 text-pure" />
+          <WaveMark className="w-5 text-pure" />
         )}
       </button>
 
@@ -393,13 +391,9 @@ export default function ChatWidget({
 }
 
 const BREATHE_CSS = `
-@keyframes bwtBreathe {
-  0%, 100% { transform: scale(1); opacity: 0.55; }
-  50% { transform: scale(1.5); opacity: 0; }
-}
-@keyframes bwtPing {
-  0% { transform: scale(1); opacity: 0.7; }
-  75%, 100% { transform: scale(1.8); opacity: 0; }
+@keyframes bwtPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.85; }
 }
 @keyframes bwtIn {
   from { opacity: 0; transform: translateY(14px); }
@@ -410,7 +404,7 @@ const BREATHE_CSS = `
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  [style*="bwtBreathe"], [style*="bwtIn"], [style*="bwtPing"], [style*="bwtNudge"] { animation: none !important; }
+  [style*="bwtPulse"], [style*="bwtIn"], [style*="bwtNudge"] { animation: none !important; }
 }
 `;
 
