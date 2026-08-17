@@ -44,7 +44,7 @@ export default function ThreePhases() {
             </span>
             <div>
               <h3 className="font-serif text-2xl text-ink">{p.word}</h3>
-              <p className="mt-1 text-muted">{p.line}</p>
+              <p className="mt-1 whitespace-pre-line text-muted">{p.line}</p>
             </div>
           </li>
         ))}
