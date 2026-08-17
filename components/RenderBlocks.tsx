@@ -745,27 +745,23 @@ function BlockSwitch({
           {(() => {
             const hasAside = included.length > 0 || !!b.investment;
             return (
-              // El botón iba después de la grilla, así que caía por debajo de la
-              // columna más alta: cuando la tarjeta de la derecha era más larga
-              // que el texto, quedaba un vacío enorme bajo el texto en pantalla
-              // grande. Ahora vive dentro de la columna del texto.
+              // El botón vive en la columna de la tarjeta, debajo de ella: es la
+              // oferta lo que se está aceptando, no el texto. La columna entera
+              // queda pegajosa, así que precio y botón suben juntos mientras se
+              // lee el texto largo de la izquierda.
+              //
+              // Va aquí y no después de la grilla porque suelto caía por debajo
+              // de la columna más alta y dejaba un vacío enorme bajo el texto.
               //
               // En teléfono el orden que ella dio por bueno se conserva con
-              // `contents`: texto, tarjeta, botón. Desde lg el envoltorio vuelve
-              // a ser un bloque y el botón queda pegado al texto.
+              // `contents`: texto, tarjeta, botón.
               <div className={`mt-6 grid gap-10 ${hasAside ? "lg:grid-cols-[1.4fr_1fr]" : ""}`}>
-                <div className="contents lg:block">
-                  <div className="prose-body order-1 space-y-4 text-muted lg:order-none">
-                    {b.body ? <RichText data={b.body as never} converters={bodyConverters} /> : null}
-                  </div>
-                  {cta ? (
-                    <div className="order-3 lg:order-none">
-                      <CtaRow ctas={[cta]} />
-                    </div>
-                  ) : null}
+                <div className="prose-body order-1 space-y-4 text-muted lg:order-none">
+                  {b.body ? <RichText data={b.body as never} converters={bodyConverters} /> : null}
                 </div>
-                {hasAside ? (
-                  <div className="relative order-2 h-fit overflow-hidden border border-line bg-ivory p-7 shadow-[0_1px_30px_-18px_rgba(34,36,32,0.5)] sm:p-8 lg:order-none lg:sticky lg:top-28">
+                <div className="contents lg:sticky lg:top-28 lg:block lg:h-fit">
+                  {hasAside ? (
+                  <div className="relative order-2 h-fit overflow-hidden border border-line bg-ivory p-7 shadow-[0_1px_30px_-18px_rgba(34,36,32,0.5)] sm:p-8 lg:order-none">
                     <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/70 to-transparent" />
                     {included.length ? (
                       <>
@@ -780,7 +776,17 @@ function BlockSwitch({
                     {b.includedNote ? <p className="mt-4 text-[0.82rem] leading-relaxed text-faint">{b.includedNote as string}</p> : null}
                     {b.investment ? <p className="mt-6 border-t border-line pt-5 text-sm text-ink-soft"><span className="font-medium text-ink">Investment</span> · {b.investment as string}</p> : null}
                   </div>
-                ) : null}
+                  ) : null}
+                  {cta ? (
+                    // En teléfono el botón ya es una celda de la grilla, así que
+                    // el gap de 40px lo separa de la tarjeta; su propio mt-8 se
+                    // sumaba encima y lo alejaba 72px, el hueco que ella marcó.
+                    // Centrado en teléfono, alineado con la tarjeta desde lg.
+                    <div className="order-3 [&>div]:mt-0 [&>div]:justify-center lg:order-none lg:[&>div]:mt-8 lg:[&>div]:justify-start">
+                      <CtaRow ctas={[cta]} />
+                    </div>
+                  ) : null}
+                </div>
               </div>
             );
           })()}
