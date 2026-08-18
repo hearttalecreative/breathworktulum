@@ -37,14 +37,29 @@ function CtaRow({
   ctas,
   align = "left",
   onDark = false,
+  stack = false,
 }: {
   ctas: { label: string; href: string; variant: "primary" | "secondary" | "whatsapp"; external: boolean }[];
   align?: "left" | "center";
   onDark?: boolean;
+  /** Uno debajo del otro y centrados, en teléfono y en escritorio. Lo usa el
+   *  bloque de cierre de página: en fila, el botón principal quedaba descentrado
+   *  y el enlace de correo competía a su lado en vez de seguirlo. */
+  stack?: boolean;
 }) {
   if (!ctas.length) return null;
+  // El enlace de correo trae min-h de 52px para el dedo, y con el texto centrado
+  // dentro deja 16px muertos arriba y abajo. A 44px sigue siendo tocable y el
+  // grupo se junta. El botón principal baja un punto sólo en escritorio, que es
+  // donde se veía grande.
+  const apilado =
+    "flex-col items-center gap-y-2 sm:gap-y-7 [&_.link-underline]:min-h-[2.75rem] sm:[&_.btn-sheen-gold]:min-h-[3rem] sm:[&_.btn-sheen-gold]:px-7";
   return (
-    <div className={`mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 ${align === "center" ? "justify-center" : ""}`}>
+    <div
+      className={`mt-8 flex items-center gap-x-6 ${
+        stack ? apilado : `flex-wrap gap-y-3 ${align === "center" ? "justify-center" : ""}`
+      }`}
+    >
       {ctas.map((c, i) => (
         <CTAButton key={i} href={c.href} variant={c.variant} external={c.external} onDark={onDark}>
           {c.label}
@@ -725,11 +740,19 @@ function BlockSwitch({
         // Sin hero delante, el titular quedaba contra el header fijo, que mide
         // 89px y flota sobre el contenido. `first` le da el alto del header más
         // el respiro normal.
-        <Section first={first} tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined} className={center ? "text-center" : ""}>
+        <Section
+          first={first}
+          tone={(b.tone as never) || "cream"}
+          width={(b.width as never) || "narrow"}
+          id={(b.anchor as string) || undefined}
+          // Cuando cierra la página, el aire de abajo se recorta: el pie ya
+          // aporta su propio respiro y sobraba un hueco muerto antes de él.
+          className={`${center ? "text-center" : ""} ${first ? "" : "pb-[calc(var(--spacing-section)*0.62)]"}`}
+        >
           <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={b.tone === "night" ? "champagne" : "gold"} /></div>
           <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
           {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"} whitespace-pre-line`}>{b.body as string}</p> : null}
-          <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} />
+          <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} stack={center} />
         </Section>
       );
     }
