@@ -53,10 +53,10 @@ export const HeroBlock: Block = {
     {
       name: "videoUrl",
       type: "text",
-      label: "Background video (optional)",
+      label: "Video (optional)",
       admin: {
-        condition: (_, s) => s?.variant === "fullBleed",
-        description: "Vimeo or YouTube link. Plays silently on a loop behind the headline. Leave it empty and the photo above is used instead.",
+        description:
+          "Paste a Vimeo or YouTube address and the video plays instead of the photo above, silently and on a loop. In the full-screen layout it sits behind the headline; in the side-by-side one it fills the shape beside the text. Leave it empty to use the photo.",
       },
     },
     {

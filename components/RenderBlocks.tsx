@@ -292,6 +292,9 @@ function BlockSwitch({
       // que es de dónde salía el hueco enorme bajo el menú. Sin foto no hay
       // columna: el texto va a todo el ancho.
       const heroImg = !!b.image;
+      // El video del hero partido vive en el mismo campo que el de pantalla
+      // completa; acá ocupa el lugar de la foto dentro de la forma.
+      const heroSideVideo = ((b.videoUrl as string) || "").trim();
       const heroPad = HERO_PAD[(b.spacing as string) || "normal"] ?? HERO_PAD.normal;
       return (
         <section className={`bg-shell px-[clamp(20px,5vw,80px)] pb-12 ${heroPad}`}>
@@ -311,16 +314,22 @@ function BlockSwitch({
               {b.metaLine ? <p className="mt-4 text-[0.9rem] tracking-wide text-gold-ink">{b.metaLine as string}</p> : null}
               <CtaRow ctas={ctas} />
             </div>
-            {heroImg ? (
-              <div className={`card relative aspect-[4/5] float-slow bg-sand lg:aspect-[5/6] ${SHAPE[(b.imageShape as string) || "arch"] ?? "arch"}`}>
+            {heroImg || heroSideVideo ? (
+              // Con video la forma pasa a 9:16, que es como se filma en el
+              // teléfono, y se limita el ancho para que no domine la fila.
+              <div className={`card relative float-slow bg-sand ${heroSideVideo ? "mx-auto aspect-[9/16] w-full max-w-[20rem]" : "aspect-[4/5] lg:aspect-[5/6]"} ${SHAPE[(b.imageShape as string) || "arch"] ?? "arch"}`}>
                 <div className="card-media absolute inset-0">
-                  <PayloadImage
-                    media={b.image as never}
-                    fill
-                    priority={first}
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
+                  {heroSideVideo ? (
+                    <FeatureMedia block={b} video={heroSideVideo} sizes="(max-width: 1024px) 100vw, 40vw" />
+                  ) : (
+                    <PayloadImage
+                      media={b.image as never}
+                      fill
+                      priority={first}
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  )}
                 </div>
               </div>
             ) : null}
