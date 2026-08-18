@@ -830,11 +830,30 @@ function BlockSwitch({
               ))}
             </ol>
           ) : (
-            <ul className="stagger mt-8 space-y-4 measure">
-              {items.map((it, i) => (
-                <li key={i} className="whitespace-pre-line border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft">{it.text}</li>
-              ))}
-            </ul>
+            (() => {
+              // Con un tope puesto desde el panel, y sólo si sobra algo que
+              // esconder, la lista se corta ahí y el resto queda detrás del
+              // enlace. Si no, va entera como siempre.
+              const tope = Number(b.collapseAfter) || 0;
+              const parte = tope > 0 && items.length > tope;
+              const li = "whitespace-pre-line border-l border-gold-soft/55 pl-4 text-[1.0625rem] leading-relaxed text-ink-soft";
+              const fila = (it: { text: string }, i: number) => <li key={i} className={li}>{it.text}</li>;
+              return (
+                <>
+                  <ul className="stagger mt-8 space-y-4 measure">
+                    {(parte ? items.slice(0, tope) : items).map(fila)}
+                  </ul>
+                  {parte ? (
+                    <ExpandableSection
+                      label={(b.moreLabel as string) || "Show more"}
+                      lessLabel={(b.lessLabel as string) || "Show less"}
+                    >
+                      <ul className="measure space-y-4 pt-4">{items.slice(tope).map(fila)}</ul>
+                    </ExpandableSection>
+                  ) : null}
+                </>
+              );
+            })()
           )}
           {b.note ? <p className="mt-6 whitespace-pre-line text-sm italic text-faint">{b.note as string}</p> : null}
           {cta ? <CtaRow ctas={[cta]} /> : null}

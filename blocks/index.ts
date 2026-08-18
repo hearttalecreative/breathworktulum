@@ -394,6 +394,35 @@ export const ListBlock: Block = {
       ],
     },
     {
+      name: "collapseAfter",
+      type: "number",
+      label: "Show only the first…",
+      min: 1,
+      admin: {
+        condition: (_, s) => (s?.layout || "list") === "list",
+        description:
+          "Leave empty to show every item. Put a number and the list stops there, with a link underneath that opens the rest. Useful when a list grows long on a phone.",
+      },
+    },
+    {
+      name: "moreLabel",
+      type: "text",
+      label: "Link that opens the rest",
+      admin: {
+        condition: (_, s) => (s?.layout || "list") === "list" && !!s?.collapseAfter,
+        description: "Default: Show more.",
+      },
+    },
+    {
+      name: "lessLabel",
+      type: "text",
+      label: "Link that closes it again",
+      admin: {
+        condition: (_, s) => (s?.layout || "list") === "list" && !!s?.collapseAfter,
+        description: "Default: Show less.",
+      },
+    },
+    {
       name: "items",
       type: "array",
       fields: [
