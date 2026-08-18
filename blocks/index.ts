@@ -307,6 +307,20 @@ export const CtaSectionBlock: Block = {
   fields: [
     { name: "heading", type: "text", required: true },
     { name: "body", type: "textarea" },
+    {
+      name: "ctaLayout",
+      type: "select",
+      defaultValue: "stacked",
+      label: "How the buttons sit",
+      options: [
+        { label: "One under the other", value: "stacked" },
+        { label: "Side by side", value: "row" },
+      ],
+      admin: {
+        condition: (_, s) => (s?.align || "center") === "center",
+        description: "Only applies when the section is centred.",
+      },
+    },
     ctaArray("ctas", 3),
     {
       name: "align",

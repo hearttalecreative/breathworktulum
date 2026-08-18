@@ -11,6 +11,7 @@ export type RawCta = {
   variant?: "primary" | "secondary" | "whatsapp" | null;
   action?: "whatsapp" | "internal" | "email" | "external" | null;
   whatsappContext?: string | null;
+  whatsappMessage?: string | null;
   href?: string | null;
   enabled?: boolean | null;
 };
@@ -41,7 +42,12 @@ export function resolveCta(cta: RawCta | null | undefined, settings: SettingsLik
     case "whatsapp":
       return {
         label: cta.label,
-        href: whatsappHref(settings, cta.whatsappContext || "general"),
+        // Un texto escrito en el propio botón manda sobre la plantilla
+        // compartida del tema: así dos páginas que comparten tema pueden
+        // abrir mensajes distintos.
+        href: (cta.whatsappMessage || "").trim()
+          ? `${whatsappHref(settings, cta.whatsappContext || "general").split("?")[0]}?text=${encodeURIComponent(String(cta.whatsappMessage).trim())}`
+          : whatsappHref(settings, cta.whatsappContext || "general"),
         // La acción de WhatsApp forzaba el botón dorado con ícono, así que
         // elegir otra apariencia desde el panel no hacía nada: un enlace a
         // WhatsApp no podía ser un enlace de texto. Ahora la elección manda, y

@@ -47,6 +47,16 @@ export const ctaFields: Field[] = [
     ].map((v) => ({ label: v, value: v })),
   },
   {
+    name: "whatsappMessage",
+    type: "textarea",
+    label: "Message this button opens with (optional)",
+    admin: {
+      condition: (_, s) => s?.action === "whatsapp",
+      description:
+        "Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.",
+    },
+  },
+  {
     name: "href",
     type: "text",
     admin: {

@@ -764,7 +764,7 @@ function BlockSwitch({
           <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={b.tone === "night" ? "champagne" : "gold"} /></div>
           <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
           {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"} whitespace-pre-line`}>{b.body as string}</p> : null}
-          <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} stack={center} />
+          <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} stack={center && (b.ctaLayout || "stacked") === "stacked"} />
         </Section>
       );
     }
