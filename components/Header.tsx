@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type NavLink = { label: string; href: string; description?: string; mobileOnly?: boolean };
@@ -26,6 +27,12 @@ export default function Header({
   const [overHero, setOverHero] = useState(false);
   // Subtle shrink once the page is scrolled — a modern, lighter bar.
   const [scrolled, setScrolled] = useState(false);
+  // El header vive en el layout y no se vuelve a montar al cambiar de
+  // página, así que sin esto el efecto corría una sola vez en toda la
+  // sesión: al pasar de una página con hero a una sin él, la barra seguía
+  // transparente con texto blanco sobre fondo claro hasta que el visitante
+  // hacía scroll y disparaba el recálculo.
+  const pathname = usePathname();
 
   useEffect(() => {
     // Header (in the layout) hydrates before the streamed page content, so the
@@ -50,7 +57,7 @@ export default function Header({
       window.removeEventListener("scroll", compute);
       window.removeEventListener("resize", compute);
     };
-  }, []);
+  }, [pathname]);
 
   // Lock background scroll while the full-screen menu is open.
   useEffect(() => {
