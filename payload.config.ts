@@ -2,7 +2,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
-import { lexicalEditor, FixedToolbarFeature } from "@payloadcms/richtext-lexical";
+import { lexicalEditor, FixedToolbarFeature, BlocksFeature } from "@payloadcms/richtext-lexical";
+import { videoEmbed } from "./blocks/videoEmbed";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { en } from "@payloadcms/translations/languages/en";
@@ -102,7 +103,13 @@ export default buildConfig({
   // hover/selection toolbar. Keeps all Payload defaults (headings, lists, links,
   // images, blockquote, etc.).
   editor: lexicalEditor({
-    features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()],
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      FixedToolbarFeature(),
+      // Video dentro del cuerpo del artículo: el editor traía imágenes pero
+      // no video, así que no había forma de insertar uno.
+      BlocksFeature({ blocks: [videoEmbed] }),
+    ],
   }),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
