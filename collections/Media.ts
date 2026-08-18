@@ -15,7 +15,8 @@ export const Media: CollectionConfig = {
     description:
       `All the site's photos. Upload an image and use it on any page. ` +
       `Best results: at least 2400px wide and under ${MAX_UPLOAD_MB} MB. ` +
-      `If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight.`,
+      `If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight. ` +
+      `Photos only: a video is never uploaded here. To show a video, open the page, find a "Feature band (big media)" section and paste the Vimeo or YouTube address into its Video link field.`,
   },
   hooks: {
     beforeValidate: [

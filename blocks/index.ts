@@ -644,7 +644,7 @@ export const MediaFeatureBlock: Block = {
         { label: "Band (short, the old style)", value: "band" },
       ],
     },
-    { name: "videoUrl", type: "text", admin: { description: "Optional video (Vimeo/YouTube link, or a direct .mp4). Shows instead of the image — space for drone footage." } },
+    { name: "videoUrl", type: "text", label: "Video link", admin: { description: "Paste a Vimeo or YouTube address here and the video plays instead of the image above. Nothing to upload." } },
     { name: "eyebrow", type: "text" },
     { name: "heading", type: "text" },
     { name: "body", type: "textarea" },
