@@ -40,7 +40,7 @@ export const HeroBlock: Block = {
         { label: "Full-bleed (immersive photo)", value: "fullBleed" },
       ],
     },
-    { name: "eyebrow", type: "text" },
+    { name: "eyebrow", type: "text", label: "Gold line above the headline", admin: { description: "The small gold line above the headline, with the wave after it. Leave it empty and neither appears." } },
     { name: "heading", type: "textarea", required: true },
     { name: "lede", type: "textarea" },
     {
@@ -156,7 +156,7 @@ export const ThreePhasesBlock: Block = {
   slug: "threePhases",
   labels: { singular: "Three phases (method)", plural: "Three phases" },
   fields: [
-    { name: "eyebrow", type: "text" },
+    { name: "eyebrow", type: "text", label: "Gold line above the headline", admin: { description: "The small gold line above the headline, with the wave after it. Leave it empty and neither appears." } },
     { name: "heading", type: "text" },
     { name: "lede", type: "textarea" },
     {
@@ -194,7 +194,7 @@ export const PhotoBandBlock: Block = {
   labels: { singular: "Photo band", plural: "Photo bands" },
   fields: [
     { name: "image", type: "upload", relationTo: "media", required: true },
-    { name: "eyebrow", type: "text" },
+    { name: "eyebrow", type: "text", label: "Gold line above the headline", admin: { description: "The small gold line above the headline, with the wave after it. Leave it empty and neither appears." } },
     { name: "caption", type: "text", admin: { description: "Optional short line over the photo." } },
     {
       name: "height",
@@ -293,7 +293,7 @@ export const SignatureBandBlock: Block = {
   slug: "signatureBand",
   labels: { singular: "Feature band (photo + text)", plural: "Feature bands" },
   fields: [
-    { name: "eyebrow", type: "text" },
+    { name: "eyebrow", type: "text", label: "Gold line above the headline", admin: { description: "The small gold line above the headline, with the wave after it. Leave it empty and neither appears." } },
     { name: "heading", type: "textarea", required: true },
     { name: "body", type: "textarea" },
     { name: "image", type: "upload", relationTo: "media" },
@@ -342,7 +342,7 @@ export const FormatDetailBlock: Block = {
   fields: [
     { name: "anchor", type: "text", admin: { description: "Anchor id, e.g. immersive" } },
     { name: "title", type: "text", required: true },
-    { name: "tag", type: "text", admin: { description: 'e.g. "Signature"' } },
+    { name: "tag", type: "text", label: "Gold line above the title", admin: { description: "The small gold line with the wave after it, e.g. \"Most chosen\". Leave it empty and neither appears." } },
     { name: "tagline", type: "text" },
     { name: "body", type: "richText" },
     {
@@ -659,7 +659,7 @@ export const MediaFeatureBlock: Block = {
       ],
     },
     { name: "videoUrl", type: "text", label: "Video link", admin: { description: "Paste a Vimeo or YouTube address here and the video plays instead of the image above. Nothing to upload." } },
-    { name: "eyebrow", type: "text" },
+    { name: "eyebrow", type: "text", label: "Gold line above the headline", admin: { description: "The small gold line above the headline, with the wave after it. Leave it empty and neither appears." } },
     { name: "heading", type: "text" },
     { name: "body", type: "textarea" },
     ctaArray("ctas"),
