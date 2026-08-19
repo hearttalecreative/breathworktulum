@@ -195,6 +195,19 @@ export const PhotoBandBlock: Block = {
   fields: [
     { name: "image", type: "upload", relationTo: "media", required: true },
     { name: "eyebrow", type: "text", label: "Gold line above the headline", admin: { description: "The small gold line above the headline, with the wave after it. Leave it empty and neither appears." } },
+    {
+      name: "eyebrowColor",
+      type: "select",
+      defaultValue: "gold",
+      label: "Colour of that gold line",
+      options: [
+        { label: "Gold", value: "gold" },
+        { label: "White", value: "white" },
+      ],
+      admin: {
+        description: "Switch it to white when the photo is too light for the gold to read.",
+      },
+    },
     { name: "caption", type: "text", admin: { description: "Optional short line over the photo." } },
     {
       name: "height",

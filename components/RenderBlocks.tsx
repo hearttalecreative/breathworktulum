@@ -497,7 +497,18 @@ function BlockSwitch({
             <>
               <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent" aria-hidden />
               <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2rem,6vh,4rem)]">
-                {b.eyebrow ? <span className="eyebrow eyebrow--filet text-champagne">{b.eyebrow as string}</span> : null}
+                {b.eyebrow ? (
+                  // La sombra va en los dos colores: el velo se desvanece justo
+                  // donde cae esta línea, así que sobre una foto clara el dorado
+                  // se perdía. El blanco es la salida cuando la foto no da.
+                  <span
+                    className={`eyebrow eyebrow--filet [text-shadow:0_1px_12px_rgba(25,27,23,0.75)] ${
+                      b.eyebrowColor === "white" ? "text-pure" : "text-champagne"
+                    }`}
+                  >
+                    {b.eyebrow as string}
+                  </span>
+                ) : null}
                 {b.caption ? <p className="mt-3 max-w-2xl font-serif text-2xl text-pure sm:text-3xl whitespace-pre-line">{b.caption as string}</p> : null}
               </div>
             </>
