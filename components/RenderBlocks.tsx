@@ -508,7 +508,7 @@ function BlockSwitch({
                   // se perdía. El blanco es la salida cuando la foto no da.
                   <span
                     className={`eyebrow eyebrow--filet [text-shadow:0_1px_12px_rgba(25,27,23,0.75)] ${
-                      b.eyebrowColor === "white" ? "text-pure" : "text-champagne"
+                      b.eyebrowColor === "white" ? "eyebrow--over-white" : "eyebrow--over"
                     }`}
                   >
                     {b.eyebrow as string}

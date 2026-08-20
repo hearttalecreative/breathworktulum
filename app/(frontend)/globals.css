@@ -197,6 +197,13 @@
   font-weight: 600;
   color: var(--color-gold-ink);
 }
+/* Sobre una foto, el gold-ink de arriba no sirve: es el dorado oscuro reservado
+   para fondos claros, y sobre el velo quedaba negro sobre negro. Por eso las
+   bandas se leían mal sin importar la imagen. Van después de .eyebrow a
+   propósito, para ganarle por orden. */
+.eyebrow--over { color: var(--color-gold-soft); }
+.eyebrow--over-white { color: var(--color-pure); }
+
 /* Al lado del eyebrow iba un filete de 1px. Ahora va la onda de la marca, que
    dice de quién es la página en vez de solo separar. Se pinta como máscara, así
    que sigue tomando el dorado del sistema y funciona igual sobre claro y sobre
