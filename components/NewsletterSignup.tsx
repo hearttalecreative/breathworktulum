@@ -131,7 +131,7 @@ export default function NewsletterSignup({
       {finedPrint ? (
         <p className={`mt-3 text-xs leading-relaxed ${dark ? "text-cream-dim/70" : "text-faint"}`}>
           {finedPrint}{" "}
-          <a href="/privacy/" className="underline underline-offset-2 hover:opacity-80">
+          <a href="/legal/privacy/" className="underline underline-offset-2 hover:opacity-80">
             Privacy policy
           </a>
           .
