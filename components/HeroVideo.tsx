@@ -80,9 +80,18 @@ export default function HeroVideo({
       playerRef.current = player;
       player
         .ready()
-        .then(() => {
+        .then(async () => {
           setReady(true);
           setCanControlSound(true);
+          // La proporción real del video, no una supuesta. Con 16:9 fijo, un
+          // video 2:1 o 4:3 volvía a dejar franjas. Se publica como variable
+          // para que el CSS recorte contra la medida verdadera.
+          try {
+            const [w, h] = await Promise.all([player!.getVideoWidth(), player!.getVideoHeight()]);
+            if (!cancelled && w > 0 && h > 0) el.style.setProperty("--vid-ar", String(w / h));
+          } catch {
+            /* se queda con el 16:9 por defecto */
+          }
         })
         .catch(() => {});
     });

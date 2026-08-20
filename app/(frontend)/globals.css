@@ -465,8 +465,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  aspect-ratio: 16 / 9;
-  width: max(100cqw, 177.78cqh);
+  /* --vid-ar la pone el reproductor con la proporción real del video. El 1.7778
+     es sólo el respaldo mientras carga. Con esto llena el contenedor sea cual
+     sea la forma del video y el ancho del dispositivo. */
+  aspect-ratio: var(--vid-ar, 1.7778);
+  width: max(100cqw, calc(100cqh * var(--vid-ar, 1.7778)));
   height: auto;
   min-width: 100%;
   min-height: 100%;
