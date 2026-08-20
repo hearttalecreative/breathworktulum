@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   }
 
   // Honeypot — silently accept to not tip off bots.
-  if (body.company) return NextResponse.json({ ok: true });
+  if (body.bwt_ref) return NextResponse.json({ ok: true });
 
   const name = String(body.name ?? "").trim();
   const email = String(body.email ?? "").trim();

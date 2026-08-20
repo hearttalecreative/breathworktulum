@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   }
 
   // Honeypot: los bots completan todo, incluido un campo que nadie ve.
-  if (body.company) return NextResponse.json({ ok: true });
+  if (body.bwt_ref) return NextResponse.json({ ok: true });
 
   const email = String(body.email ?? "").trim().toLowerCase();
   const firstName = String(body.firstName ?? "").trim();

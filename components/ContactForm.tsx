@@ -42,9 +42,11 @@ export default function ContactForm({
     const data = Object.fromEntries(new FormData(form));
 
     // Honeypot
-    if (data.company) return;
-    if (!data.name || !data.email || !data.phone || !data.message) {
-      setError("Please fill in your name, email, phone, and message.");
+    if (data.bwt_ref) return;
+    // El teléfono es opcional: pedirlo acá lo volvía obligatorio de hecho,
+    // aunque el campo ya no lo marcara.
+    if (!data.name || !data.email || !data.subject || !data.message) {
+      setError("Please fill in your name, email, what you're interested in, and your message.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email))) {
@@ -84,7 +86,7 @@ export default function ContactForm({
       {/* Honeypot */}
       <input
         type="text"
-        name="company"
+        name="bwt_ref"
         tabIndex={-1}
         autoComplete="off"
         aria-hidden

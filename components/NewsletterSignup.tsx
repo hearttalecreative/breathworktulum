@@ -46,7 +46,7 @@ export default function NewsletterSignup({
       const res = await fetch("/api/newsletter/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, email, company, source }),
+        body: JSON.stringify({ firstName, email, bwt_ref: company, source }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || "Something went wrong.");
@@ -118,7 +118,7 @@ export default function NewsletterSignup({
       {/* Trampa para bots: fuera de pantalla y nunca enfocable con el teclado. */}
       <input
         type="text"
-        name="company"
+        name="bwt_ref"
         tabIndex={-1}
         autoComplete="off"
         aria-hidden
