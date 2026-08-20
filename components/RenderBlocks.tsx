@@ -393,7 +393,14 @@ function BlockSwitch({
       if (format === "portrait") {
         return (
           <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
-            <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            {/* Las columnas se dan vuelta junto con la foto: si sólo se moviera
+                de lado, pasaría de la columna angosta a la ancha y cambiaría de
+                tamaño. Así la foto mide igual de los dos lados. */}
+            <div
+              className={`grid items-center gap-10 lg:gap-16 ${
+                b.imageSide === "right" ? "lg:grid-cols-[1.1fr_0.9fr]" : "lg:grid-cols-[0.9fr_1.1fr]"
+              }`}
+            >
               {/* En teléfono la foto siempre va primero. El lado sólo cambia
                   desde lg, para que dos de estas secciones seguidas no se lean
                   como la misma. */}
