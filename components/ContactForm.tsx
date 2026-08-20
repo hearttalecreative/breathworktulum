@@ -19,6 +19,7 @@ export default function ContactForm({
   subjectLabel = "I'm interested in",
   subjects,
   source = "",
+  placeholder = "Please select",
   successMessage = "Your message has been received.",
   successNote = "I normally reply within 24 to 48 hours.",
   successSignature = "With Love, Sabine.",
@@ -26,6 +27,7 @@ export default function ContactForm({
   subjectLabel?: string;
   subjects?: string[];
   source?: string;
+  placeholder?: string;
   successMessage?: string;
   successNote?: string;
   successSignature?: string;
@@ -99,16 +101,23 @@ export default function ContactForm({
       {/* Nombre y teléfono comparten fila: acorta el formulario sin apretar nada. */}
       <div className="grid gap-7 sm:grid-cols-2">
         <Field label="Your name" name="name" autoComplete="name" required />
-        <Field label="Phone or WhatsApp, including country code" name="phone" type="tel" autoComplete="tel" required />
+        <Field label="Phone or WhatsApp, including country code" name="phone" type="tel" autoComplete="tel" />
       </div>
       <Field label="Email" name="email" type="email" autoComplete="email" required />
 
       <div>
         <label htmlFor="subject" className={LABEL}>
           {subjectLabel}
+          <span className="text-gold-ink"> *</span>
         </label>
         <div className="relative">
-          <select id="subject" name="subject" className={`${FIELD} appearance-none pr-8`}>
+          {/* Sin un marcador de posición el navegador deja elegida la primera
+              opción, así que todo el mundo enviaba "Private session" sin haberlo
+              elegido. Con value="" y required, hay que elegir a conciencia. */}
+          <select id="subject" name="subject" required defaultValue="" className={`${FIELD} appearance-none pr-8`}>
+            <option value="" disabled>
+              {placeholder}
+            </option>
             {options.map((o) => (
               <option key={o}>{o}</option>
             ))}
@@ -144,7 +153,7 @@ export default function ContactForm({
         </button>
         <p className="text-xs text-faint">
           Your details stay between us.{" "}
-          <a href="/privacy/" className="underline underline-offset-2 hover:text-ink-soft">
+          <a href="/legal/privacy/" className="underline underline-offset-2 hover:text-ink-soft">
             Privacy policy
           </a>
         </p>
@@ -180,6 +189,7 @@ function Field({
     <div>
       <label htmlFor={name} className={LABEL}>
         {label}
+        {required ? <span className="text-gold-ink"> *</span> : null}
       </label>
       <input
         id={name}

@@ -1004,6 +1004,7 @@ function BlockSwitch({
               subjectLabel={(b.subjectLabel as string) || undefined}
               subjects={((b.subjects as { label: string }[]) || []).map((s) => s.label).filter(Boolean)}
               source={(b.anchor as string) || "contact form"}
+              placeholder={(b.selectPlaceholder as string) || undefined}
               successMessage={(b.successMessage as string) || undefined}
               successNote={(b.successNote as string) || undefined}
               successSignature={(b.successSignature as string) || undefined}

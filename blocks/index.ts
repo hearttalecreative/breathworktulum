@@ -509,6 +509,12 @@ export const ContactFormBlock: Block = {
     { name: "heading", type: "text" },
     { name: "intro", type: "textarea" },
     {
+      name: "selectPlaceholder",
+      type: "text",
+      label: "First line of the dropdown",
+      admin: { description: "What shows before someone chooses. Default: Please select." },
+    },
+    {
       name: "successMessage",
       type: "text",
       label: "After someone sends the form — first line",
