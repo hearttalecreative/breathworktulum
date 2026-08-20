@@ -166,6 +166,15 @@ function Ornament({ start = false, tone = "gold" }: { start?: boolean; tone?: "g
   );
 }
 
+// La onda por sección. "auto" deja lo que decide el diseño de cada bloque;
+// "show" y "hide" son la decisión de ella desde el panel.
+function wave(b: AnyBlock, pordefecto: boolean): boolean {
+  const w = (b.wave as string) || "auto";
+  return w === "show" ? true : w === "hide" ? false : pordefecto;
+}
+const waveTone = (b: AnyBlock, pordefecto: "gold" | "champagne" = "gold") =>
+  b.waveColor === "pale" ? "champagne" : b.waveColor === "gold" ? "gold" : pordefecto;
+
 export default function RenderBlocks({
   blocks,
   settings,
@@ -355,7 +364,7 @@ function BlockSwitch({
               </div>
             ) : null}
             <div>
-              <Ornament start />
+              {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
               <h2 className="t-h2 mt-7 max-w-xl text-ink">{emph(b.heading as string)}</h2>
               <ol className="stagger mt-10 space-y-9">
                 {items.map((it, i) => (
@@ -427,7 +436,7 @@ function BlockSwitch({
       const folded = chapters.filter((c) => c.collapsed);
       return (
         <Section tone={(b.tone as never) || "cream"} width={(b.width as never) || "narrow"} id={(b.anchor as string) || undefined}>
-          <Ornament start />
+          {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
           <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
           <div className="mt-8">
             {open.map((c, i) => <StoryChapter key={`o${i}`} c={c} first={i === 0} />)}
@@ -557,6 +566,7 @@ function BlockSwitch({
               </div>
             ) : null}
             <div>
+              {wave(b, false) ? <div className="mb-5"><Ornament start tone={waveTone(b, dark ? "champagne" : "gold")} /></div> : null}
               {b.eyebrow ? (
                 // Llevaba un punto que latía, único en todo el sitio: por eso
                 // desentonaba. Ahora usa la onda, igual que los otros diez
@@ -623,7 +633,7 @@ function BlockSwitch({
       };
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <Ornament start />
+          {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
           <h2 className="t-h2 mt-7 max-w-2xl">{emph(b.heading as string)}</h2>
           <div className="stagger mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
             {cards.map((c, i) => {
@@ -669,7 +679,7 @@ function BlockSwitch({
       const [lead, ...rest] = items;
       return (
         <Section tone={(b.tone as never) || "sand"} width="wide" id={(b.anchor as string) || undefined}>
-          <Ornament start />
+          {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
           {b.heading ? <h2 className="t-h2 mt-7 max-w-2xl text-ink">{emph(b.heading as string)}</h2> : null}
           <div className="mt-12 grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             {lead ? (
@@ -717,7 +727,7 @@ function BlockSwitch({
                 queda igual que siempre. */}
             <div className="contents lg:block">
               <div className="order-1 lg:order-none">
-                <Ornament start />
+                {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
                 <h2 className="t-h2 mt-7 max-w-[20ch] text-ink">{emph(b.heading as string)}</h2>
               </div>
               <div className="order-3 lg:order-none">
@@ -753,7 +763,7 @@ function BlockSwitch({
             <div className="max-w-xl">
               {b.eyebrow ? <span className="eyebrow eyebrow--filet text-gold-soft">{b.eyebrow as string}</span> : null}
               <h2 className="t-h2 mt-4 text-cream">{emph(b.heading as string)}</h2>
-              <div className="mt-6"><Ornament start tone="champagne" /></div>
+              {wave(b, true) ? <div className="mt-6"><Ornament start tone={waveTone(b, "champagne")} /></div> : null}
               {b.body ? <p className="mt-6 max-w-lg text-cream-dim/90 whitespace-pre-line">{b.body as string}</p> : null}
               {cta ? <div className="mt-9"><CTAButton href={cta.href} variant={cta.variant} external={cta.external} onDark>{cta.label}</CTAButton></div> : null}
             </div>
@@ -779,7 +789,7 @@ function BlockSwitch({
           // aporta su propio respiro y sobraba un hueco muerto antes de él.
           className={`${center ? "text-center" : ""} ${first ? "" : "pb-[calc(var(--spacing-section)*0.62)]"}`}
         >
-          <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={b.tone === "night" ? "champagne" : "gold"} /></div>
+          {wave(b, true) ? <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={waveTone(b, b.tone === "night" ? "champagne" : "gold")} /></div> : null}
           <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
           {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"} whitespace-pre-line`}>{b.body as string}</p> : null}
           <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} stack={center && (b.ctaLayout || "stacked") === "stacked"} />
@@ -792,6 +802,7 @@ function BlockSwitch({
       const included = (b.included as { text: string }[]) || [];
       return (
         <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
+          {wave(b, false) ? <div className="mb-4"><Ornament start tone={waveTone(b)} /></div> : null}
           {b.tag ? <span className="eyebrow eyebrow--filet">{b.tag as string}</span> : null}
           <h2 className={`t-h2 ${b.tag ? "mt-4" : ""}`}>{b.title as string}</h2>
           {b.tagline ? <p className="prose-lede mt-3">{b.tagline as string}</p> : null}
@@ -851,7 +862,7 @@ function BlockSwitch({
       const items = ((b.items as { question: string; answer: string }[]) || []).map((q) => ({ q: q.question, a: q.answer }));
       return (
         <Section tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
-          <Ornament start />
+          {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
           {b.heading ? <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2> : null}
           <div className="mt-9"><Accordion items={items} /></div>
         </Section>
@@ -864,7 +875,7 @@ function BlockSwitch({
       const stages = b.layout === "stages";
       return (
         <Section tone={(b.tone as never) || "cream"} width={stages ? "wide" : ((b.width as never) || "default")} id={(b.anchor as string) || undefined}>
-          <Ornament start />
+          {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
           <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
           {b.intro ? <p className={`mt-5 text-muted whitespace-pre-line${stages ? " measure" : ""}`}>{b.intro as string}</p> : null}
           {stages ? (
@@ -919,7 +930,7 @@ function BlockSwitch({
       const right = (b.right as { text: string }[]) || [];
       return (
         <Section tone={(b.tone as never) || "cream"} id={(b.anchor as string) || undefined}>
-          <Ornament start />
+          {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
           <h2 className="t-h2 mt-7 max-w-[24ch]">{emph(b.heading as string)}</h2>
           {b.intro ? <p className="mt-5 text-muted whitespace-pre-line">{b.intro as string}</p> : null}
           {/* Dos tarjetas idénticas lado a lado leen como formulario de admisión:
@@ -979,7 +990,7 @@ function BlockSwitch({
     case "contactForm":
       return (
         <Section first={first} tone={(b.tone as never) || "sand"} id={(b.anchor as string) || undefined}>
-          <Ornament start />
+          {wave(b, true) ? <Ornament start tone={waveTone(b)} /> : null}
           {/* El titular iba al mismo tamaño que los de las secciones que cuentan
               algo, y acá domina lo que es una sección de apoyo. Un escalón menos. */}
           {b.heading ? (

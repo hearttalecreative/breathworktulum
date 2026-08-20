@@ -726,7 +726,42 @@ const hiddenField = {
   },
 };
 
+// La onda de la marca. La mayoría de las secciones ya la dibujan solas; con
+// esto se decide sección por sección, sin depender de escribir una etiqueta.
+const waveField = {
+  name: "wave",
+  type: "select" as const,
+  defaultValue: "auto",
+  label: "The wave",
+  options: [
+    { label: "As the design decides", value: "auto" },
+    { label: "Show it", value: "show" },
+    { label: "Hide it", value: "hide" },
+  ],
+  admin: {
+    position: "sidebar" as const,
+    description: "Most sections draw the wave on their own. Use this to add one or take one away.",
+  },
+};
+
+const waveColorField = {
+  name: "waveColor",
+  type: "select" as const,
+  defaultValue: "gold",
+  label: "Wave colour",
+  options: [
+    { label: "Gold", value: "gold" },
+    { label: "Pale (for dark sections)", value: "pale" },
+  ],
+  admin: {
+    position: "sidebar" as const,
+    condition: (_: unknown, sib: { wave?: string }) => (sib?.wave || "auto") !== "hide",
+  },
+};
+
 for (const b of allBlocks) {
   if (!b.fields.some((f) => "name" in f && f.name === "anchor")) b.fields.push(anchorField);
   if (!b.fields.some((f) => "name" in f && f.name === "hidden")) b.fields.push(hiddenField);
+  if (!b.fields.some((f) => "name" in f && f.name === "wave")) b.fields.push(waveField);
+  if (!b.fields.some((f) => "name" in f && f.name === "waveColor")) b.fields.push(waveColorField);
 }
