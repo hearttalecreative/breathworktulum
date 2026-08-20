@@ -394,7 +394,10 @@ function BlockSwitch({
         return (
           <Section tone={(b.tone as never) || "cream"} width="wide" id={(b.anchor as string) || undefined}>
             <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-              <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl bg-sand ring-1 ring-line lg:max-w-none">
+              {/* En teléfono la foto siempre va primero. El lado sólo cambia
+                  desde lg, para que dos de estas secciones seguidas no se lean
+                  como la misma. */}
+              <div className={`relative mx-auto w-full max-w-[520px] overflow-hidden rounded-2xl bg-sand ring-1 ring-line lg:max-w-none ${b.imageSide === "right" ? "lg:order-last" : ""}`}>
                 {/* Con foto, el marco vertical de siempre. Con video se abre a
                     9:16, que es como se filma en el teléfono: en 4:5 quedaba
                     con una banda oscura a cada lado. */}

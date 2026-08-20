@@ -695,6 +695,21 @@ export const MediaFeatureBlock: Block = {
         { label: "Band (short, the old style)", value: "band" },
       ],
     },
+    {
+      name: "imageSide",
+      type: "select",
+      defaultValue: "left",
+      label: "Which side the photo sits on",
+      options: [
+        { label: "Left", value: "left" },
+        { label: "Right", value: "right" },
+      ],
+      admin: {
+        condition: (_, s) => s?.format === "portrait",
+        description:
+          "Only on a computer. On a phone the photo always comes first, then the text. Alternate the sides when two of these sections follow each other.",
+      },
+    },
     { name: "videoUrl", type: "text", label: "Video link", admin: { description: "Paste a Vimeo or YouTube address here and the video plays instead of the image above. Nothing to upload." } },
     { name: "eyebrow", type: "text", label: "Gold line above the headline", admin: { description: "The small gold line above the headline, with the wave after it. Leave it empty and neither appears." } },
     { name: "heading", type: "text" },
