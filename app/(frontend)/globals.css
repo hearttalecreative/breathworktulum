@@ -453,14 +453,20 @@
 .btn-glow:hover { animation: none; box-shadow: 0 0 26px -6px rgba(194, 168, 120, 0.7); }
 
 /* Vimeo background video — force a 16:9 iframe to COVER any container
-   (portrait phones included), centered and cropped, never letterboxed. */
+   (portrait phones included), centered and cropped, never letterboxed.
+   Las medidas van contra el contenedor y no contra la ventana: con vw/vh
+   funcionaba sólo en el hero, que ocupa la pantalla entera, y dentro de una
+   sección más chica dejaba bandas negras a los costados. */
+.vimeo-cover {
+  container-type: size;
+}
 .vimeo-cover iframe {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   aspect-ratio: 16 / 9;
-  width: max(100vw, 177.78vh);
+  width: max(100cqw, 177.78cqh);
   height: auto;
   min-width: 100%;
   min-height: 100%;
