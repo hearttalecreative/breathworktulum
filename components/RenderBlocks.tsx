@@ -126,6 +126,19 @@ function FeatureMedia({
   if (/\.mp4($|\?)/i.test(video)) {
     return <video className={cover} src={video} autoPlay muted loop playsInline />;
   }
+  // Vimeo va por HeroVideo, que trae el botón de sonido: es el mismo que ella
+  // conoce del video de la portada. YouTube sigue con el iframe simple, que no
+  // permite ese control.
+  if (/vimeo\.com/i.test(video)) {
+    return (
+      <HeroVideo
+        url={video}
+        poster={mediaUrl(b.image) || "/hero/hero-poster.jpg"}
+        priority={false}
+        sizes={sizes}
+      />
+    );
+  }
   const embed = video ? toVideoEmbed(video) : "";
   if (embed) {
     return (

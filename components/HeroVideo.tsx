@@ -12,11 +12,17 @@ export default function HeroVideo({
   url,
   poster,
   loopEnd,
+  priority = true,
+  sizes = "100vw",
 }: {
   url: string;
   poster: string;
   /** Corta el loop en este segundo. Sin valor, el video corre entero. */
   loopEnd?: number;
+  /** El póster del hero es el LCP de la página. Fuera del hero no lo es, así
+   *  que ahí conviene apagarlo para no competir por el ancho de banda. */
+  priority?: boolean;
+  sizes?: string;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
   const playerRef = useRef<PlayerType | null>(null);
@@ -99,8 +105,8 @@ export default function HeroVideo({
         alt=""
         aria-hidden
         fill
-        priority
-        sizes="100vw"
+        priority={priority}
+        sizes={sizes}
         className={`object-cover transition-opacity duration-700 ${
           ready ? "opacity-0" : "opacity-100"
         }`}
