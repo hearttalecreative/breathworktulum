@@ -553,9 +553,11 @@ function BlockSwitch({
             ) : null}
             <div>
               {b.eyebrow ? (
-                <span className="inline-flex items-center gap-3">
-                  <span className="breath-dot" aria-hidden />
-                  <span className={`eyebrow ${dark ? "text-champagne" : "text-gold-ink"}`}>{b.eyebrow as string}</span>
+                // Llevaba un punto que latía, único en todo el sitio: por eso
+                // desentonaba. Ahora usa la onda, igual que los otros diez
+                // eyebrows.
+                <span className={`eyebrow eyebrow--filet ${dark ? "text-champagne" : "text-gold-ink"}`}>
+                  {b.eyebrow as string}
                 </span>
               ) : null}
               {b.heading ? <h2 className={`t-h2 mt-4 ${dark ? "text-pure" : "text-ink"}`}>{emph(b.heading as string)}</h2> : null}
