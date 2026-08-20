@@ -495,7 +495,12 @@ function BlockSwitch({
           <PayloadImage media={b.image as never} fill sizes="100vw" className="kenburns object-cover" />
           {b.caption || b.eyebrow ? (
             <>
-              <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent" aria-hidden />
+              {/* El velo llegaba a transparente antes de la altura del texto, así que
+                  la legibilidad quedaba librada a la foto y había que elegir color
+                  imagen por imagen. Ahora el tercio inferior tiene piso propio: el
+                  dorado se lee sobre cualquier foto y el blanco pasa a ser la
+                  excepción, no una decisión de cada vez. */}
+              <div className="absolute inset-0 bg-gradient-to-t from-night/88 via-night/38 to-night/5" aria-hidden />
               <div className="over-photo relative mx-auto w-full max-w-6xl px-[clamp(20px,5vw,80px)] pb-[clamp(2rem,6vh,4rem)]">
                 {b.eyebrow ? (
                   // La sombra va en los dos colores: el velo se desvanece justo
