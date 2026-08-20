@@ -49,10 +49,13 @@ function saveHistory(msgs: Msg[]) {
 export default function ChatWidget({
   welcomeMessage,
   whatsappHref,
+  nudgeText,
 }: {
   welcomeMessage: string;
   whatsappHref: string;
+  nudgeText?: string;
 }) {
+  const nudgeLine = (nudgeText || "").trim() || NUDGE_TEXT;
   const [open, setOpen] = useState(false);
   const [nudge, setNudge] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -200,7 +203,7 @@ export default function ChatWidget({
             <span aria-hidden className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure">
               <WaveMark className="w-4 text-pure" />
             </span>
-            <span className="text-[0.82rem] leading-snug text-ink">{NUDGE_TEXT}</span>
+            <span className="text-[0.82rem] leading-snug text-ink">{nudgeLine}</span>
           </button>
           <button
             type="button"

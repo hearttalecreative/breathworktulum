@@ -33,7 +33,8 @@ export const Footer: GlobalConfig = {
       type: "collapsible",
       label: "Newsletter + legal",
       fields: [
-        { name: "newsletterBlurb", type: "textarea", label: "Newsletter text" },
+        { name: "newsletterHeading", type: "text", label: "Newsletter heading", admin: { description: "Default: Stay in touch." } },
+  { name: "newsletterBlurb", type: "textarea", label: "Newsletter text" },
         {
           name: "newsletterSuccess",
           type: "text",

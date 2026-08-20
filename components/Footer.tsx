@@ -15,6 +15,7 @@ export default function Footer({
   subBrandBlurb = "",
   workWithMe = [],
   explore = [],
+  newsletterHeading = "",
   newsletterBlurb = "",
   newsletterSuccess,
   newsletterSignature,
@@ -32,6 +33,7 @@ export default function Footer({
   subBrandBlurb?: string;
   workWithMe?: NavLink[];
   explore?: NavLink[];
+  newsletterHeading?: string;
   newsletterBlurb?: string;
   newsletterSuccess?: string;
   newsletterSignature?: string;
@@ -76,7 +78,7 @@ export default function Footer({
           <FooterCol title="Explore" links={explore} />
 
           <div>
-            <p className="text-xs uppercase tracking-widest text-cream-dim/50">Stay in touch</p>
+            <p className="text-xs uppercase tracking-widest text-cream-dim/50">{newsletterHeading || "Stay in touch"}</p>
             {newsletterBlurb ? <p className="mt-4 text-sm leading-relaxed text-cream-dim/80">{newsletterBlurb}</p> : null}
             <div className="mt-4"><NewsletterSignup tone="dark" stacked source="footer" successMessage={newsletterSuccess || undefined} successSignature={newsletterSignature || undefined} /></div>
             <p className="mt-7 text-xs uppercase tracking-widest text-cream-dim/50">Follow along</p>

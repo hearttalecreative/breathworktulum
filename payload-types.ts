@@ -160,6 +160,9 @@ export interface Page {
     | (
         | {
             variant?: ('split' | 'fullBleed') | null;
+            /**
+             * The small gold line above the headline, with the wave after it. Leave it empty and neither appears.
+             */
             eyebrow?: string | null;
             heading: string;
             lede?: string | null;
@@ -169,7 +172,7 @@ export interface Page {
             metaLine?: string | null;
             image?: (number | null) | Media;
             /**
-             * Vimeo or YouTube link. Plays silently on a loop behind the headline. Leave it empty and the photo above is used instead.
+             * Paste a Vimeo or YouTube address and the video plays instead of the photo above, silently and on a loop. In the full-screen layout it sits behind the headline; in the side-by-side one it fills the shape beside the text. Leave it empty to use the photo.
              */
             videoUrl?: string | null;
             /**
@@ -210,6 +213,10 @@ export interface Page {
                       )
                     | null;
                   /**
+                   * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+                   */
+                  whatsappMessage?: string | null;
+                  /**
                    * e.g. /the-method/ or #immersive (internal) or full https URL.
                    */
                   href?: string | null;
@@ -224,6 +231,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero';
@@ -270,6 +282,10 @@ export interface Page {
                   )
                 | null;
               /**
+               * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+               */
+              whatsappMessage?: string | null;
+              /**
                * e.g. /the-method/ or #immersive (internal) or full https URL.
                */
               href?: string | null;
@@ -294,11 +310,19 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'richText';
           }
         | {
+            /**
+             * The small gold line above the headline, with the wave after it. Leave it empty and neither appears.
+             */
             eyebrow?: string | null;
             heading?: string | null;
             lede?: string | null;
@@ -343,6 +367,10 @@ export interface Page {
                   )
                 | null;
               /**
+               * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+               */
+              whatsappMessage?: string | null;
+              /**
                * e.g. /the-method/ or #immersive (internal) or full https URL.
                */
               href?: string | null;
@@ -359,6 +387,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'threePhases';
@@ -385,13 +418,25 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'situations';
           }
         | {
             image: number | Media;
+            /**
+             * The small gold line above the headline, with the wave after it. Leave it empty and neither appears.
+             */
             eyebrow?: string | null;
+            /**
+             * Switch it to white when the photo is too light for the gold to read.
+             */
+            eyebrowColor?: ('gold' | 'white') | null;
             /**
              * Optional short line over the photo.
              */
@@ -405,6 +450,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'photoBand';
@@ -419,9 +469,12 @@ export interface Page {
              */
             format?: ('fullScreen' | 'portrait' | 'band') | null;
             /**
-             * Optional video (Vimeo/YouTube link, or a direct .mp4). Shows instead of the image — space for drone footage.
+             * Paste a Vimeo or YouTube address here and the video plays instead of the image above. Nothing to upload.
              */
             videoUrl?: string | null;
+            /**
+             * The small gold line above the headline, with the wave after it. Leave it empty and neither appears.
+             */
             eyebrow?: string | null;
             heading?: string | null;
             body?: string | null;
@@ -446,6 +499,10 @@ export interface Page {
                       )
                     | null;
                   /**
+                   * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+                   */
+                  whatsappMessage?: string | null;
+                  /**
                    * e.g. /the-method/ or #immersive (internal) or full https URL.
                    */
                   href?: string | null;
@@ -464,6 +521,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'mediaFeature';
@@ -500,6 +562,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'waysGrid';
@@ -536,6 +603,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'gallery';
@@ -574,6 +646,10 @@ export interface Page {
                   )
                 | null;
               /**
+               * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+               */
+              whatsappMessage?: string | null;
+              /**
                * e.g. /the-method/ or #immersive (internal) or full https URL.
                */
               href?: string | null;
@@ -594,6 +670,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'detailsGrid';
@@ -645,6 +726,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'expandableStory';
@@ -666,6 +752,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'testimonialsBlock';
@@ -710,6 +801,10 @@ export interface Page {
                   )
                 | null;
               /**
+               * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+               */
+              whatsappMessage?: string | null;
+              /**
                * e.g. /the-method/ or #immersive (internal) or full https URL.
                */
               href?: string | null;
@@ -726,11 +821,19 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'splitImageText';
           }
         | {
+            /**
+             * The small gold line above the headline, with the wave after it. Leave it empty and neither appears.
+             */
             eyebrow?: string | null;
             heading: string;
             body?: string | null;
@@ -756,6 +859,10 @@ export interface Page {
                   )
                 | null;
               /**
+               * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+               */
+              whatsappMessage?: string | null;
+              /**
                * e.g. /the-method/ or #immersive (internal) or full https URL.
                */
               href?: string | null;
@@ -768,6 +875,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'signatureBand';
@@ -775,6 +887,10 @@ export interface Page {
         | {
             heading: string;
             body?: string | null;
+            /**
+             * Only applies when the section is centred.
+             */
+            ctaLayout?: ('stacked' | 'row') | null;
             ctas?:
               | {
                   label?: string | null;
@@ -795,6 +911,10 @@ export interface Page {
                         | 'contact'
                       )
                     | null;
+                  /**
+                   * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+                   */
+                  whatsappMessage?: string | null;
                   /**
                    * e.g. /the-method/ or #immersive (internal) or full https URL.
                    */
@@ -819,6 +939,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'ctaSection';
@@ -830,7 +955,7 @@ export interface Page {
             anchor?: string | null;
             title: string;
             /**
-             * e.g. "Signature"
+             * The small gold line with the wave after it, e.g. "Most chosen". Leave it empty and neither appears.
              */
             tag?: string | null;
             tagline?: string | null;
@@ -884,6 +1009,10 @@ export interface Page {
                   )
                 | null;
               /**
+               * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+               */
+              whatsappMessage?: string | null;
+              /**
                * e.g. /the-method/ or #immersive (internal) or full https URL.
                */
               href?: string | null;
@@ -897,6 +1026,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'formatDetail';
@@ -922,6 +1056,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'faq';
@@ -933,6 +1072,18 @@ export interface Page {
              * Simple list is one line per item. Numbered stages gives each item its own card with a big gold number, a headline and a paragraph — for steps that happen in order.
              */
             layout?: ('list' | 'stages') | null;
+            /**
+             * Leave empty to show every item. Put a number and the list stops there, with a link underneath that opens the rest. Useful when a list grows long on a phone.
+             */
+            collapseAfter?: number | null;
+            /**
+             * Default: Show more.
+             */
+            moreLabel?: string | null;
+            /**
+             * Default: Show less.
+             */
+            lessLabel?: string | null;
             items?:
               | {
                   /**
@@ -965,6 +1116,10 @@ export interface Page {
                   )
                 | null;
               /**
+               * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+               */
+              whatsappMessage?: string | null;
+              /**
                * e.g. /the-method/ or #immersive (internal) or full https URL.
                */
               href?: string | null;
@@ -985,6 +1140,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'list';
@@ -1018,6 +1178,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'twoColumnLists';
@@ -1046,6 +1211,10 @@ export interface Page {
                       )
                     | null;
                   /**
+                   * Write the words you want already typed in WhatsApp when someone taps this button. Leave it empty and it uses the shared message for the topic above.
+                   */
+                  whatsappMessage?: string | null;
+                  /**
                    * e.g. /the-method/ or #immersive (internal) or full https URL.
                    */
                   href?: string | null;
@@ -1064,6 +1233,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'contactTiles';
@@ -1071,6 +1245,18 @@ export interface Page {
         | {
             heading?: string | null;
             intro?: string | null;
+            /**
+             * Default: Your message has been received.
+             */
+            successMessage?: string | null;
+            /**
+             * Default: I normally reply within 24 to 48 hours.
+             */
+            successNote?: string | null;
+            /**
+             * Default: With Love, Sabine.
+             */
+            successSignature?: string | null;
             subjectLabel?: string | null;
             /**
              * The options someone can pick. Drag to reorder. Leave empty to use the standard list.
@@ -1093,6 +1279,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'contactForm';
@@ -1126,6 +1317,11 @@ export interface Page {
              * Keeps the section saved but removes it from the live site.
              */
             hidden?: boolean | null;
+            /**
+             * Most sections draw the wave on their own. Use this to add one or take one away.
+             */
+            wave?: ('auto' | 'show' | 'hide') | null;
+            waveColor?: ('gold' | 'pale') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'newsletter';
@@ -1153,7 +1349,7 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * All the site's photos. Upload an image and use it on any page. Best results: at least 2400px wide and under 3 MB. If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight.
+ * All the site's photos. Upload an image and use it on any page. Best results: at least 2400px wide and under 3 MB. If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight. Photos only: a video is never uploaded here. To show a video, open the page, find a "Feature band (big media)" section and paste the Vimeo or YouTube address into its Video link field.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -1509,11 +1705,14 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                     id?: T;
                   };
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1531,6 +1730,7 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                   };
               align?: T;
@@ -1538,6 +1738,8 @@ export interface PagesSelect<T extends boolean = true> {
               width?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1558,11 +1760,14 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                   };
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1581,6 +1786,8 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1589,10 +1796,13 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               image?: T;
               eyebrow?: T;
+              eyebrowColor?: T;
               caption?: T;
               height?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1612,12 +1822,15 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                     id?: T;
                   };
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1640,6 +1853,8 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1659,6 +1874,8 @@ export interface PagesSelect<T extends boolean = true> {
               width?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1682,12 +1899,15 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                   };
               tone?: T;
               width?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1708,6 +1928,8 @@ export interface PagesSelect<T extends boolean = true> {
               width?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1721,6 +1943,8 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1739,11 +1963,14 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                   };
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1762,10 +1989,13 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                   };
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1774,6 +2004,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               body?: T;
+              ctaLayout?: T;
               ctas?:
                 | T
                 | {
@@ -1781,6 +2012,7 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                     id?: T;
                   };
@@ -1789,6 +2021,8 @@ export interface PagesSelect<T extends boolean = true> {
               width?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1816,11 +2050,14 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                     id?: T;
                   };
               tone?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1838,6 +2075,8 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1847,6 +2086,9 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               intro?: T;
               layout?: T;
+              collapseAfter?: T;
+              moreLabel?: T;
+              lessLabel?: T;
               items?:
                 | T
                 | {
@@ -1863,12 +2105,15 @@ export interface PagesSelect<T extends boolean = true> {
                     variant?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                   };
               tone?: T;
               width?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1894,6 +2139,8 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1909,12 +2156,15 @@ export interface PagesSelect<T extends boolean = true> {
                     ctaLabel?: T;
                     action?: T;
                     whatsappContext?: T;
+                    whatsappMessage?: T;
                     href?: T;
                     id?: T;
                   };
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1923,6 +2173,9 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               intro?: T;
+              successMessage?: T;
+              successNote?: T;
+              successSignature?: T;
               subjectLabel?: T;
               subjects?:
                 | T
@@ -1933,6 +2186,8 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -1949,6 +2204,8 @@ export interface PagesSelect<T extends boolean = true> {
               tone?: T;
               anchor?: T;
               hidden?: T;
+              wave?: T;
+              waveColor?: T;
               id?: T;
               blockName?: T;
             };
@@ -2278,6 +2535,10 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Default: Stay in touch.
+   */
+  newsletterHeading?: string | null;
   newsletterBlurb?: string | null;
   /**
    * What someone sees once they have signed up, in place of the form.
@@ -2318,6 +2579,10 @@ export interface ChatSetting {
    * Models marked FREE don't use up your OpenRouter credit.
    */
   model?: string | null;
+  /**
+   * The short line that pops up beside NUMA a few seconds after someone arrives. Default: Hi, I'm NUMA, Sabine's assistant. How can I help?
+   */
+  nudgeText?: string | null;
   /**
    * The first message a visitor sees when they open the chat.
    */
@@ -2426,6 +2691,7 @@ export interface FooterSelect<T extends boolean = true> {
         href?: T;
         id?: T;
       };
+  newsletterHeading?: T;
   newsletterBlurb?: T;
   newsletterSuccess?: T;
   newsletterSignature?: T;
@@ -2449,6 +2715,7 @@ export interface ChatSettingsSelect<T extends boolean = true> {
   enabled?: T;
   openRouterApiKey?: T;
   model?: T;
+  nudgeText?: T;
   welcomeMessage?: T;
   extraInstructions?: T;
   extraKnowledge?: T;

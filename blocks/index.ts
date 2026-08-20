@@ -509,6 +509,24 @@ export const ContactFormBlock: Block = {
     { name: "heading", type: "text" },
     { name: "intro", type: "textarea" },
     {
+      name: "successMessage",
+      type: "text",
+      label: "After someone sends the form — first line",
+      admin: { description: "Default: Your message has been received." },
+    },
+    {
+      name: "successNote",
+      type: "text",
+      label: "After someone sends the form — second line",
+      admin: { description: "Default: I normally reply within 24 to 48 hours." },
+    },
+    {
+      name: "successSignature",
+      type: "text",
+      label: "After someone sends the form — signature",
+      admin: { description: "Default: With Love, Sabine." },
+    },
+    {
       name: "subjectLabel",
       type: "text",
       label: "Label above the dropdown",

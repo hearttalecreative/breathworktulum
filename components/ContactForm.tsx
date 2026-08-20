@@ -19,10 +19,16 @@ export default function ContactForm({
   subjectLabel = "I'm interested in",
   subjects,
   source = "",
+  successMessage = "Your message has been received.",
+  successNote = "I normally reply within 24 to 48 hours.",
+  successSignature = "With Love, Sabine.",
 }: {
   subjectLabel?: string;
   subjects?: string[];
   source?: string;
+  successMessage?: string;
+  successNote?: string;
+  successSignature?: string;
 }) {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState("");
@@ -64,9 +70,9 @@ export default function ContactForm({
     return (
       <div className="relative overflow-hidden bg-ivory/70 p-8">
         <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
-        <p className="text-[1.05rem] text-ink">Your message has been received.</p>
-        <p className="mt-2 text-ink-soft">I normally reply within 24 to 48 hours.</p>
-        <p className="mt-4 font-serif italic text-gold-ink">With Love, Sabine.</p>
+        <p className="text-[1.05rem] text-ink">{successMessage}</p>
+        {successNote ? <p className="mt-2 text-ink-soft">{successNote}</p> : null}
+        {successSignature ? <p className="mt-4 font-serif italic text-gold-ink">{successSignature}</p> : null}
       </div>
     );
   }

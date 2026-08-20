@@ -140,6 +140,7 @@ export default async function RootLayout({
           subBrandBlurb={footer.subBrandBlurb || ""}
           workWithMe={footer.workWithMe || []}
           explore={footer.explore || []}
+          newsletterHeading={footer.newsletterHeading || ""}
           newsletterBlurb={footer.newsletterBlurb || ""}
           newsletterSuccess={footer.newsletterSuccess || undefined}
           newsletterSignature={footer.newsletterSignature || undefined}
@@ -149,7 +150,7 @@ export default async function RootLayout({
           googleReviews={(s.googleReviews as string) || ""}
         />
         {chat.enabled ? (
-          <ChatWidget welcomeMessage={chat.welcomeMessage} whatsappHref={waHref} />
+          <ChatWidget welcomeMessage={chat.welcomeMessage} whatsappHref={waHref} nudgeText={chat.nudgeText} />
         ) : (
           <WhatsAppSticky />
         )}

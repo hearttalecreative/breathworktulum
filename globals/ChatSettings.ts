@@ -54,6 +54,15 @@ export const ChatSettings: GlobalConfig = {
       },
     },
     {
+      name: "nudgeText",
+      type: "text",
+      label: "The little bubble that appears first",
+      admin: {
+        description:
+          "The short line that pops up beside NUMA a few seconds after someone arrives. Default: Hi, I'm NUMA, Sabine's assistant. How can I help?",
+      },
+    },
+    {
       name: "welcomeMessage",
       type: "textarea",
       label: "Welcome message",

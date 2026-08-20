@@ -179,6 +179,7 @@ export const getChatPublicSettings = unstable_cache(
     return {
       enabled: chat?.enabled !== false,
       welcomeMessage: chat?.welcomeMessage || "",
+      nudgeText: chat?.nudgeText || "",
     };
   },
   ["chat-public"],
