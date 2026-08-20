@@ -24,15 +24,18 @@ const paras = (s?: string | null) =>
 // La negrita no va a 700 a propósito: el titular es Canela 300, y un 700 al
 // lado rompe el trazo fino de la tipografía. 500 marca sin gritar.
 // El orden importa: ** se prueba antes que *, si no el split parte de a uno.
-// El símbolo de marca registrada se escribe en el texto como un carácter más,
-// así que en un titular grande sale del tamaño del titular. Va reducido y
-// elevado, como corresponde: marca la propiedad sin competir con la palabra.
+// Los símbolos de marca se escriben en el texto como un carácter más, así que
+// en un titular grande salen del tamaño del titular. Van reducidos y elevados,
+// como corresponde: marcan la propiedad sin competir con la palabra.
+// Sin la bandera global para el test: con /g, .test() avanza lastIndex y la
+// llamada siguiente devuelve falso aunque el símbolo esté. El split sí la lleva.
+const TIENE_MARCA = /[®™℠]/;
 function reg(txt: string, k: string) {
-  if (!txt.includes("®")) return txt;
-  return txt.split(/(®)/g).map((t, j) =>
-    t === "®" ? (
+  if (!TIENE_MARCA.test(txt)) return txt;
+  return txt.split(/([®™℠])/g).map((t, j) =>
+    /^[®™℠]$/.test(t) ? (
       <span key={`${k}-${j}`} className="align-super text-[0.4em] tracking-normal">
-        ®
+        {t}
       </span>
     ) : (
       t
