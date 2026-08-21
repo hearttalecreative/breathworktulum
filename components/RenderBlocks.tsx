@@ -456,8 +456,17 @@ function BlockSwitch({
       }
 
       // Full screen fills the viewport on desktop; phones keep the height she
-      // already likes. "band" is the old short format, kept for existing pages.
-      const height = format === "band" ? "min-h-[48svh] lg:min-h-[56svh]" : "min-h-[70svh] lg:min-h-[100svh]";
+      // already likes. "band" is the old short format, kept para las páginas
+      // que ya lo usan.
+      //
+      // Con video la altura fija se saca: la sección toma la forma del video y
+      // así se ve entero. Con un alto impuesto, un video apaisado en teléfono
+      // perdía los costados, que es donde estaba el título del drone.
+      const height = video
+        ? "aspect-video min-h-0"
+        : format === "band"
+          ? "min-h-[48svh] lg:min-h-[56svh]"
+          : "min-h-[70svh] lg:min-h-[100svh]";
       return (
         <section className={`on-dark relative flex ${height} items-end overflow-clip bg-night`} id={(b.anchor as string) || undefined}>
           <FeatureMedia block={b} video={video} sizes="100vw" fill />
