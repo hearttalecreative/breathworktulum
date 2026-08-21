@@ -839,6 +839,8 @@ function BlockSwitch({
           // Cuando cierra la página, el aire de abajo se recorta: el pie ya
           // aporta su propio respiro y sobraba un hueco muerto antes de él.
           className={`${center ? "text-center" : ""} ${first ? "" : "pb-[calc(var(--spacing-section)*0.62)]"}`}
+          // NUMA se aparta mientras esta sección está a la vista.
+          finalCta={!first}
         >
           {wave(b, true) ? <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={waveTone(b, b.tone === "night" ? "champagne" : "gold")} /></div> : null}
           <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>

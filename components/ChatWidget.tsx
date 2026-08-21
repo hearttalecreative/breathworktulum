@@ -58,6 +58,9 @@ export default function ChatWidget({
   const nudgeLine = (nudgeText || "").trim() || NUDGE_TEXT;
   const [open, setOpen] = useState(false);
   const [nudge, setNudge] = useState(false);
+  // Mientras la sección de cierre está a la vista, NUMA se aparta: ahí la
+  // página ya ofrece su propio camino y el botón flotante competía con él.
+  const [apartado, setApartado] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -102,6 +105,17 @@ export default function ChatWidget({
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
+
+  useEffect(() => {
+    const cierre = document.querySelector("[data-final-cta]");
+    if (!cierre) return;
+    const obs = new IntersectionObserver(
+      ([e]) => setApartado(e.isIntersecting),
+      { threshold: 0.25 }
+    );
+    obs.observe(cierre);
+    return () => obs.disconnect();
+  }, []);
 
   // Keep the newest message in view while streaming.
   useEffect(() => {
@@ -190,7 +204,7 @@ export default function ChatWidget({
       <style>{BREATHE_CSS}</style>
 
       {/* Proactive greeting — draws the eye and says the chat is live. */}
-      {nudge && !open && (
+      {nudge && !open && !apartado && (
         <div
           className="fixed bottom-[max(5rem,calc(env(safe-area-inset-bottom)+5rem))] right-5 z-40 w-[15.5rem] max-w-[calc(100vw-2rem)]"
           style={{ animation: "bwtNudge 0.4s cubic-bezier(0.22,1,0.36,1)" }}
@@ -228,7 +242,9 @@ export default function ChatWidget({
         // 44px y a 20px del borde: mismo tamaño y mismo eje que el botón de
         // sonido del video (h-11 w-11, bottom-5 right-5), así los dos círculos
         // quedan alineados en vertical en vez de cada uno por su lado.
-        className="group fixed bottom-[max(1.1rem,env(safe-area-inset-bottom))] right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_4px_12px_-4px_rgba(43,55,48,0.35)] ring-1 ring-inset ring-pure/30 transition-transform duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft"
+        className={`group fixed bottom-[max(1.1rem,env(safe-area-inset-bottom))] right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-whatsapp to-gold-soft text-pure shadow-[0_4px_12px_-4px_rgba(43,55,48,0.35)] ring-1 ring-inset ring-pure/30 transition-[transform,opacity] duration-500 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-soft ${
+          apartado && !open ? "pointer-events-none scale-90 opacity-0" : "opacity-100"
+        }`}
       >
         {/* Un solo borde fino que late despacio, antes de la primera apertura.
             Antes eran dos capas que se expandían hasta 1.8x: el halo grande

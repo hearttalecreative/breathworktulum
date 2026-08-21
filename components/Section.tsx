@@ -16,6 +16,7 @@ export default function Section({
   className = "",
   width = "default",
   first = false,
+  finalCta = false,
 }: {
   children: ReactNode;
   tone?: Tone;
@@ -25,6 +26,8 @@ export default function Section({
   /** Primera sección de una página que no arranca con un hero: suma el alto del
    *  header fixed, si no su contenido queda debajo y no se puede clickear. */
   first?: boolean;
+  /** La sección de cierre. NUMA se aparta mientras está a la vista. */
+  finalCta?: boolean;
 }) {
   const measure =
     width === "narrow"
@@ -35,6 +38,7 @@ export default function Section({
   return (
     <section
       id={id}
+      {...(finalCta ? { "data-final-cta": "" } : {})}
       className={`${tones[tone]} ${tone === "night" ? "on-dark" : ""} px-[clamp(20px,5vw,80px)] py-section ${first ? "section-first" : ""} ${className}`}
     >
       <div className={`mx-auto ${measure}`}>{children}</div>
