@@ -37,6 +37,7 @@ const trustedOrigins = [
   "https://breathworktulum.com",
   "https://www.breathworktulum.com",
   "https://breathworktulum.hearttalecreative.com",
+  "https://breathworktulum.vercel.app",
   "http://localhost:3000",
   "http://localhost:4123",
   ...(process.env.ADMIN_ORIGINS?.split(",").map((s) => s.trim()).filter(Boolean) ?? []),

@@ -7,6 +7,7 @@ import Section from "@/components/Section";
 import PayloadImage from "@/components/PayloadImage";
 import JsonLd from "@/components/JsonLd";
 import ShareButtons from "@/components/ShareButtons";
+import CTAButton from "@/components/CTAButton";
 import LivePreviewListener from "@/components/LivePreviewListener";
 import { getPost, getAuthUser } from "@/lib/payload";
 import { postConverters } from "@/lib/richtextConverters";
@@ -148,18 +149,16 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
             <p className="measure mx-auto mt-3 text-muted">
               If any of this landed, the next step is a conversation. Message Sabine and we&apos;ll find the right starting point.
             </p>
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={whatsappLink("general")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-[3rem] items-center bg-gold-soft px-7 text-sm font-medium text-ink transition-transform hover:bg-[#b7975f] active:scale-95"
-              >
+            {/* Los mismos dos botones que cierran el resto de las páginas: el
+                dorado de WhatsApp y, debajo, el enlace con flecha. Antes iban
+                armados a mano acá, y por eso al segundo le faltaba la flecha. */}
+            <div className="mt-8 flex flex-col items-center gap-y-2 sm:gap-y-7 [&_.link-underline]:min-h-[2.75rem] sm:[&_.btn-sheen-gold]:min-h-[3rem] sm:[&_.btn-sheen-gold]:px-7">
+              <CTAButton href={whatsappLink("general")} variant="whatsapp">
                 Message me on WhatsApp
-              </a>
-              <Link href="/work-with-me/private-sessions/" className="inline-flex min-h-[3rem] items-center border border-line px-7 text-sm font-medium text-ink transition-colors hover:bg-sand/60">
+              </CTAButton>
+              <CTAButton href="/work-with-me/private-sessions/" variant="secondary">
                 Explore private sessions
-              </Link>
+              </CTAButton>
             </div>
           </div>
         </Section>

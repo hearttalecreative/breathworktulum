@@ -843,7 +843,15 @@ function BlockSwitch({
           finalCta={!first}
         >
           {wave(b, true) ? <div className={center ? "flex justify-center" : ""}><Ornament start={!center} tone={waveTone(b, b.tone === "night" ? "champagne" : "gold")} /></div> : null}
-          <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
+          {/* Cuando este bloque abre la página, su titular es el título de la
+              página y va como h1. Contact, Work With Me, el newsletter y las
+              legales no tenían ninguno. Se ve igual: cambia la etiqueta, no
+              el estilo. */}
+          {first ? (
+            <h1 className="t-h2 mt-7">{emph(b.heading as string)}</h1>
+          ) : (
+            <h2 className="t-h2 mt-7">{emph(b.heading as string)}</h2>
+          )}
           {b.body ? <p className={`prose-body mt-6 text-muted ${center ? "mx-auto max-w-xl" : "max-w-2xl"} whitespace-pre-line`}>{b.body as string}</p> : null}
           <CtaRow ctas={ctas} align={center ? "center" : "left"} onDark={b.tone === "night"} stack={center && (b.ctaLayout || "stacked") === "stacked"} />
         </Section>

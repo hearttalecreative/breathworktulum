@@ -48,9 +48,10 @@ export const postConverters: JSXConvertersFunction = (args) => ({
           sizes="(max-width: 768px) 100vw, 720px"
           className="h-auto w-full rounded-xl"
         />
-        {value.alt ? (
-          <figcaption className="mt-2 text-center text-sm text-ink-soft/70">{value.alt}</figcaption>
-        ) : null}
+        {/* Sin pie de foto. Antes se imprimía el texto alternativo debajo de
+            cada imagen, así que no había forma de quitar el pie sin dejar la
+            foto sin descripción para lectores de pantalla y buscadores. El
+            texto alternativo sigue en la imagen, donde corresponde. */}
       </figure>
     );
   },

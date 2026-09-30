@@ -53,3 +53,6 @@ FONTS/
 /icon blanco.svg
 /rs=w_*.webp
 /public/images/og-photo-backup.jpg
+
+# local data snapshots (contain personal data)
+/backups/

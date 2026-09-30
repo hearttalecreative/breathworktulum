@@ -1,0 +1,12 @@
+diff --git a/node_modules/@payloadcms/storage-vercel-blob/dist/uploadFile.js b/node_modules/@payloadcms/storage-vercel-blob/dist/uploadFile.js
+index b3b6bf4..d13dffe 100644
+--- a/node_modules/@payloadcms/storage-vercel-blob/dist/uploadFile.js
++++ b/node_modules/@payloadcms/storage-vercel-blob/dist/uploadFile.js
+@@ -11,6 +11,7 @@ export async function uploadFile({ access, addRandomSuffix, buffer, cacheControl
+     const result = await put(fileKey, buffer, {
+         access,
+         addRandomSuffix,
++        allowOverwrite: true,
+         cacheControlMaxAge,
+         contentType: mimeType,
+         token

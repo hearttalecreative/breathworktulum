@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppSticky from "@/components/WhatsAppSticky";
 import ChatWidget from "@/components/ChatWidget";
 import CookieConsent from "@/components/CookieConsent";
+import Analytics from "@/components/Analytics";
 import JsonLd from "@/components/JsonLd";
 import { SITE } from "@/lib/site";
 import { organizationLd, websiteLd, localBusinessLd } from "@/lib/seo";
@@ -62,6 +63,9 @@ export const metadata: Metadata = {
     "Breathe Heal Transform",
   ],
   category: "Health & Wellness",
+  // The same ownership tag the previous site carried, so the Search Console
+  // property that was verified through it stays verified after the switch.
+  verification: { google: "5J4GPAPHHXix2AJXti5wvY8kIywofD-SGq-m0C9Ymj4" },
   alternates: { canonical: "/" },
   // Sin index/follow explícitos a propósito. Una página sin etiqueta robots ya
   // es indexable, así que declararlo no agregaba nada, y en cambio la pantalla
@@ -155,6 +159,7 @@ export default async function RootLayout({
           <WhatsAppSticky />
         )}
         <CookieConsent />
+        <Analytics />
       </body>
     </html>
   );

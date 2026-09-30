@@ -12,6 +12,7 @@ export const Subscribers: CollectionConfig = {
     useAsTitle: "email",
     defaultColumns: ["email", "firstName", "syncedAt", "createdAt"],
     description: "Everyone who signed up through the site. Newest first.",
+    components: { beforeListTable: ["@/components/admin/ExportSubscribers"] },
   },
   access: {
     // Cualquiera puede anotarse; solo el admin puede leer la lista.
@@ -27,6 +28,21 @@ export const Subscribers: CollectionConfig = {
       name: "source",
       type: "text",
       admin: { readOnly: true, description: "Which page they signed up from." },
+    },
+    {
+      name: "consentText",
+      type: "textarea",
+      label: "What they agreed to",
+      admin: {
+        readOnly: true,
+        description: "The exact sentence shown under the form when this person signed up.",
+      },
+    },
+    {
+      name: "consentAt",
+      type: "date",
+      label: "Agreed on",
+      admin: { readOnly: true, date: { pickerAppearance: "dayAndTime" } },
     },
     {
       name: "syncedAt",

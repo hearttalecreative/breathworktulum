@@ -71,8 +71,11 @@ export async function generateMetadata({
   const ogUrl = toSlug(slug) === "home" ? OG_FALLBACK : toPublicOg(og?.url);
   const title = (p.metaTitle as string) || (p.title as string);
   const description = (p.metaDescription as string) || undefined;
+  // The layout appends "· Breathwork Tulum" to every title. A title typed in
+  // the panel with the brand already on the end came out with it twice.
+  const branded = new RegExp(`[·|\\-–]\\s*${SITE.name}\\s*$`, "i").test(title || "");
   return {
-    title,
+    title: branded ? { absolute: title } : title,
     description,
     alternates: { canonical: `${SITE.url}${path}` },
     ...(p.noindex ? { robots: { index: false, follow: false } } : {}),

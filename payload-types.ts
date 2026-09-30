@@ -469,6 +469,10 @@ export interface Page {
              */
             format?: ('fullScreen' | 'portrait' | 'band') | null;
             /**
+             * Only on a computer. On a phone the photo always comes first, then the text. Alternate the sides when two of these sections follow each other.
+             */
+            imageSide?: ('left' | 'right') | null;
+            /**
              * Paste a Vimeo or YouTube address here and the video plays instead of the image above. Nothing to upload.
              */
             videoUrl?: string | null;
@@ -1246,6 +1250,10 @@ export interface Page {
             heading?: string | null;
             intro?: string | null;
             /**
+             * What shows before someone chooses. Default: Please select.
+             */
+            selectPlaceholder?: string | null;
+            /**
              * Default: Your message has been received.
              */
             successMessage?: string | null;
@@ -1349,7 +1357,7 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * All the site's photos. Upload an image and use it on any page. Best results: at least 2400px wide and under 3 MB. If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight. Photos only: a video is never uploaded here. To show a video, open the page, find a "Feature band (big media)" section and paste the Vimeo or YouTube address into its Video link field.
+ * All the site's photos. Upload an image and use it on any page. Any width works. For a photo that fills the screen, 2400px wide looks sharpest. JPG, PNG or WebP, under 3 MB. If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight. Photos only: a video is never uploaded here. To show a video, open the page, find a "Feature band (big media)" section and paste the Vimeo or YouTube address into its Video link field.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -1513,6 +1521,11 @@ export interface Subscriber {
    * Which page they signed up from.
    */
   source?: string | null;
+  /**
+   * The exact sentence shown under the form when this person signed up.
+   */
+  consentText?: string | null;
+  consentAt?: string | null;
   /**
    * Empty means it is stored here but not yet in the email platform.
    */
@@ -1811,6 +1824,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               image?: T;
               format?: T;
+              imageSide?: T;
               videoUrl?: T;
               eyebrow?: T;
               heading?: T;
@@ -2173,6 +2187,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               heading?: T;
               intro?: T;
+              selectPlaceholder?: T;
               successMessage?: T;
               successNote?: T;
               successSignature?: T;
@@ -2257,6 +2272,8 @@ export interface SubscribersSelect<T extends boolean = true> {
   email?: T;
   firstName?: T;
   source?: T;
+  consentText?: T;
+  consentAt?: T;
   syncedAt?: T;
   syncError?: T;
   updatedAt?: T;
@@ -2576,7 +2593,7 @@ export interface ChatSetting {
    */
   openRouterApiKey?: string | null;
   /**
-   * Models marked FREE don't use up your OpenRouter credit.
+   * Models marked FREE don't use up your OpenRouter credit. Free models vary a lot in quality and can be withdrawn; if the one chosen here stops working, NUMA switches to a backup on its own.
    */
   model?: string | null;
   /**

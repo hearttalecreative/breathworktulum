@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const KEY = "bt-cookie-consent";
+import { CONSENT_EVENT, CONSENT_KEY as KEY } from "./Analytics";
 
 // Quiet, non-invasive consent notice — a small card bottom-left, no overlay,
 // no scroll lock. Privacy-preserving: nothing tracks until "Accept".
@@ -24,6 +24,8 @@ export default function CookieConsent() {
     } catch {
       /* ignore */
     }
+    // Analytics waits for this. It starts on "accepted" and never on "declined".
+    window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: value }));
     setShow(false);
   };
 

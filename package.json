@@ -9,7 +9,8 @@
     "start": "next start",
     "payload": "payload",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:importmap": "payload generate:importmap",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.85.1",
@@ -33,6 +34,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "patch-package": "^8.0.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

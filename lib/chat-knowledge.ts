@@ -46,7 +46,44 @@ const TEXT_KEYS = new Set([
   "name",
   "role",
   "label",
+  // Plain-text bodies. Fifty sections keep their main paragraph here, and none
+  // of it reached the assistant while only rich-text bodies were read.
+  "body",
+  "metaLine",
+  "includedNote",
 ]);
+
+// Pages the assistant is asked about most go first, so that if the text ever
+// outgrows the budget it is the legal small print that falls off the end, not
+// the prices. The old order was the database's, with a 60,000-character cut:
+// About, Private Sessions, The Method and Home came last and were dropped
+// whole, so NUMA had no private-session prices and made them up.
+const PRIORITY = [
+  "home",
+  "work-with-me",
+  "work-with-me/private-sessions",
+  "work-with-me/couples",
+  "work-with-me/personalized-retreats",
+  "work-with-me/group-practice",
+  "work-with-me/curated-group-experiences",
+  "work-with-me/corporate",
+  "retreat-riviera-maya-2026",
+  "the-method",
+  "about",
+  "contact",
+  "gallery",
+  "resources",
+  "resources/newsletter",
+  "legal/contraindications",
+  "legal/retreat-policies",
+];
+const rank = (slug: string) => {
+  const i = PRIORITY.indexOf(slug);
+  return i === -1 ? PRIORITY.length : i;
+};
+
+// ~140k chars ≈ 35k tokens. The whole site is about 100k today.
+const MAX_CHARS = 140_000;
 
 function blockToText(block: unknown): string {
   const parts: string[] = [];
@@ -92,17 +129,19 @@ export const getChatKnowledge = unstable_cache(
       `Location: ${SITE.location.city}, ${SITE.location.region}, ${SITE.location.country}. Sessions in Tulum, online, or in a personalized retreat.`,
       `Contact: ${SITE.email} · WhatsApp ${SITE.phoneDisplay}`,
     ].join("\n");
-    const pages = res.docs.map((p) => {
+    const docs = [...res.docs].sort((a, b) => rank(String(a.slug)) - rank(String(b.slug)));
+    const pages = docs.map((p) => {
       const path = p.slug === "home" ? "/" : `/${p.slug}/`;
-      const body = ((p as { layout?: unknown[] }).layout ?? [])
+      const body = ((p as { layout?: { hidden?: boolean }[] }).layout ?? [])
+        // A section she has hidden from the page is hidden from NUMA too.
+        .filter((b) => !b?.hidden)
         .map(blockToText)
         .filter(Boolean)
         .join("\n\n");
       return `## ${p.title} (${path})\n${body}`;
     });
-    // ~60k chars ≈ 15k tokens — comfortable within every free model's context.
-    return [head, ...pages].join("\n\n").slice(0, 60_000);
+    return [head, ...pages].join("\n\n").slice(0, MAX_CHARS);
   },
-  ["chat-knowledge"],
+  ["chat-knowledge-v2"],
   { revalidate: 3600, tags: ["pages", "chat-settings"] }
 );
