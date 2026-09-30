@@ -22,6 +22,10 @@ export async function POST(request: Request) {
   const email = String(body.email ?? "").trim().toLowerCase();
   const firstName = String(body.firstName ?? "").trim();
   const source = String(body.source ?? "").trim().slice(0, 120);
+  // Lo que decía la letra chica al momento de anotarse, con su fecha. Sin esto
+  // queda el alta pero no a qué se dio el sí.
+  const consentText = String(body.consent ?? "").trim().slice(0, 600);
+  const consent = consentText ? { consentText, consentAt: new Date().toISOString() } : {};
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ ok: false, error: "That doesn't look like a valid email." }, { status: 422 });
@@ -42,12 +46,18 @@ export async function POST(request: Request) {
   if (!id) {
     const created = await payload.create({
       collection: "subscribers",
-      data: { email, firstName: firstName || undefined, source: source || undefined } as never,
+      data: { email, firstName: firstName || undefined, source: source || undefined, ...consent } as never,
       overrideAccess: true,
     });
     id = created.id;
-  } else if (firstName) {
-    await payload.update({ collection: "subscribers", id, data: { firstName } as never, overrideAccess: true });
+  } else if (firstName || consentText) {
+    // Alguien que ya estaba y vuelve a anotarse: se guarda el sí más reciente.
+    await payload.update({
+      collection: "subscribers",
+      id,
+      data: { ...(firstName ? { firstName } : {}), ...consent } as never,
+      overrideAccess: true,
+    });
   }
 
   if (newsletterConfigured) {

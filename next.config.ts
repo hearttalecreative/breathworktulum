@@ -51,6 +51,13 @@ const nextConfig: NextConfig = {
         has: [{ type: "host", value: "breathworktulum.hearttalecreative.com" }],
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       },
+      // Same for the vercel.app address. It keeps answering after the real
+      // domain is connected, and it must not compete with it in Google.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "breathworktulum.vercel.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
     ];
   },
   images: {

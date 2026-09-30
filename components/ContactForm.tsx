@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Formulario de consulta. Manda a /api/contact, que guarda la consulta en el
 // panel y después avisa por correo.
@@ -35,14 +35,26 @@ export default function ContactForm({
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState("");
   const options = subjects?.length ? subjects : SUBJECTS_FALLBACK;
+  const doneRef = useRef<HTMLDivElement>(null);
+
+  // La confirmación mide mucho menos que el formulario. Al reemplazarlo, la
+  // página se acortaba y quien acababa de enviar quedaba mirando la sección de
+  // abajo, sin ninguna señal de que el mensaje había salido. Se la trae a la
+  // vista y se le da el foco, así también la anuncia un lector de pantalla.
+  useEffect(() => {
+    if (status !== "done" || !doneRef.current) return;
+    doneRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+    doneRef.current.focus({ preventScroll: true });
+  }, [status]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
 
-    // Honeypot
-    if (data.bwt_ref) return;
+    // La trampa para bots se decide en el servidor. Cortar acá dejaba el
+    // botón sin hacer nada, y sin explicación, cuando el autocompletado del
+    // navegador rellenaba el campo oculto de una persona real.
     // El teléfono es opcional: pedirlo acá lo volvía obligatorio de hecho,
     // aunque el campo ya no lo marcara.
     if (!data.name || !data.email || !data.subject || !data.message) {
@@ -72,7 +84,12 @@ export default function ContactForm({
 
   if (status === "done") {
     return (
-      <div className="relative overflow-hidden bg-ivory/70 p-8">
+      <div
+        ref={doneRef}
+        role="status"
+        tabIndex={-1}
+        className="relative scroll-mt-32 overflow-hidden bg-ivory/70 p-8 outline-none"
+      >
         <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-soft/60 to-transparent" />
         <p className="text-[1.05rem] text-ink">{successMessage}</p>
         {successNote ? <p className="mt-2 text-ink-soft">{successNote}</p> : null}
@@ -83,15 +100,11 @@ export default function ContactForm({
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-7">
-      {/* Honeypot */}
-      <input
-        type="text"
-        name="bwt_ref"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-      />
+      {/* Trampa para bots. Va con `hidden` y no corrida fuera de pantalla: a un
+          campo fuera de pantalla el autocompletado de Chrome lo rellena igual
+          que a los demás, y el envío de esa persona se descartaba en silencio.
+          Uno que no se pinta, el navegador lo saltea; un bot que lee el HTML no. */}
+      <input type="text" name="bwt_ref" tabIndex={-1} autoComplete="off" aria-hidden hidden />
 
       {/* Al sacar los asteriscos rojos no quedó forma de saber qué era
           obligatorio, y ella dio por hecho que nada lo era. Vuelve la marca,

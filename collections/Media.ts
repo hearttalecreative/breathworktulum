@@ -14,7 +14,7 @@ export const Media: CollectionConfig = {
     group: "Content",
     description:
       `All the site's photos. Upload an image and use it on any page. ` +
-      `Best results: at least 2400px wide and under ${MAX_UPLOAD_MB} MB. ` +
+      `Any width works. For a photo that fills the screen, 2400px wide looks sharpest. JPG, PNG or WebP, under ${MAX_UPLOAD_MB} MB. ` +
       `If a photo is heavier, shrink it at tinypng.com first — it keeps the quality and cuts the weight. ` +
       `Photos only: a video is never uploaded here. To show a video, open the page, find a "Feature band (big media)" section and paste the Vimeo or YouTube address into its Video link field.`,
   },
@@ -45,14 +45,20 @@ export const Media: CollectionConfig = {
     // components/PayloadImage — no image CDN and no per-request work.
     // Height stays undefined so every variant keeps the original aspect ratio:
     // nothing is cropped, which the Portrait 4:5 blocks depend on.
-    // withoutEnlargement means a small original simply produces fewer variants
-    // instead of a blurry upscale.
+    //
+    // No `withoutEnlargement` here, on purpose. Set to true it does not skip a
+    // variant wider than the photo: it emits the photo at its own size under
+    // that variant's name. A 1600px photo then produced "wide" and "hero" as
+    // the same file with the same name, the storage refused the second copy,
+    // and the whole upload failed with no explanation. Every photo 1600px wide
+    // or narrower was rejected that way. Left unset, a variant wider than the
+    // photo is simply not generated, and PayloadImage skips the gap.
     formatOptions: { format: "webp", options: { quality: 80 } },
     imageSizes: [
-      { name: "thumbnail", width: 480, height: undefined, withoutEnlargement: true, formatOptions: { format: "webp", options: { quality: 80 } } },
-      { name: "card", width: 960, height: undefined, withoutEnlargement: true, formatOptions: { format: "webp", options: { quality: 80 } } },
-      { name: "wide", width: 1600, height: undefined, withoutEnlargement: true, formatOptions: { format: "webp", options: { quality: 80 } } },
-      { name: "hero", width: 2400, height: undefined, withoutEnlargement: true, formatOptions: { format: "webp", options: { quality: 80 } } },
+      { name: "thumbnail", width: 480, height: undefined, formatOptions: { format: "webp", options: { quality: 80 } } },
+      { name: "card", width: 960, height: undefined, formatOptions: { format: "webp", options: { quality: 80 } } },
+      { name: "wide", width: 1600, height: undefined, formatOptions: { format: "webp", options: { quality: 80 } } },
+      { name: "hero", width: 2400, height: undefined, formatOptions: { format: "webp", options: { quality: 80 } } },
     ],
   },
   fields: [

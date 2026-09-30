@@ -43,14 +43,14 @@ export const ChatSettings: GlobalConfig = {
       name: "model",
       type: "text",
       label: "AI model",
-      // A non-reasoning instruct model that streams a clean answer. Reasoning
-      // models (hy3, nemotron-ultra) either leak their thinking or return an
-      // empty answer, so they are avoided as the default.
-      defaultValue: "meta-llama/llama-3.3-70b-instruct:free",
+      // A free model checked against the live site content: it quotes prices
+      // exactly and stays in plain prose. If it is ever withdrawn, the chat
+      // route falls through to its own backups (see app/api/chat/route.ts).
+      defaultValue: "nvidia/nemotron-3-super-120b-a12b:free",
       admin: {
         components: { Field: "@/components/admin/ModelSelect" },
         description:
-          "Models marked FREE don't use up your OpenRouter credit.",
+          "Models marked FREE don't use up your OpenRouter credit. Free models vary a lot in quality and can be withdrawn; if the one chosen here stops working, NUMA switches to a backup on its own.",
       },
     },
     {

@@ -46,7 +46,9 @@ export default function NewsletterSignup({
       const res = await fetch("/api/newsletter/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, email, bwt_ref: company, source }),
+        // El texto que la persona tenía delante al anotarse viaja con el alta:
+        // es el registro de a qué dijo que sí.
+        body: JSON.stringify({ firstName, email, bwt_ref: company, source, consent: finedPrint }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || "Something went wrong.");
@@ -115,16 +117,18 @@ export default function NewsletterSignup({
         </button>
       </div>
 
-      {/* Trampa para bots: fuera de pantalla y nunca enfocable con el teclado. */}
+      {/* Trampa para bots. `hidden` y no fuera de pantalla: el autocompletado
+          rellena un campo corrido fuera de pantalla, y esa alta se perdía sin
+          aviso mientras la persona leía "You're in". */}
       <input
         type="text"
         name="bwt_ref"
         tabIndex={-1}
         autoComplete="off"
         aria-hidden
+        hidden
         value={company}
         onChange={(e) => setCompany(e.target.value)}
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
       />
 
       {error ? <p className="mt-2 text-sm text-clay">{error}</p> : null}
