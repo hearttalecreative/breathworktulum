@@ -284,7 +284,9 @@ function NavDropdown({
         </span>
       </button>
       <div className="invisible absolute left-0 top-full w-[336px] origin-top translate-y-2 pt-4 opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-        <div className="relative overflow-hidden bg-ivory/95 shadow-[0_40px_80px_-36px_rgba(25,27,23,0.45)] ring-1 ring-line backdrop-blur-md">
+        {/* Opaque on purpose. At 95% with a blur, the page text underneath
+            showed through the menu and competed with the links. */}
+        <div className="relative overflow-hidden bg-ivory shadow-[0_40px_80px_-36px_rgba(25,27,23,0.45)] ring-1 ring-line">
           <span
             aria-hidden
             className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-gold-soft via-gold-soft/70 to-transparent transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"

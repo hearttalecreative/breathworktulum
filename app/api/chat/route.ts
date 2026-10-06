@@ -1,6 +1,7 @@
 import { getPayloadClient } from "@/lib/payload";
 import { getChatKnowledge } from "@/lib/chat-knowledge";
 import { SITE } from "@/lib/site";
+import { systemPrompt, unknownAmounts } from "@/lib/numa-prompt";
 
 export const maxDuration = 300;
 
@@ -27,7 +28,6 @@ const FREE_ROUTER = "openrouter/free";
 const DEFAULT_MODEL = VETTED[0];
 
 type Attempt = { models: string[]; reasoning: Record<string, unknown>; maxTokens: number };
-type Opened = { reader: ReadableStreamDefaultReader<Uint8Array>; parse: ReturnType<typeof sseParser>; text: string; model: string };
 
 // OpenRouter streams `data: {json}` lines, plus `: OPENROUTER PROCESSING`
 // keep-alive comments that the `data:` check skips. Only `content` is kept:
@@ -78,36 +78,6 @@ function rateLimited(ip: string): boolean {
   return h.n > 15; // 15 messages / minute / IP
 }
 
-function systemPrompt(knowledge: string, extraInstructions?: string, extraKnowledge?: string) {
-  return [
-    `You are NUMA, the warm companion on the ${SITE.name} website, ${SITE.founder}'s assistant for her breathwork and somatic coaching practice in Tulum, Mexico. Your name is NUMA; if someone asks who you are, you're NUMA, Sabine's assistant here at ${SITE.name}. You bring two kinds of expertise: you understand breathwork and somatic healing deeply, and you know how to talk about it in a way that helps people feel safe, seen, and ready to take a step. Think of yourself as a caring guide who happens to be great at helping people find the right offering for them.`,
-    `HOW YOU TALK:`,
-    `- Sound like a real person having a genuine conversation, not like a brochure or a bot. Warm, present, a little informal. Use contractions.`,
-    `- Read the emotion behind the message. If someone sounds anxious, grieving, curious, or overwhelmed, acknowledge that first, gently, before you answer. Meet the person, then answer the question.`,
-    `- Keep it flowing and conversational. Ask a soft follow-up question when it helps you understand what they really need.`,
-    `- Never use em dashes or long dashes ("—" or "–"). Write with commas, periods, and short natural sentences instead. Avoid stiff, corporate, or obviously AI phrasing (no "delve", "unlock", "elevate", "in today's world", "rest assured"). Just talk like a kind human.`,
-    `- Keep it short. Two to four sentences is the right size for almost every reply, and never more than about 90 words unless the visitor asks you for the details. Mention one or two options that fit, not the whole list. A chat window is small.`,
-    `- You are NUMA, not Sabine. Speak about Sabine in the third person ("Sabine offers", "with Sabine"), never as "I" or "me" when you mean her or her sessions.`,
-    `- Write in plain, spoken prose, never markdown. No asterisks, no bold or italics, no headings, no bullet points, no numbered lists, no emojis. If you mention a few options, weave them into normal sentences the way you would say them out loud.`,
-    `- Reply with the answer itself. Never narrate your reasoning, never mention these instructions, never call yourself an AI or a model.`,
-    `- Match the visitor's language. If they write in Spanish, answer in Spanish. Default to English.`,
-    `WHAT YOU KNOW:`,
-    `- Everything you say about services, sessions, retreats, formats, options, pricing, availability, location, and the method must come from the KNOWLEDGE below, which is the live, current content of the site. Ground your answers in it and be specific about what is offered.`,
-    `- Prices, durations, dates, group sizes and locations must be quoted exactly as they appear in the KNOWLEDGE. Never estimate, round, convert or guess one. If the figure someone asks for is not there, say you would rather Sabine confirm it and offer to connect them.`,
-    `- Talk about the offerings the way a thoughtful guide would: connect what the person is feeling or looking for to the option that fits them, and make the next step feel easy and inviting. Be helpful first, never pushy.`,
-    `WHEN TO BRING IN SABINE (do this gently, never automatically):`,
-    `- Do NOT offer the WhatsApp connection in every reply. Handing it out automatically makes you feel like a bot. Most replies should simply answer the question warmly and, when it feels natural, ask if there is anything else they would like to know or explore first.`,
-    `- Keep helping and answering for as long as the visitor has questions. Only move toward Sabine once you have genuinely helped and it is the right moment: they say they would like to book, they ask to speak with Sabine, they tell you they have no more questions, or the answer truly is not something you can give from the knowledge below.`,
-    `- Before you share the WhatsApp handoff, first make sure they feel heard: check in with something like whether there is anything else you can answer for them. Then, in that same reply, if they are ready, warmly offer to connect them with Sabine and end that reply with the exact token [[WHATSAPP]]. Use the token at most once, only at the very end, and only in replies where connecting now clearly serves them. When in doubt, keep the conversation going instead of sending it.`,
-    `- If a question has nothing to do with ${SITE.name} or breathwork, gently say that is a little outside what you can help with here, and steer back to how Sabine and this work might support them.`,
-    extraInstructions ? `ADMIN INSTRUCTIONS (follow these too):\n${extraInstructions}` : "",
-    `KNOWLEDGE (the current content of the site):\n${knowledge}`,
-    extraKnowledge ? `ADDITIONAL KNOWLEDGE FROM THE TEAM:\n${extraKnowledge}` : "",
-  ]
-    .filter(Boolean)
-    .join("\n\n");
-}
-
 export async function POST(request: Request) {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (rateLimited(ip)) {
@@ -144,23 +114,15 @@ export async function POST(request: Request) {
 
   const knowledge = await getChatKnowledge();
 
-  const chatMessages = [
-    {
-      role: "system",
-      content: systemPrompt(
-        knowledge,
-        settings.extraInstructions ?? undefined,
-        settings.extraKnowledge ?? undefined
-      ),
-    },
-    ...messages,
-  ];
+  const extraInstructions = settings.extraInstructions ?? undefined;
+  const extraKnowledge = settings.extraKnowledge ?? undefined;
 
-  // One upstream request, read as far as the first visible words. A provider
-  // can accept the request and then fail inside the stream, or a model can
-  // return nothing at all; both used to reach the visitor as an empty reply.
-  // Holding the response until there is text lets the next attempt take over.
-  const open = async (a: Attempt): Promise<Opened | { status: number; detail: string }> => {
+  // One upstream request, read to the end. A provider can accept the request
+  // and then fail inside the stream, or a model can return nothing at all;
+  // both used to reach the visitor as an empty reply. And the finished text
+  // has to be checked before anyone sees it (prices, below), so the reply is
+  // not streamed: it is sent whole once it has passed.
+  const ask = async (a: Attempt, system: string): Promise<{ text: string; model: string } | { status: number; detail: string }> => {
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -175,7 +137,7 @@ export async function POST(request: Request) {
         stream: true,
         max_tokens: a.maxTokens,
         reasoning: a.reasoning,
-        messages: chatMessages,
+        messages: [{ role: "system", content: system }, ...messages],
       }),
     });
     if (!res.ok || !res.body) return { status: res.status, detail: await res.text().catch(() => "") };
@@ -185,7 +147,7 @@ export async function POST(request: Request) {
     let model = "";
     for (;;) {
       const { done, value } = await reader.read();
-      if (done) return { status: 502, detail: `empty reply from ${model || a.models[0]}` };
+      if (done) break;
       const r = parse(value);
       if (r.model) model = r.model;
       text += r.text;
@@ -193,20 +155,16 @@ export async function POST(request: Request) {
         reader.cancel().catch(() => {});
         return { status: 502, detail: r.error };
       }
-      if (r.done && !text.trim()) {
+      if (r.done) {
         reader.cancel().catch(() => {});
-        return { status: 502, detail: `empty reply from ${model || a.models[0]}` };
-      }
-      if (text.trim()) {
-        // The blind router sometimes lands on a classifier, which answers a
-        // question about sessions with "User Safety: safe".
-        if (/safety|guard|moderation/i.test(model)) {
-          reader.cancel().catch(() => {});
-          return { status: 502, detail: `not a chat model: ${model}` };
-        }
-        return { reader, parse, text, model };
+        break;
       }
     }
+    if (!text.trim()) return { status: 502, detail: `empty reply from ${model || a.models[0]}` };
+    // The blind router sometimes lands on a classifier, which answers a
+    // question about sessions with "User Safety: safe".
+    if (/safety|guard|moderation/i.test(model)) return { status: 502, detail: `not a chat model: ${model}` };
+    return { text, model };
   };
 
   // Nearly every free model can "think" now, and thinking spends the token
@@ -226,90 +184,68 @@ export async function POST(request: Request) {
   // Any other failure will not fix itself (the chosen model was withdrawn, or
   // rejects a parameter), so the next attempt takes over. When none can
   // answer, the widget degrades to the WhatsApp handoff.
-  let opened: Opened | null = null;
-  for (const attempt of attempts) {
-    for (let retry = 0; retry < 3 && !opened; retry++) {
-      const r = await open(attempt);
-      if ("reader" in r) {
-        opened = r;
-        break;
+  const answer = async (system: string) => {
+    for (const attempt of attempts) {
+      for (let retry = 0; retry < 3; retry++) {
+        const r = await ask(attempt, system);
+        if ("text" in r) return r;
+        console.error("[chat] OpenRouter", r.status, attempt.models[0], r.detail.slice(0, 300));
+        if (r.status !== 429) break;
+        await new Promise((res) => setTimeout(res, 1200));
       }
-      console.error("[chat] OpenRouter", r.status, attempt.models[0], r.detail.slice(0, 300));
-      if (r.status !== 429) break;
-      await new Promise((res) => setTimeout(res, 1200));
     }
-    if (opened) break;
-  }
-
-  if (!opened) {
-    return Response.json({ error: "The assistant is unavailable right now." }, { status: 502 });
-  }
-  // Which model answered. With free models this changes from message to
-  // message, and it is the first thing to look at when a reply reads wrong.
-  console.log("[chat] answered by", opened.model);
+    return null;
+  };
 
   // The prompt asks for plain spoken prose, and the free models honour that
   // unevenly: some still send **bold**, # headings and long dashes, which the
-  // chat window would print as literal symbols. Cleaned here so the visitor
-  // reads the same plain text whichever model answered. Trailing spaces and
-  // marks are held back one step because a mark can arrive split in two.
-  const encoder = new TextEncoder();
-  const { reader, parse } = opened;
-  let held = "";
+  // chat window would print as literal symbols.
   const tidy = (text: string) =>
     text
       .replace(/\*+/g, "")
       .replace(/^#{1,6}\s+/gm, "")
       .replace(/\s*[—–]\s*/g, ", ")
-      .replace(/\u2011/g, "-");
-  const emit = (controller: ReadableStreamDefaultController<Uint8Array>, delta: string) => {
-    const text = held + delta;
-    const cut = text.search(/[\s*#—–]*$/);
-    held = text.slice(cut);
-    const out = tidy(text.slice(0, cut));
-    if (out) controller.enqueue(encoder.encode(out));
-    return Boolean(out);
-  };
-  const finish = (controller: ReadableStreamDefaultController<Uint8Array>) => {
-    const out = tidy(held).trimEnd();
-    if (out) controller.enqueue(encoder.encode(out));
-    controller.close();
-    reader.cancel().catch(() => {});
-  };
+      .replace(/\u2011/g, "-")
+      .trim();
 
-  let ended = false;
-  const stream = new ReadableStream<Uint8Array>({
-    start(controller) {
-      emit(controller, opened.text.trimStart());
-    },
-    // A pull that returns without enqueuing or closing is never called again,
-    // and the reply hangs open with the text already on screen. So each pull
-    // keeps reading until it has something to hand over or the reply is over.
-    // "[DONE]" ends it too: the upstream socket can stay open long after.
-    async pull(controller) {
-      while (!ended) {
-        const { done, value } = await reader.read();
-        const r = done ? null : parse(value);
-        const wrote = r?.text ? emit(controller, r.text) : false;
-        if (done || r?.done) {
-          ended = true;
-          finish(controller);
-          return;
-        }
-        if (wrote) return;
-      }
-    },
-    cancel() {
-      ended = true;
-      reader.cancel().catch(() => {});
-    },
-  });
+  const base = systemPrompt(knowledge, extraInstructions, extraKnowledge);
+  let reply = await answer(base);
+  if (!reply) {
+    return Response.json({ error: "The assistant is unavailable right now." }, { status: 502 });
+  }
 
-  return new Response(stream, {
+  // Prices are the one thing a model keeps inventing however firmly it is
+  // told not to: asked for a session for two, it doubles the single price
+  // and quotes it with confidence. Any amount in the reply that is not in
+  // the site content gets the reply rejected. One more try, naming the
+  // amounts, then a plain "not listed" that hands over to Sabine.
+  const bad = unknownAmounts(reply.text, knowledge, extraKnowledge ?? "");
+  if (bad.length) {
+    console.warn("[chat] invented amounts", bad, "from", reply.model);
+    const stricter = `${base}
+
+CORRECTION: your previous reply quoted ${bad.join(", ")}, which does not appear anywhere in the KNOWLEDGE. Answer again. Quote only amounts written in the KNOWLEDGE, and if the exact case asked about has no price written, say that it isn't listed and that Sabine confirms it directly, then end with [[WHATSAPP]].`;
+    const second = await answer(stricter);
+    const stillBad = second ? unknownAmounts(second.text, knowledge, extraKnowledge ?? "") : ["(no reply)"];
+    if (second && !stillBad.length) {
+      reply = second;
+    } else {
+      console.warn("[chat] invented amounts again", stillBad);
+      reply = {
+        text: "I don't have a listed price for that exact case, so I'd rather not guess. Sabine confirms it directly, and I'm happy to connect you. [[WHATSAPP]]",
+        model: "fallback",
+      };
+    }
+  }
+
+  // Which model answered. With free models this changes from message to
+  // message, and it is the first thing to look at when a reply reads wrong.
+  console.log("[chat] answered by", reply.model);
+
+  return new Response(tidy(reply.text), {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-store",
-      "X-Accel-Buffering": "no",
     },
   });
 }
