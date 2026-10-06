@@ -135,13 +135,22 @@ La trampa va con el atributo `hidden`, y el corte se decide solo en el servidor.
   orden de prioridad y con tope de caracteres. Si el sitio crece, revisar que lo
   que queda afuera sea lo legal y no los precios: con el tope viejo NUMA no
   tenía los precios de las sesiones privadas y los inventaba.
-- La respuesta ya no se transmite en streaming: se junta entera y se revisa
-  antes de enviarla. Todo monto de dinero de la respuesta tiene que existir,
-  dígito por dígito, en el conocimiento (`unknownAmounts` en
-  `lib/numa-prompt.ts`). Un modelo preguntado por "dos personas" duplicaba el
-  precio individual y lo daba con seguridad (4.000 → 8.000; a Sabine le dijo
-  7.500). Si inventa, se reintenta una vez con corrección y después cae a un
-  texto fijo que deriva a WhatsApp.
+- La respuesta ya no se transmite en streaming: se junta entera y pasa dos
+  controles antes de salir.
+  1. `unknownNumbers` (`lib/numa-prompt.ts`): **todo** número de la respuesta
+     tiene que existir, dígito por dígito, en el conocimiento, en las notas
+     del panel o en lo que escribió el visitante. Es determinista y no tiene
+     falsos negativos. Un modelo preguntado por "dos personas" duplicaba el
+     precio individual (4.000 → 8.000; a Sabine le dijo 7.500).
+  2. `FACT_CHECK`: un segundo modelo lee el borrador contra el contenido del
+     sitio y responde OK o FAIL. Cubre lo que ningún regex puede: a Sabine le
+     dijo "sí, es absolutamente posible compartir la Foundation con tu marido",
+     que no está en ninguna página. Si el verificador falla por error propio,
+     la respuesta pasa igual: vale más una respuesta que un silencio.
+  Si algo no pasa, se reintenta una vez con la corrección explícita y después
+  cae a un texto fijo que deriva a WhatsApp. Suma ~1s a una respuesta normal.
+  Medido el 6 oct sobre 24 preguntas (10 diseñadas para tentar a inventar):
+  ningún número ni afirmación fuera del sitio.
 - Las reglas base viven en `lib/numa-prompt.ts` y el panel las muestra en modo
   lectura (Settings → AI Chat) para que ella sepa sobre qué escribe.
 

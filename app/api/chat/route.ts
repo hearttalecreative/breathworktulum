@@ -1,7 +1,7 @@
 import { getPayloadClient } from "@/lib/payload";
 import { getChatKnowledge } from "@/lib/chat-knowledge";
 import { SITE } from "@/lib/site";
-import { systemPrompt, unknownAmounts } from "@/lib/numa-prompt";
+import { FACT_CHECK, systemPrompt, unknownNumbers } from "@/lib/numa-prompt";
 
 export const maxDuration = 300;
 
@@ -122,7 +122,11 @@ export async function POST(request: Request) {
   // both used to reach the visitor as an empty reply. And the finished text
   // has to be checked before anyone sees it (prices, below), so the reply is
   // not streamed: it is sent whole once it has passed.
-  const ask = async (a: Attempt, system: string): Promise<{ text: string; model: string } | { status: number; detail: string }> => {
+  const ask = async (
+    a: Attempt,
+    system: string,
+    turns: { role: string; content: string }[] = messages
+  ): Promise<{ text: string; model: string } | { status: number; detail: string }> => {
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -137,7 +141,7 @@ export async function POST(request: Request) {
         stream: true,
         max_tokens: a.maxTokens,
         reasoning: a.reasoning,
-        messages: [{ role: "system", content: system }, ...messages],
+        messages: [{ role: "system", content: system }, ...turns],
       }),
     });
     if (!res.ok || !res.body) return { status: res.status, detail: await res.text().catch(() => "") };
@@ -184,10 +188,10 @@ export async function POST(request: Request) {
   // Any other failure will not fix itself (the chosen model was withdrawn, or
   // rejects a parameter), so the next attempt takes over. When none can
   // answer, the widget degrades to the WhatsApp handoff.
-  const answer = async (system: string) => {
+  const answer = async (system: string, turns?: { role: string; content: string }[]) => {
     for (const attempt of attempts) {
       for (let retry = 0; retry < 3; retry++) {
-        const r = await ask(attempt, system);
+        const r = await ask(attempt, system, turns);
         if ("text" in r) return r;
         console.error("[chat] OpenRouter", r.status, attempt.models[0], r.detail.slice(0, 300));
         if (r.status !== 429) break;
@@ -214,27 +218,44 @@ export async function POST(request: Request) {
     return Response.json({ error: "The assistant is unavailable right now." }, { status: 502 });
   }
 
-  // Prices are the one thing a model keeps inventing however firmly it is
-  // told not to: asked for a session for two, it doubles the single price
-  // and quotes it with confidence. Any amount in the reply that is not in
-  // the site content gets the reply rejected. One more try, naming the
-  // amounts, then a plain "not listed" that hands over to Sabine.
-  const bad = unknownAmounts(reply.text, knowledge, extraKnowledge ?? "");
-  if (bad.length) {
-    console.warn("[chat] invented amounts", bad, "from", reply.model);
-    const stricter = `${base}
+  // Said once, in the words the visitor should hear when a question cannot be
+  // answered from the site.
+  const HANDOFF =
+    "That's not something I can confirm from what's here, and I'd rather not guess. Sabine answers this kind of question directly, and I'm happy to connect you. [[WHATSAPP]]";
 
-CORRECTION: your previous reply quoted ${bad.join(", ")}, which does not appear anywhere in the KNOWLEDGE. Answer again. Quote only amounts written in the KNOWLEDGE, and if the exact case asked about has no price written, say that it isn't listed and that Sabine confirms it directly, then end with [[WHATSAPP]].`;
+  // Everything the reply is allowed to draw numbers from: the site, the team's
+  // notes, and whatever the visitor typed themselves. Repeating the visitor's
+  // own "2 people" back to them is not an invention.
+  const sources = [knowledge, extraKnowledge ?? "", messages.map((m) => m.content).join("\n")];
+
+  // Two checks, in order of cost. A number that is nowhere in the sources is
+  // caught instantly and for certain. Anything else (a session described as
+  // shareable when nothing says so) needs a reader, so a second model reads
+  // the draft back against the site. It only overrules a reply when it answers
+  // clearly; if the check itself fails, the reply stands rather than leaving
+  // the visitor with nothing.
+  const inspect = async (text: string): Promise<string | null> => {
+    const invented = unknownNumbers(text, ...sources);
+    if (invented.length) return `invented numbers: ${invented.join(", ")}`;
+    const judge = await answer(FACT_CHECK, [
+      { role: "user", content: `SOURCE:\n${knowledge}\n\n${extraKnowledge ? `MORE SOURCE:\n${extraKnowledge}\n\n` : ""}DRAFT:\n${text}` },
+    ]);
+    if (!judge) return null;
+    const m = judge.text.trim().match(/^FAIL\s*:?\s*(.*)/i);
+    return m ? `unsupported claim: ${m[1].slice(0, 160) || "(unstated)"}` : null;
+  };
+
+  let problem = await inspect(reply.text);
+  if (problem) {
+    console.warn("[chat] rejected:", problem, "| from", reply.model);
+    const stricter = `${base}\n\nCORRECTION: a draft reply you just wrote was rejected because of ${problem}. Write the reply again using only what the KNOWLEDGE actually says. Do not state any number or any detail about the offering that is not written there. If the visitor is asking for something the KNOWLEDGE does not cover, tell them plainly that you cannot confirm it, and end with [[WHATSAPP]].`;
     const second = await answer(stricter);
-    const stillBad = second ? unknownAmounts(second.text, knowledge, extraKnowledge ?? "") : ["(no reply)"];
-    if (second && !stillBad.length) {
+    const stillWrong = second ? await inspect(second.text) : "no reply";
+    if (second && !stillWrong) {
       reply = second;
     } else {
-      console.warn("[chat] invented amounts again", stillBad);
-      reply = {
-        text: "I don't have a listed price for that exact case, so I'd rather not guess. Sabine confirms it directly, and I'm happy to connect you. [[WHATSAPP]]",
-        model: "fallback",
-      };
+      console.warn("[chat] rejected again:", stillWrong);
+      reply = { text: HANDOFF, model: "handoff" };
     }
   }
 
