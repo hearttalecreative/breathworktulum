@@ -144,7 +144,14 @@ export async function POST(request: Request) {
         messages: [{ role: "system", content: system }, ...turns],
       }),
     });
-    if (!res.ok || !res.body) return { status: res.status, detail: await res.text().catch(() => "") };
+    if (!res.ok || !res.body) {
+      const detail = await res.text().catch(() => "");
+      // A daily quota is not a throttle: it will still be spent in ten
+      // seconds' time. Retrying it twelve times only makes the visitor wait
+      // before the WhatsApp fallback they were always going to get.
+      const spent = res.status === 429 && /per-day|daily|free-models-per-day/i.test(detail);
+      return { status: spent ? 402 : res.status, detail };
+    }
     const reader = res.body.getReader();
     const parse = sseParser();
     let text = "";
@@ -194,6 +201,9 @@ export async function POST(request: Request) {
         const r = await ask(attempt, system, turns);
         if ("text" in r) return r;
         console.error("[chat] OpenRouter", r.status, attempt.models[0], r.detail.slice(0, 300));
+        // 402 here means the account's daily free-model allowance is gone.
+        // No model and no retry can change that, so stop immediately.
+        if (r.status === 402) return null;
         if (r.status !== 429) break;
         await new Promise((res) => setTimeout(res, 1200));
       }
