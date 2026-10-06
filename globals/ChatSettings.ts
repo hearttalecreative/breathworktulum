@@ -73,6 +73,11 @@ export const ChatSettings: GlobalConfig = {
       },
     },
     {
+      name: "baseInstructions",
+      type: "ui",
+      admin: { components: { Field: "@/components/admin/NumaBaseInstructions" } },
+    },
+    {
       name: "extraInstructions",
       type: "textarea",
       label: "Additional instructions (optional)",

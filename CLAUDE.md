@@ -135,8 +135,15 @@ La trampa va con el atributo `hidden`, y el corte se decide solo en el servidor.
   orden de prioridad y con tope de caracteres. Si el sitio crece, revisar que lo
   que queda afuera sea lo legal y no los precios: con el tope viejo NUMA no
   tenía los precios de las sesiones privadas y los inventaba.
-- En un `ReadableStream`, un `pull()` que vuelve sin encolar ni cerrar no se
-  vuelve a llamar y la respuesta queda colgada.
+- La respuesta ya no se transmite en streaming: se junta entera y se revisa
+  antes de enviarla. Todo monto de dinero de la respuesta tiene que existir,
+  dígito por dígito, en el conocimiento (`unknownAmounts` en
+  `lib/numa-prompt.ts`). Un modelo preguntado por "dos personas" duplicaba el
+  precio individual y lo daba con seguridad (4.000 → 8.000; a Sabine le dijo
+  7.500). Si inventa, se reintenta una vez con corrección y después cae a un
+  texto fijo que deriva a WhatsApp.
+- Las reglas base viven en `lib/numa-prompt.ts` y el panel las muestra en modo
+  lectura (Settings → AI Chat) para que ella sepa sobre qué escribe.
 
 ### Compartir artículos y dominio
 
