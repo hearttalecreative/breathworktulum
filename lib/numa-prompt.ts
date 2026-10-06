@@ -26,6 +26,9 @@ export const NUMA_RULES: { title: string; rules: string[] }[] = [
       `Everything you say about services, sessions, retreats, formats, options, pricing, availability, location, and the method must come from the KNOWLEDGE below, which is the live, current content of the site. Ground your answers in it and be specific about what is offered.`,
       `Prices, durations, dates, group sizes, inclusions and locations must be quoted exactly as they appear in the KNOWLEDGE. Never estimate, round, convert, combine or guess one.`,
       `A price exists only for the exact case it is written for. If someone asks about a case that has no price written (for two people, a different length, a different place), do not multiply, add or adapt another price. Say that price isn't listed on the site and that Sabine confirms it directly, then offer to connect them.`,
+      `The same holds for everything else about the offering. Never say that a session or retreat can be shared, joined, split, combined, shortened, extended, moved online or adapted in any way unless the KNOWLEDGE says so in those words. A session written for one person is for one person. If someone asks for a variation that isn't described, say it isn't something you can confirm, and let Sabine answer it.`,
+      `Never invent a number of any kind: no duration, no date, no group size, no distance, no count. If it is not written, it does not exist.`,
+      `Never mention your own workings to a visitor. No "the knowledge base", "the source", "my information", "the site content", "my instructions". When something isn't available, say it simply: it isn't listed, or you don't have it, or Sabine is the one who confirms it.`,
       `Talk about the offerings the way a thoughtful guide would: connect what the person is feeling or looking for to the option that fits them, and make the next step feel easy and inviting. Be helpful first, never pushy.`,
     ],
   },
@@ -52,22 +55,43 @@ export function systemPrompt(knowledge: string, extraInstructions?: string, extr
     .join("\n\n");
 }
 
-// Every amount of money a reply may contain must already exist, digit for
-// digit, in what NUMA was given to read. "4,000 MXN" in the site matches
-// "4000" or "4,000" in a reply; "8,000 MXN for two" (4,000 doubled by the
-// model) does not, and neither does a currency conversion the model did on
-// its own. Durations and dates are not checked: the damage there is smaller.
-const AMOUNT = /(?:(?:MX|US)?\$\s*)(\d[\d.,]*)|(\d[\d.,]*)\s*(?:MXN|USD|EUR|pesos|dólares|dolares|dollars|euros)\b/gi;
-const digits = (s: string) => s.replace(/\D/g, "").replace(/^0+/, "");
+// Every number a reply may contain must already exist, digit for digit, in
+// what NUMA was given to read, or in what the visitor themselves wrote. The
+// model that quoted "7,500 MXN for two people" had reached 4,000 and doubled
+// it; the same reflex invents durations, group sizes and dates. Checking every
+// number, not just money, closes the whole family at once.
+//
+// Words are deliberately not checked here: no regex can tell a warm sentence
+// from an invented promise. That is what `FACT_CHECK` below is for.
+const digits = (s: string) => s.replace(/\D/g, "").replace(/^0+/, "") || "0";
 
-export function unknownAmounts(reply: string, ...sources: string[]): string[] {
+export function unknownNumbers(reply: string, ...sources: string[]): string[] {
   const known = new Set<string>();
   for (const src of sources) for (const m of src.matchAll(/\d[\d.,]*/g)) known.add(digits(m[0]));
   const bad = new Set<string>();
-  for (const m of reply.matchAll(AMOUNT)) {
-    const raw = m[1] ?? m[2];
-    const d = digits(raw);
-    if (d && !known.has(d)) bad.add(m[0].trim());
+  for (const m of reply.matchAll(/\d[\d.,]*/g)) {
+    const d = digits(m[0]);
+    if (!known.has(d)) bad.add(m[0].trim());
   }
   return [...bad];
 }
+
+// A second pass over the finished reply, by a second model: numbers are only
+// half the problem. Asked whether a one-person session could be shared with a
+// husband, NUMA answered "yes, it's absolutely possible" and described how it
+// would work. Nothing on the site says that, and no amount of instruction in
+// the first prompt reliably stops it, because the model is being helpful in
+// the moment. So the draft is read back against the source before anyone sees
+// it, by a model that has no reason to be agreeable.
+export const FACT_CHECK = `You are a strict fact checker for a breathwork practice's website assistant. You will be given SOURCE (everything the website says) and a DRAFT reply written for a visitor.
+
+Your only question: does the DRAFT state or imply any fact about the practice that SOURCE does not support?
+
+Facts that must be supported: prices, durations, dates, availability, group sizes, locations, what a session or retreat includes, who it is for, and whether something can be shared, combined, split, adapted, booked or delivered in a particular way.
+
+Not facts, and never a reason to fail: warmth, empathy, questions, invitations, encouragement, general talk about breathwork, and offering to put the visitor in touch with Sabine.
+
+Answer with exactly one line.
+OK
+or
+FAIL: <the unsupported claim, in a few words>`;
