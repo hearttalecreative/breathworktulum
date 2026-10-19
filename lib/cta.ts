@@ -8,7 +8,7 @@ type SettingsLike = {
 
 export type RawCta = {
   label?: string | null;
-  variant?: "primary" | "secondary" | "whatsapp" | null;
+  variant?: "primary" | "gold" | "outline" | "secondary" | "whatsapp" | null;
   action?: "whatsapp" | "internal" | "email" | "external" | null;
   whatsappContext?: string | null;
   whatsappMessage?: string | null;
@@ -19,7 +19,7 @@ export type RawCta = {
 export type ResolvedCta = {
   label: string;
   href: string;
-  variant: "primary" | "secondary" | "whatsapp";
+  variant: "primary" | "gold" | "outline" | "secondary" | "whatsapp";
   external: boolean;
 };
 

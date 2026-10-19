@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type Variant = "primary" | "gold" | "secondary" | "whatsapp";
+type Variant = "primary" | "gold" | "outline" | "secondary" | "whatsapp";
 
 // Editorial buttons — rectangular, not pill. Primary/WhatsApp are sharp filled
 // blocks with a tactile press; secondary is a text link with a gold underline
@@ -70,6 +70,26 @@ export default function CTAButton({
         {content}
       </Link>
     );
+
+  // A quieter filled-weight button: same size as the others, no solid fill.
+  // Asked for as a softer alternative to the charcoal block on cream.
+  if (variant === "outline") {
+    return (
+      <Anchor
+        className={`${filledBase} border ${
+          onDark
+            ? "border-cream-dim/70 bg-transparent text-pure hover:bg-pure/10"
+            : "border-ink/80 bg-shell text-ink hover:bg-ink hover:text-pure"
+        }`}
+        content={
+          <>
+            {children}
+            <Arrow />
+          </>
+        }
+      />
+    );
+  }
 
   if (variant === "secondary") {
     return (

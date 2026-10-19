@@ -286,11 +286,13 @@ function NavDropdown({
       <div className="invisible absolute left-0 top-full w-[336px] origin-top translate-y-2 pt-4 opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
         {/* Opaque on purpose. At 95% with a blur, the page text underneath
             showed through the menu and competed with the links. */}
-        <div className="relative overflow-hidden bg-ivory shadow-[0_40px_80px_-36px_rgba(25,27,23,0.45)] ring-1 ring-line">
-          <span
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-gold-soft via-gold-soft/70 to-transparent transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
-          />
+        {/* Sits 1px up so its gold edge lands on the bar's own bottom line: one
+            line where the two meet, not the bar's line plus the panel's border
+            with a sliver between them. No border on top for the same reason.
+            The gold edge is solid; it used to fade out to the right, which
+            read as an uneven line. */}
+        <div className="relative -mt-px overflow-hidden border-x border-b border-line bg-ivory shadow-[0_40px_80px_-36px_rgba(25,27,23,0.45)]">
+          <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-gold-soft" />
           <p className="eyebrow px-5 pb-1 pt-4 text-gold-ink/80">{eyebrow}</p>
           <div className="px-1.5 pb-2 pt-1">
             {items.map((item, i) => (

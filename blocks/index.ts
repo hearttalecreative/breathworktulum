@@ -166,6 +166,21 @@ export const ThreePhasesBlock: Block = {
       admin: { description: 'Short scannable line under the description, e.g. "Small-group retreat · Tulum · November to April".' },
     },
     { name: "image", type: "upload", relationTo: "media" },
+    {
+      name: "phases",
+      type: "array",
+      label: "The three phases",
+      labels: { singular: "Phase", plural: "Phases" },
+      maxRows: 3,
+      admin: {
+        description:
+          "Title and line for Breathe, Heal and Transform. Leave empty to use the standard wording.",
+      },
+      fields: [
+        { name: "title", type: "text", required: true },
+        { name: "line", type: "textarea", label: "Line under the title" },
+      ],
+    },
     { name: "body", type: "richText" },
     ctaGroup("cta"),
     tone,

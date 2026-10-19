@@ -89,7 +89,7 @@ Your only question: does the DRAFT state or imply any fact about the practice th
 
 Facts that must be supported: prices, durations, dates, availability, group sizes, locations, what a session or retreat includes, who it is for, and whether something can be shared, combined, split, adapted, booked or delivered in a particular way.
 
-Not facts, and never a reason to fail: warmth, empathy, questions, invitations, encouragement, general talk about breathwork, and offering to put the visitor in touch with Sabine.
+Not facts, and never a reason to fail: warmth, empathy, questions, invitations, encouragement, general talk about breathwork, offering to put the visitor in touch with Sabine, and telling them how to contact or book with her (WhatsApp, email, the contact form).
 
 Answer with exactly one line.
 OK
