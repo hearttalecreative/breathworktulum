@@ -58,7 +58,7 @@ function CtaRow({
   onDark = false,
   stack = false,
 }: {
-  ctas: { label: string; href: string; variant: "primary" | "secondary" | "whatsapp"; external: boolean }[];
+  ctas: { label: string; href: string; variant: "primary" | "gold" | "outline" | "secondary" | "whatsapp"; external: boolean }[];
   align?: "left" | "center";
   onDark?: boolean;
   /** Uno debajo del otro y centrados, en teléfono y en escritorio. Lo usa el
@@ -584,11 +584,16 @@ function BlockSwitch({
 
     case "threePhases": {
       const cta = resolveCta(b.cta as RawCta, settings);
-      const phases = [
+      // The three lines used to live only here, so they could not be edited
+      // from the panel. They are now a field on the block; this is the
+      // fallback for a block that has never had them filled in.
+      const STANDARD_PHASES = [
         { n: "Breathe", line: "The body enters the work. The technique opens what's been held." },
         { n: "Heal", line: "The emotional layer surfaces. What was stored has room to move." },
         { n: "Transform", line: "Integration. What shifted gets language, so the change holds." },
       ];
+      const own = ((b.phases as { title?: string; line?: string }[]) || []).filter((p) => p?.title);
+      const phases = own.length ? own.map((p) => ({ n: p.title as string, line: p.line || "" })) : STANDARD_PHASES;
       // The section now follows the block's own Background colour instead of
       // being hard-coded to forest green, and the photo sits in a plain rounded
       // frame — the arch and the framed card were the three things she named.
@@ -640,7 +645,9 @@ function BlockSwitch({
                 ))}
               </ol>
               {b.body ? (
-                <div className={`prose-body mt-8 max-w-xl space-y-4 leading-relaxed ${dark ? "text-cream-dim [&_strong]:text-pure" : "text-ink-soft [&_strong]:text-ink"}`}>
+                // Same size as the lede above the phases. At body size it was a
+                // third text size inside one column, which read as a mistake.
+                <div className={`prose-lede mt-10 max-w-xl space-y-4 ${dark ? "text-cream-dim [&_strong]:text-pure" : "text-ink-soft [&_strong]:text-ink"}`}>
                   <RichText data={b.body as never} converters={bodyConverters} />
                 </div>
               ) : null}
@@ -689,6 +696,27 @@ function BlockSwitch({
           <div className="stagger mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6">
             {cards.map((c, i) => {
               const Wrapper = c.href ? "a" : "div";
+              // A card without a photo used to keep the tall photo shape, so on
+              // Corporate it was a dark box with the text pushed to the bottom
+              // under a large empty space. Without a photo it is a text card.
+              if (!c.image) {
+                return (
+                  <Wrapper
+                    key={i}
+                    {...(c.href ? { href: c.href } : {})}
+                    className={`group relative block rounded-2xl bg-ivory p-7 ring-1 ring-line sm:p-8 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spanOf(c, i)}`}
+                  >
+                    <span aria-hidden className="absolute inset-x-7 top-0 h-px bg-gold-soft/60" />
+                    <h3 className="text-2xl text-ink">{c.title}</h3>
+                    <p className="mt-3 whitespace-pre-line text-[0.98rem] leading-relaxed text-ink-soft">{c.body}</p>
+                    {c.ctaLabel ? (
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink">
+                        {c.ctaLabel} <span aria-hidden className="text-gold-ink">→</span>
+                      </span>
+                    ) : null}
+                  </Wrapper>
+                );
+              }
               return (
                 <Wrapper
                   key={i}
@@ -696,7 +724,7 @@ function BlockSwitch({
                   // La proporción va en la tarjeta y la foto la llena entera. Si
                   // la fila estira una tarjeta para igualar alturas, la foto
                   // estira con ella y nunca queda fondo a la vista.
-                  className={`card group relative block overflow-clip bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 focus-within:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spanOf(c, i)} ${ratioOf(c, i)}`}
+                  className={`card group relative block overflow-clip rounded-2xl bg-night transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 focus-within:-translate-y-1.5 sm:[&:last-child:nth-child(odd)]:col-span-2 ${spanOf(c, i)} ${ratioOf(c, i)}`}
                 >
                   <div className="card-media absolute inset-0">
                     {c.image ? (
@@ -899,7 +927,32 @@ function BlockSwitch({
                       </>
                     ) : null}
                     {b.includedNote ? <p className="mt-4 text-[0.82rem] leading-relaxed text-faint">{b.includedNote as string}</p> : null}
-                    {b.investment ? <p className="mt-6 border-t border-line pt-5 text-sm text-ink-soft"><span className="font-medium text-ink">Investment</span> · {b.investment as string}</p> : null}
+                    {b.investment ? (
+                      // Written in the panel as one line with "|" between parts.
+                      // Each part's label ("Duration:") is set in bold so the
+                      // line can be scanned.
+                      <p className="mt-6 border-t border-line pt-5 text-sm leading-relaxed text-ink-soft">
+                        <span className="font-medium text-ink">Investment</span> ·{" "}
+                        {String(b.investment)
+                          .split("|")
+                          .map((part, i, all) => {
+                            const t = part.trim();
+                            const m = t.match(/^([^:]{1,30}):\s*(.*)$/);
+                            return (
+                              <span key={i}>
+                                {m ? (
+                                  <>
+                                    <span className="font-medium text-ink">{m[1]}:</span> {m[2]}
+                                  </>
+                                ) : (
+                                  t
+                                )}
+                                {i < all.length - 1 ? " | " : ""}
+                              </span>
+                            );
+                          })}
+                      </p>
+                    ) : null}
                   </div>
                   ) : null}
                   {cta ? (

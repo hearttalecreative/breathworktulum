@@ -195,7 +195,7 @@ export interface Page {
             ctas?:
               | {
                   label?: string | null;
-                  variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+                  variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
                   action: 'whatsapp' | 'internal' | 'email' | 'external';
                   whatsappContext?:
                     | (
@@ -264,7 +264,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -331,6 +331,16 @@ export interface Page {
              */
             metaLine?: string | null;
             image?: (number | null) | Media;
+            /**
+             * Title and line for Breathe, Heal and Transform. Leave empty to use the standard wording.
+             */
+            phases?:
+              | {
+                  title: string;
+                  line?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
             body?: {
               root: {
                 type: string;
@@ -349,7 +359,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -485,7 +495,7 @@ export interface Page {
             ctas?:
               | {
                   label?: string | null;
-                  variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+                  variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
                   action: 'whatsapp' | 'internal' | 'email' | 'external';
                   whatsappContext?:
                     | (
@@ -632,7 +642,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -787,7 +797,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -845,7 +855,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -898,7 +908,7 @@ export interface Page {
             ctas?:
               | {
                   label?: string | null;
-                  variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+                  variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
                   action: 'whatsapp' | 'internal' | 'email' | 'external';
                   whatsappContext?:
                     | (
@@ -995,7 +1005,7 @@ export interface Page {
             investment?: string | null;
             cta: {
               label?: string | null;
-              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -1102,7 +1112,7 @@ export interface Page {
             cta: {
               enabled?: boolean | null;
               label?: string | null;
-              variant?: ('primary' | 'gold' | 'secondary' | 'whatsapp') | null;
+              variant?: ('primary' | 'gold' | 'outline' | 'secondary' | 'whatsapp') | null;
               action: 'whatsapp' | 'internal' | 'email' | 'external';
               whatsappContext?:
                 | (
@@ -1764,6 +1774,13 @@ export interface PagesSelect<T extends boolean = true> {
               lede?: T;
               metaLine?: T;
               image?: T;
+              phases?:
+                | T
+                | {
+                    title?: T;
+                    line?: T;
+                    id?: T;
+                  };
               body?: T;
               cta?:
                 | T

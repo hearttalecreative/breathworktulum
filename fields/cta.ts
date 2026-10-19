@@ -11,6 +11,7 @@ export const ctaFields: Field[] = [
     options: [
       { label: "Primary (dark button)", value: "primary" },
       { label: "Gold button", value: "gold" },
+      { label: "Outline (light, dark border)", value: "outline" },
       { label: "Text link with arrow", value: "secondary" },
       { label: "WhatsApp (gold, with icon)", value: "whatsapp" },
     ],

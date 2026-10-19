@@ -230,8 +230,10 @@ export async function POST(request: Request) {
 
   // Said once, in the words the visitor should hear when a question cannot be
   // answered from the site.
+  // Neutral on purpose: it is also what a visitor reads after saying "yes,
+  // let's book", so it must not sound like a refusal.
   const HANDOFF =
-    "That's not something I can confirm from what's here, and I'd rather not guess. Sabine answers this kind of question directly, and I'm happy to connect you. [[WHATSAPP]]";
+    "Sabine is the best person for this one, and she'll be happy to hear from you. You can message her directly here. [[WHATSAPP]]";
 
   // Everything the reply is allowed to draw numbers from: the site, the team's
   // notes, and whatever the visitor typed themselves. Repeating the visitor's
